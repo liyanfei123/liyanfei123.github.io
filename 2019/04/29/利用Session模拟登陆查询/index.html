@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="MinHow,MinHow's Blog">
+  
+  <meta name="description" content="当我们在爬虫时，通常会遇到一些网站需要登陆验证，只有登陆个人账号后才能进一步查看网页中的信息。但是，有时候在我们第一次登陆之后，其后的一段时间内却不用再重新登陆便能够看到信息。这到底是为什么呢？在这里面，有个神奇的东西，在帮我们维持着对话，它就是Cookie，关于Cookie的进一步解释在此就不展开了，百度上关于他的介绍有很多。而我们在第一次输入密码等信息时，实际上就是在构造Cookie。更进一步">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://yoursite.com/2019/04/29/利用Session模拟登陆查询/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="当我们在爬虫时，通常会遇到一些网站需要登陆验证，只有登陆个人账号后才能进一步查看网页中的信息。但是，有时候在我们第一次登陆之后，其后的一段时间内却不用再重新登陆便能够看到信息。这到底是为什么呢？在这里面，有个神奇的东西，在帮我们维持着对话，它就是Cookie，关于Cookie的进一步解释在此就不展开了，百度上关于他的介绍有很多。而我们在第一次输入密码等信息时，实际上就是在构造Cookie。更进一步">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190222205724742.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190222210127937.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190222211952139.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70">
+<meta property="og:updated_time" content="2019-04-29T09:48:17.784Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hexo">
+<meta name="twitter:description" content="当我们在爬虫时，通常会遇到一些网站需要登陆验证，只有登陆个人账号后才能进一步查看网页中的信息。但是，有时候在我们第一次登陆之后，其后的一段时间内却不用再重新登陆便能够看到信息。这到底是为什么呢？在这里面，有个神奇的东西，在帮我们维持着对话，它就是Cookie，关于Cookie的进一步解释在此就不展开了，百度上关于他的介绍有很多。而我们在第一次输入密码等信息时，实际上就是在构造Cookie。更进一步">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20190222205724742.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/pace.min.js"></script>
+  
+
+  
+  
+
+</head>
+</html>
+<body>
+  <div id="container">
+      <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer">
+        <div id="header-menu" class="header-menu-pos animated">
+            <div class="header-menu-container">
+                <a href="/" class="left">
+                    <span class="site-title">MinHow&#39;s Blog</span>
+                </a>
+                <nav id="header-menu-nav" class="right">
+                    
+                    <a href="/">
+                        <i class="fa fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                    
+                    <a href="/archives">
+                        <i class="fa fa-archive"></i>
+                        <span>Archives</span>
+                    </a>
+                    
+                    <a href="/about">
+                        <i class="fa fa-user"></i>
+                        <span>About</span>
+                    </a>
+                    
+                </nav>
+                <a class="mobile-header-menu-button">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </div>
+        <div id="header-row">
+            <div id="logo">
+                <a href="/">
+                    <img src="/images/logo.png" alt="logo">
+                </a>
+            </div>
+            <div class="header-info">
+                <div id="header-title">
+                    
+                    <h2>
+                        MinHow&#39;s Blog
+                    </h2>
+                    
+                </div>
+                <div id="header-description">
+                    
+                    <h3>
+                        一个专注 WEB 开发的技术博客
+                    </h3>
+                    
+                </div>
+            </div>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a title="MinHow" target="_blank" href="//minhow.com">
+                            <i class="fa fa-home fa-2x"></i></a>
+                    
+                        <a title="Github" target="_blank" href="//github.com/wongminho">
+                            <i class="fa fa-github fa-2x"></i></a>
+                    
+                        <a title="Weibo" target="_blank" href="//weibo.com/WongMinHo">
+                            <i class="fa fa-weibo fa-2x"></i></a>
+                    
+                        <a title="Twitter" target="_blank" href="//twitter.com/huangminhow">
+                            <i class="fa fa-twitter fa-2x"></i></a>
+                    
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+      <div class="outer">
+        <section id="main" class="body-wrap"><article id="post-利用Session模拟登陆查询" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    <div class="article-entry post-content" itemprop="articleBody">
+      
+            
+            <p>当我们在爬虫时，通常会遇到一些网站需要登陆验证，只有登陆个人账号后才能进一步查看网页中的信息。但是，有时候在我们第一次登陆之后，其后的一段时间内却不用再重新登陆便能够看到信息。这到底是为什么呢？在这里面，有个神奇的东西，在帮我们维持着对话，它就是<code>Cookie</code>，关于<code>Cookie</code>的进一步解释在此就不展开了，百度上关于他的介绍有很多。而我们在第一次输入密码等信息时，实际上就是在构造<code>Cookie</code>。更进一步来说，我们在构造<code>Cookie</code>时，其实就是在向登陆界面提交一个表单，并通过这个我们所提交的表单来形成一个<code>Cookie</code>,这是我在某个网站中copy下来的<code>cookie</code>，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cookie: _uab_collina=155313450434175728304466; gr_user_id=7cff9c41-</span><br><span class="line">de6f-4080-9475-65c7126fe21c; _ga=GA1.2.2034516717.1553133506; grwng_uid=6c05b24b-a353-422e-8598-16032841edd5; a2873925c34ecbd2_gr_last_sent_cs1=liyanfei123; __auc=0c1b4ef416a1ab99cefd1939752; __atuvc=15%7C13%2C0%7C14%2C0%7C15%2C0%7C16%2C3%7C17; csrftoken=AxXznnUGDgyWfyDywowHI88cTOeBuYVwr3KsSmqNWP3lgNlbFD3Cu1m26hyHPHZX; Hm_lvt_fa218a3ff7179639fac15e372f411c=1555501611,1555901333,1556106946,1556530222; a2824655c34ecbd2_gr_session_id=dc8b98a4-c28b-4bf9-b9ae-7f10a0afa012; a2873925c34ecbd2_gr_last_sent_sid_with_cs1=dc8b98a4-c28b-4bf9-b9ae-7f10a0afa012; a2873925c34ecbd2_gr_cs1=liyanfei123; a2873925c34ecbd2_gr_session_id_dc8b98a4-c28b-4bf9-b9ae-7f10a0afa012=true; Hm_lpvt_fa218a3ff7179639fcdw15e372f411c=1556530231</span><br></pre></td></tr></table></figure></p>
+<p>可以发现每个字段都有等号存在，因此可以将其写成字典的形式。哈哈，好像有点跑题了，让我们言归正传，看看到底如何使用Python来实现模拟登陆吧。</p>
+<h2 id="requests提交表单"><a href="#requests提交表单" class="headerlink" title="requests提交表单"></a>requests提交表单</h2><p>在requests中提交表单很容易，只需要以下简单的几行代码就可以实现<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">data = &#123;<span class="string">'username'</span>:**, <span class="string">'password'</span>:**&#125;</span><br><span class="line">requests.post(<span class="string">'****'</span>, data = data)</span><br></pre></td></tr></table></figure></p>
+<p>但是在使用<code>requests</code>提交表单时需要注意的是，该方法只能针对一些登陆较为简单的网页使用，如只要提交用户名称和密码就ok的网站，而针对一些需要提交的信息较多，且又有一些加密信息的网站，使用<code>requests</code>就不行了。</p>
+<p>或许会有人说，我们先用一个<code>requests.get()</code>得到加密的信息，再来一个<code>requests.post()</code>对加密的信息进行提交不就行了，当然，这也是一种方法，但只能够用来处理固定的加密数据，而对于变化的就GG了，因为<code>requests.get()</code>和<code>requests.post()</code>是两个不同的会话，也就是用两个浏览器打开了不同的页面，举个例子，你在路上看到了一个帅哥A，过了一段时间你又看见了他，你觉得他就是那个额刚刚看见的帅哥A，其实不然，这里的帅哥已经变了，他可能是那个帅哥A的双胞胎兄弟帅哥B。</p>
+<h2 id="session模拟登陆"><a href="#session模拟登陆" class="headerlink" title="session模拟登陆"></a>session模拟登陆</h2><p>那对于提交的表单中有其他内容，并且该内容会随者网页刷新而发生变化，在这种情况下我们该如何构建表单进行提交呢？解决上述问题的主要方法就是维持同一个会话，也就是打开一个新的浏览器选项卡而不是新开一个浏览器。这个时候就要搬出我们的<code>session</code>了，通过使用它来帮助我们维持会话。</p>
+<p>话不多说，直接上实例。但是，还是得给自己学校打个广告，<strong>南京邮电大学，牛x，欢迎报考</strong>。</p>
+<p>打开南邮智慧校园的<a href="http://ids6.njupt.edu.cn/authserver/login" target="_blank" rel="noopener">登陆界面</a>，同时打开开发者工具，寻找我们所需要的报表但信息。<strong>在这里，有个小技巧，就是先输入错误的信息进行登陆，这样可以快速的找到表单，要不然，一输入正确的信息就跳转页面了（虽然这样也可以找到，但是比较繁琐）</strong>。</p>
+<p><img src="https://img-blog.csdnimg.cn/20190222205724742.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>在这里，我们可以很清楚的看到要提交的表单内容。除了需要username和password外，还需要提交其他的信息。再次刷新页面，发现这些值会发生变化，但这并不能阻止我们前进的脚步。</p>
+<p>通过对源码的观察，我们发现，这些信息在源码中都有对应的值，并不是什么高级的加密信息（如网易云，它使用<code>AES</code>加密，<code>RSA</code>加密，破解就比较麻烦了）<br><img src="https://img-blog.csdnimg.cn/20190222210127937.png" alt="在这里插入图片描述"></p>
+<p>因此，我们可以直接从源码中提取除我们所要的信息，对其通过<code>session.post()</code>提交便可。</p>
+<p>人总是懒惰的，不想每次查询数据时都构造提交表单或设置<code>cookies</code>，因此，我们可以将提交成功后的<code>cookies</code>给保存到本地文件中，等需要使用的时候将其拿出来即可。由于原始的<code>session.cookies</code>没有<code>save()</code>方法，所以需要用到<code>cookielib</code>中的方法<code>LWPCookieJar</code>，这个类实例化的<code>cookie</code>对象，就可以直接调用<code>save</code>方法。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nysession = requests.session()</span><br><span class="line">nysession.cookies = http.cookiejar.LWPCookieJar(filename)</span><br></pre></td></tr></table></figure></p>
+<p>在调用<code>save</code>方法前，我们可先检验当前登陆是否成功，如果登陆成功再对其进行保存。试了好多次，发现保存下来的<code>cookies</code>都没法用，估计是里面有个系统时间在作怪，我也没多去深究。</p>
+<p>在这里，我们对课程表进行了抓取。</p>
+<p>完整代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> http.cookiejar</span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NJUPT</span><span class="params">()</span>:</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">		self.headers = &#123;</span><br><span class="line">			<span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.109 Safari/537.36'</span>		</span><br><span class="line">			&#125;</span><br><span class="line">		self.nysession = requests.session()    <span class="comment"># 用于维持会话</span></span><br><span class="line">		self.nysession.cookies = http.cookiejar.LWPCookieJar(filename = <span class="string">"NJUPTCookies.txt"</span>)</span><br><span class="line">		self.post_url = <span class="string">'http://ids6.njupt.edu.cn/authserver/login'</span></span><br><span class="line">		<span class="comment"># 查询课表信息</span></span><br><span class="line">		self.data_url = <span class="string">'http://yjs.njupt.edu.cn/epstar/yjs/T_PYGL_KWGL_WSXK/T_PYGL_KWGL_WSXK_XSKB_NEW.jsp?&amp;current.model.id=aa5u2-5qit61-ga0dny4n-1-gb0irwbr-ffc'</span></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">login_by_postdata</span><span class="params">(self)</span>:</span></span><br><span class="line">		<span class="string">"""</span></span><br><span class="line"><span class="string">		提交表单进行登陆</span></span><br><span class="line"><span class="string">		"""</span></span><br><span class="line">		page_source = self.nysession.get(self.post_url, headers = self.headers).text</span><br><span class="line">		soup = BeautifulSoup(page_source, <span class="string">'lxml'</span>)</span><br><span class="line">		values = [item.attrs[<span class="string">'value'</span>] <span class="keyword">for</span> item <span class="keyword">in</span> soup.find_all(<span class="string">'input'</span>, attrs = &#123;<span class="string">'type'</span>:<span class="string">'hidden'</span>&#125;)] </span><br><span class="line">		self.postdata = &#123;</span><br><span class="line">			<span class="string">'username'</span>: <span class="string">'***'</span>,</span><br><span class="line">			<span class="string">'password'</span>: <span class="string">'***'</span>,</span><br><span class="line">			<span class="string">'lt'</span>: values[<span class="number">0</span>],</span><br><span class="line">			<span class="string">'dllt'</span>: values[<span class="number">1</span>],</span><br><span class="line">			<span class="string">'execution'</span>: values[<span class="number">2</span>],</span><br><span class="line">			<span class="string">'_eventId'</span>: values[<span class="number">3</span>],</span><br><span class="line">			<span class="string">'rmShown'</span>: values[<span class="number">4</span>]</span><br><span class="line">		&#125;    <span class="comment"># 所需要提交的数据都在网页源码input标签当中</span></span><br><span class="line">		time.sleep(<span class="number">2</span>)</span><br><span class="line">		results = self.nysession.post(self.post_url, data = self.postdata, headers = self.headers)  <span class="comment"># 提交表单信息，更新cookies</span></span><br><span class="line">		<span class="comment"># 对该得到的页面进行验证，看登陆是否成功 </span></span><br><span class="line">		print(<span class="string">'进行测试'</span>)</span><br><span class="line">		<span class="keyword">if</span> self.test_success(results.text):</span><br><span class="line">			<span class="comment"># 如果登陆成功，则将当前的cookies保存到本地文件, 并进行后续的数据抓取</span></span><br><span class="line">			print(<span class="string">'登陆成功'</span>)</span><br><span class="line">			self.nysession.cookies.save(ignore_discard = <span class="literal">True</span>, ignore_expires=<span class="literal">True</span>)   <span class="comment"># 括号内内容很重要,要不然保存不了</span></span><br><span class="line">			self.get_data()</span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			print(<span class="string">'登陆失败'</span>)</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">login_by_cookies</span><span class="params">(self)</span>:</span></span><br><span class="line">		<span class="string">"""</span></span><br><span class="line"><span class="string">		根据本地cookies文件来进行登陆</span></span><br><span class="line"><span class="string">		"""</span></span><br><span class="line">		self.nysession.cookies.load(ignore_discard = <span class="literal">True</span>, ignore_expires=<span class="literal">True</span>)  <span class="comment">#将指定文件中的cookies输入到session中</span></span><br><span class="line">		page_source = self.nysession.get(self.data_url, headers = self.headers).text</span><br><span class="line">		<span class="keyword">try</span>:</span><br><span class="line">			<span class="keyword">if</span> self.test_success(page_source):</span><br><span class="line">				self.get_data()</span><br><span class="line">		<span class="keyword">except</span>:</span><br><span class="line">			print(<span class="string">'当前本地文件cookies已失效'</span>)</span><br><span class="line">			self.nysession = requests.session()        <span class="comment"># 重置session信息</span></span><br><span class="line">			self.nysession.cookies = http.cookiejar.LWPCookieJar(filename = <span class="string">"NJUPTCookies.txt"</span>)</span><br><span class="line">			self.login_by_postdata()</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">get_data</span><span class="params">(self)</span>:</span></span><br><span class="line">		response = self.nysession.get(self.data_url, headers = self.headers).text</span><br><span class="line">		soup = BeautifulSoup(response, <span class="string">'lxml'</span>)</span><br><span class="line">		content = soup.find(<span class="string">'td'</span>, attrs = &#123;<span class="string">'class'</span>:<span class="string">'td_03'</span>&#125;).find_all(<span class="string">'table'</span>)[<span class="number">1</span>]  </span><br><span class="line">		tb = pd.read_html(content.prettify(), header = <span class="number">0</span>)[<span class="number">0</span>]</span><br><span class="line">		tb.to_csv(<span class="string">r'course.csv'</span>, mode = <span class="string">'a'</span>, encoding = <span class="string">'utf-8-sig'</span>, header = <span class="number">1</span>, index = <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">test_success</span><span class="params">(self, page_source)</span>:</span></span><br><span class="line">		<span class="string">"""</span></span><br><span class="line"><span class="string">		检验登陆是否成功</span></span><br><span class="line"><span class="string">		"""</span></span><br><span class="line">		<span class="comment"># 登陆成功的页面上能够测试是否成功的东西太少了，目前只想到用正则</span></span><br><span class="line">		soup = BeautifulSoup(page_source, <span class="string">'lxml'</span>)</span><br><span class="line">		test_text = re.search(<span class="string">r'.*?(\d+).*?'</span>, soup.find(<span class="string">'div'</span>, attrs = &#123;<span class="string">'class'</span>:<span class="string">'auth_username'</span>&#125;).text, re.S)</span><br><span class="line">		<span class="keyword">try</span>:</span><br><span class="line">			<span class="keyword">if</span> test_text.group(<span class="number">1</span>) == <span class="string">'**'</span>:     <span class="comment"># **是你的学号</span></span><br><span class="line">				<span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">		<span class="keyword">except</span>:</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">	njupt = NJUPT()</span><br><span class="line">	njupt.login_by_postdata()</span><br></pre></td></tr></table></figure>
+<p>在对课表的抓取中，我们使用了<code>pandas</code>中的<code>read_html</code>方法，该方法可以帮助我们快速的抓取网页上的表格信息。</p>
+<p>在对<code>cookies</code>进行保存时，需要注意的是<code>save</code>中的<code>ignore_discard = True, ignore_expires=True</code>，如果不添加的话，将无法保存，本地文件只会出现一行<code>#LWP-Cookies-2.0</code>。</p>
+<p>最后的结果为：<br><img src="https://img-blog.csdnimg.cn/20190222211952139.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70" alt="由于没有对数据进行后续的处理，表格看起来比较乱"></p>
+<p>在进行多次登陆失败后，它就需要我们输入验证码了，这个咱也不怕，动用<code>selenium</code>和<code>百度OCR</code>，可以轻松帮我们解决这个问题，在这里就不进行阐述了。</p>
+
+            <div class="post-copyright">
+    <div class="content">
+        <p>最后更新： 2019年04月29日 17:48</p>
+        <p>原始链接： <a class="post-url" href="/2019/04/29/利用Session模拟登陆查询/" title>http://yoursite.com/2019/04/29/利用Session模拟登陆查询/</a></p>
+        <footer>
+            <a href="http://yoursite.com">
+                <img src="/images/logo.png" alt="John Doe">
+                John Doe
+            </a>
+        </footer>
+    </div>
+</div>
+
+      
+        
+            
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;">赏</a>
+</div>
+
+<div id="reward" class="post-modal reward-lay">
+    <a class="close" href="javascript:;" id="reward-close">×</a>
+    <span class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我吃糖~
+        <i class="icon icon-quote-right"></i>
+    </span>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/images/wechat_code.jpg" alt="打赏二维码">
+        </div>
+        <div class="reward-select">
+            
+            <label class="reward-select-item checked" data-id="wechat" data-wechat="/images/wechat_code.jpg">
+                <img class="reward-select-item-wechat" src="/images/wechat.png" alt="微信">
+            </label>
+            
+            
+            <label class="reward-select-item" data-id="alipay" data-alipay="/images/alipay_code.jpg">
+                <img class="reward-select-item-alipay" src="/images/alipay.png" alt="支付宝">
+            </label>
+            
+        </div>
+    </div>
+</div>
+
+
+        
+    </div>
+    <footer class="article-footer">
+        
+        
+<div class="post-share">
+    <a href="javascript:;" id="share-sub" class="post-share-fab">
+        <i class="fa fa-share-alt"></i>
+    </a>
+    <div class="post-share-list" id="share-list">
+        <ul class="share-icons">
+          <li>
+            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2019/04/29/利用Session模拟登陆查询/&title=Hexo&pic=http://yoursite.comimages/logo.png" data-title="微博">
+              <i class="fa fa-weibo"></i>
+            </a>
+          </li>
+          <li>
+            <a class="weixin share-sns" id="wxFab" href="javascript:;" data-title="微信">
+              <i class="fa fa-weixin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2019/04/29/利用Session模拟登陆查询/&title=Hexo&source=" data-title="QQ">
+              <i class="fa fa-qq"></i>
+            </a>
+          </li>
+          <li>
+            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/04/29/利用Session模拟登陆查询/" data-title="Facebook">
+              <i class="fa fa-facebook"></i>
+            </a>
+          </li>
+          <li>
+            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=Hexo&url=http://yoursite.com/2019/04/29/利用Session模拟登陆查询/&via=http://yoursite.com" data-title="Twitter">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+          <li>
+            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://yoursite.com/2019/04/29/利用Session模拟登陆查询/" data-title="Google+">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        </ul>
+     </div>
+</div>
+<div class="post-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;" id="wxShare-close">×</a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=http://yoursite.com/2019/04/29/利用Session模拟登陆查询/" alt="微信分享二维码">
+</div>
+
+<div class="mask"></div>
+
+        
+        <ul class="article-footer-menu">
+            
+            
+        </ul>
+        
+    </footer>
+  </div>
+</article>
+
+
+    <aside class="post-toc-pos post-toc-top" id="post-toc">
+        <nav class="post-toc-wrap">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#requests提交表单"><span class="post-toc-text">requests提交表单</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#session模拟登陆"><span class="post-toc-text">session模拟登陆</span></a></li></ol>
+        </nav>
+    </aside>
+    
+
+<nav id="article-nav">
+  
+  
+    <a href="/2019/04/29/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-title">Hello World</span>
+      <i class="fa fa-hand-o-right" aria-hidden="true"></i>
+    </a>
+  
+</nav>
+
+
+
+    
+</section>
+        
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+      <p>
+        Powered by  <a href="http://hexo.io/" target="_blank">Hexo</a>
+        Theme <a href="//github.com/wongminho/hexo-theme-miho" target="_blank">MiHo</a>
+      &copy; 2019 John Doe<br>
+      </p>
+    </div>
+  </div>
+</footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  var mihoConfig = {
+      root: "http://yoursite.com",
+      animate: true,
+      isHome: false,
+      share: true,
+      reward: 1
+  }
+</script>
+<div class="sidebar">
+    <div id="sidebar-search" title="Search">
+        <i class="fa fa-search"></i>
+    </div>
+    <div id="sidebar-category" title="Categories">
+        <i class="fa fa-book"></i>
+    </div>
+    <div id="sidebar-tag" title="Tags">
+        <i class="fa fa-tags"></i>
+    </div>
+    <div id="sidebar-top">
+        <span class="sidebar-top-icon"><i class="fa fa-angle-up"></i></span>
+    </div>
+</div>
+<div class="sidebar-menu-box" id="sidebar-menu-box">
+    <div class="sidebar-menu-box-container">
+        <div id="sidebar-menu-box-categories">
+            
+        </div>
+        <div id="sidebar-menu-box-tags">
+            
+        </div>
+    </div>
+    <a href="javascript:;" class="sidebar-menu-box-close">&times;</a>
+</div>
+<div class="mobile-header-menu-nav" id="mobile-header-menu-nav">
+    <div class="mobile-header-menu-container">
+        <span class="title">Menus</span>
+        <ul class="mobile-header-menu-navbar">
+            
+            <li>
+                <a href="/">
+                    <i class="fa fa-home"></i><span>Home</span>
+                </a>
+            </li>
+            
+            <li>
+                <a href="/archives">
+                    <i class="fa fa-archive"></i><span>Archives</span>
+                </a>
+            </li>
+            
+            <li>
+                <a href="/about">
+                    <i class="fa fa-user"></i><span>About</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    <div class="mobile-header-tag-container">
+        <span class="title">Tags</span>
+        <div id="mobile-header-container-tags">
+            
+        </div>
+    </div>
+</div>
+<div class="search-wrap">
+    <span class="search-close">&times;</span>
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+            <i class="icon icon-lg icon-chevron-left"></i>
+        </a>
+        <input class="search-field" placeholder="Search..." id="keywords">
+        <a id="search-submit" href="javascript:;">
+            <i class="fa fa-search"></i>
+        </a>
+    <div class="search-container" id="search-container">
+        <ul class="search-result" id="search-result">
+        </ul>
+    </div>
+</div>
+
+<div id="search-tpl">
+    <li class="search-result-item">
+        <a href="{url}" class="search-item-li">
+            <span class="search-item-li-title" title="{title}">{title}</span>
+        </a>
+    </li>
+</div>
+<script src="/js/search.js"></script>
+<script src="/js/main.js"></script>
+
+
+  <script src="//cdn.bootcss.com/particles.js/2.0.0/particles.min.js"></script>
+  <div id="particles"></div>
+  <script src="/js/particles.js"></script>
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  <script src="//cdn.bootcss.com/scrollReveal.js/3.0.5/scrollreveal.js"></script>
+  <script src="/js/animate.js"></script>
+
+
+  <script src="/js/pop-img.js"></script>
+  <script>
+     $(".article-entry p img").popImg();
+  </script>
+
+  </div>
+</body>
+</html>
