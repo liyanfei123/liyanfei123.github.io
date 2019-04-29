@@ -3,26 +3,26 @@
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
-  <title>利用Session模拟登陆 | Hexo</title>
+  <title>Session模拟登陆 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
     <meta name="keywords" content="MinHow,MinHow's Blog">
   
-  <meta name="description" content="当我们在爬虫时，通常会遇到一些网站需要登陆验证，只有登陆个人账号后才能进一步查看网页中的信息。但是，有时候在我们第一次登陆之后，其后的一段时间内却不用再重新登陆便能够看到信息。这到底是为什么呢？在这里面，有个神奇的东西，在帮我们维持着对话，它就是Cookie，关于Cookie的进一步解释在此就不展开了，百度上关于他的介绍有很多。而我们在第一次输入密码等信息时，实际上就是在构造Cookie。更进一步">
+  <meta name="description" content="当我们在爬虫时，通常会遇到一些网站需要登陆验证，只有登陆个人账号后才能进一步查看网页中的信息。但是，有时候在我们第一次登陆之后，其后的一段时间内却不用再重新登陆便能够看到信息。这到底是为什么呢？在这里面，有个神奇的东西，在帮我们维持着对话，它就是Cookie，关于Cookie的进一步解释在此就不展开了，百度上关于他的介绍有很多。而我们在第一次输入密码等信息时，实际上就是在构造Cookie。更进一">
 <meta name="keywords" content="Session,模拟登陆">
 <meta property="og:type" content="article">
-<meta property="og:title" content="利用Session模拟登陆">
+<meta property="og:title" content="Session模拟登陆">
 <meta property="og:url" content="http://yoursite.com/2019/04/29/Session模拟登陆/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="当我们在爬虫时，通常会遇到一些网站需要登陆验证，只有登陆个人账号后才能进一步查看网页中的信息。但是，有时候在我们第一次登陆之后，其后的一段时间内却不用再重新登陆便能够看到信息。这到底是为什么呢？在这里面，有个神奇的东西，在帮我们维持着对话，它就是Cookie，关于Cookie的进一步解释在此就不展开了，百度上关于他的介绍有很多。而我们在第一次输入密码等信息时，实际上就是在构造Cookie。更进一步">
+<meta property="og:description" content="当我们在爬虫时，通常会遇到一些网站需要登陆验证，只有登陆个人账号后才能进一步查看网页中的信息。但是，有时候在我们第一次登陆之后，其后的一段时间内却不用再重新登陆便能够看到信息。这到底是为什么呢？在这里面，有个神奇的东西，在帮我们维持着对话，它就是Cookie，关于Cookie的进一步解释在此就不展开了，百度上关于他的介绍有很多。而我们在第一次输入密码等信息时，实际上就是在构造Cookie。更进一">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20190222205724742.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20190222210127937.png">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20190222211952139.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70">
-<meta property="og:updated_time" content="2019-04-29T11:51:58.465Z">
+<meta property="og:updated_time" content="2019-04-29T11:55:19.416Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="利用Session模拟登陆">
-<meta name="twitter:description" content="当我们在爬虫时，通常会遇到一些网站需要登陆验证，只有登陆个人账号后才能进一步查看网页中的信息。但是，有时候在我们第一次登陆之后，其后的一段时间内却不用再重新登陆便能够看到信息。这到底是为什么呢？在这里面，有个神奇的东西，在帮我们维持着对话，它就是Cookie，关于Cookie的进一步解释在此就不展开了，百度上关于他的介绍有很多。而我们在第一次输入密码等信息时，实际上就是在构造Cookie。更进一步">
+<meta name="twitter:title" content="Session模拟登陆">
+<meta name="twitter:description" content="当我们在爬虫时，通常会遇到一些网站需要登陆验证，只有登陆个人账号后才能进一步查看网页中的信息。但是，有时候在我们第一次登陆之后，其后的一段时间内却不用再重新登陆便能够看到信息。这到底是为什么呢？在这里面，有个神奇的东西，在帮我们维持着对话，它就是Cookie，关于Cookie的进一步解释在此就不展开了，百度上关于他的介绍有很多。而我们在第一次输入密码等信息时，实际上就是在构造Cookie。更进一">
 <meta name="twitter:image" content="https://img-blog.csdnimg.cn/20190222205724742.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70">
   
   
@@ -121,7 +121,7 @@
         
   
     <h1 class="post-title" itemprop="name">
-      利用Session模拟登陆
+      Session模拟登陆
     </h1>
     <div class="post-title-bar">
       <ul>
@@ -150,7 +150,8 @@
     <div class="article-entry post-content" itemprop="articleBody">
       
             
-            <p>当我们在爬虫时，通常会遇到一些网站需要登陆验证，只有登陆个人账号后才能进一步查看网页中的信息。但是，有时候在我们第一次登陆之后，其后的一段时间内却不用再重新登陆便能够看到信息。这到底是为什么呢？在这里面，有个神奇的东西，在帮我们维持着对话，它就是<code>Cookie</code>，关于<code>Cookie</code>的进一步解释在此就不展开了，百度上关于他的介绍有很多。而我们在第一次输入密码等信息时，实际上就是在构造<code>Cookie</code>。更进一步来说，我们在构造<code>Cookie</code>时，其实就是在向登陆界面提交一个表单，并通过这个我们所提交的表单来形成一个<code>Cookie</code>,这是我在某个网站中copy下来的<code>cookie</code>，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cookie: _uab_collina=155313450434175728304466; gr_user_id=7cff9c41-</span><br><span class="line">de6f-4080-9475-65c7126fe21c; _ga=GA1.2.2034516717.1553133506; grwng_uid=6c05b24b-a353-422e-8598-16032841edd5; a2873925c34ecbd2_gr_last_sent_cs1=liyanfei123; __auc=0c1b4ef416a1ab99cefd1939752; __atuvc=15%7C13%2C0%7C14%2C0%7C15%2C0%7C16%2C3%7C17; csrftoken=AxXznnUGDgyWfyDywowHI88cTOeBuYVwr3KsSmqNWP3lgNlbFD3Cu1m26hyHPHZX; Hm_lvt_fa218a3ff7179639fac15e372f411c=1555501611,1555901333,1556106946,1556530222; a2824655c34ecbd2_gr_session_id=dc8b98a4-c28b-4bf9-b9ae-7f10a0afa012; a2873925c34ecbd2_gr_last_sent_sid_with_cs1=dc8b98a4-c28b-4bf9-b9ae-7f10a0afa012; a2873925c34ecbd2_gr_cs1=liyanfei123; a2873925c34ecbd2_gr_session_id_dc8b98a4-c28b-4bf9-b9ae-7f10a0afa012=true; Hm_lpvt_fa218a3ff7179639fcdw15e372f411c=1556530231</span><br></pre></td></tr></table></figure></p>
+            <a id="more"></a>
+<p>当我们在爬虫时，通常会遇到一些网站需要登陆验证，只有登陆个人账号后才能进一步查看网页中的信息。但是，有时候在我们第一次登陆之后，其后的一段时间内却不用再重新登陆便能够看到信息。这到底是为什么呢？在这里面，有个神奇的东西，在帮我们维持着对话，它就是<code>Cookie</code>，关于<code>Cookie</code>的进一步解释在此就不展开了，百度上关于他的介绍有很多。而我们在第一次输入密码等信息时，实际上就是在构造<code>Cookie</code>。更进一步来说，我们在构造<code>Cookie</code>时，其实就是在向登陆界面提交一个表单，并通过这个我们所提交的表单来形成一个<code>Cookie</code>,这是我在某个网站中copy下来的<code>cookie</code>，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cookie: _uab_collina=155313450434175728304466; gr_user_id=7cff9c41-</span><br><span class="line">de6f-4080-9475-65c7126fe21c; _ga=GA1.2.2034516717.1553133506; grwng_uid=6c05b24b-a353-422e-8598-16032841edd5; a2873925c34ecbd2_gr_last_sent_cs1=liyanfei123; __auc=0c1b4ef416a1ab99cefd1939752; __atuvc=15%7C13%2C0%7C14%2C0%7C15%2C0%7C16%2C3%7C17; csrftoken=AxXznnUGDgyWfyDywowHI88cTOeBuYVwr3KsSmqNWP3lgNlbFD3Cu1m26hyHPHZX; Hm_lvt_fa218a3ff7179639fac15e372f411c=1555501611,1555901333,1556106946,1556530222; a2824655c34ecbd2_gr_session_id=dc8b98a4-c28b-4bf9-b9ae-7f10a0afa012; a2873925c34ecbd2_gr_last_sent_sid_with_cs1=dc8b98a4-c28b-4bf9-b9ae-7f10a0afa012; a2873925c34ecbd2_gr_cs1=liyanfei123; a2873925c34ecbd2_gr_session_id_dc8b98a4-c28b-4bf9-b9ae-7f10a0afa012=true; Hm_lpvt_fa218a3ff7179639fcdw15e372f411c=1556530231</span><br></pre></td></tr></table></figure></p>
 <p>可以发现每个字段都有等号存在，因此可以将其写成字典的形式。哈哈，好像有点跑题了，让我们言归正传，看看到底如何使用Python来实现模拟登陆吧。</p>
 <h2 id="requests提交表单"><a href="#requests提交表单" class="headerlink" title="requests提交表单"></a>requests提交表单</h2><p>在requests中提交表单很容易，只需要以下简单的几行代码就可以实现<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">data = &#123;<span class="string">'username'</span>:**, <span class="string">'password'</span>:**&#125;</span><br><span class="line">requests.post(<span class="string">'****'</span>, data = data)</span><br></pre></td></tr></table></figure></p>
 <p>但是在使用<code>requests</code>提交表单时需要注意的是，该方法只能针对一些登陆较为简单的网页使用，如只要提交用户名称和密码就ok的网站，而针对一些需要提交的信息较多，且又有一些加密信息的网站，使用<code>requests</code>就不行了。</p>
@@ -174,8 +175,8 @@
 
             <div class="post-copyright">
     <div class="content">
-        <p>最后更新： 2019年04月29日 19:51</p>
-        <p>原始链接： <a class="post-url" href="/2019/04/29/Session模拟登陆/" title="利用Session模拟登陆">http://yoursite.com/2019/04/29/Session模拟登陆/</a></p>
+        <p>最后更新： 2019年04月29日 19:55</p>
+        <p>原始链接： <a class="post-url" href="/2019/04/29/Session模拟登陆/" title="Session模拟登陆">http://yoursite.com/2019/04/29/Session模拟登陆/</a></p>
         <footer>
             <a href="http://yoursite.com">
                 <img src="/images/logo.png" alt="John Doe">
@@ -232,7 +233,7 @@
     <div class="post-share-list" id="share-list">
         <ul class="share-icons">
           <li>
-            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2019/04/29/Session模拟登陆/&title=《利用Session模拟登陆》 — Hexo&pic=images/alipay.png" data-title="微博">
+            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2019/04/29/Session模拟登陆/&title=《Session模拟登陆》 — Hexo&pic=images/alipay.png" data-title="微博">
               <i class="fa fa-weibo"></i>
             </a>
           </li>
@@ -242,7 +243,7 @@
             </a>
           </li>
           <li>
-            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2019/04/29/Session模拟登陆/&title=《利用Session模拟登陆》 — Hexo&source=" data-title="QQ">
+            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2019/04/29/Session模拟登陆/&title=《Session模拟登陆》 — Hexo&source=" data-title="QQ">
               <i class="fa fa-qq"></i>
             </a>
           </li>
@@ -252,7 +253,7 @@
             </a>
           </li>
           <li>
-            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《利用Session模拟登陆》 — Hexo&url=http://yoursite.com/2019/04/29/Session模拟登陆/&via=http://yoursite.com" data-title="Twitter">
+            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Session模拟登陆》 — Hexo&url=http://yoursite.com/2019/04/29/Session模拟登陆/&via=http://yoursite.com" data-title="Twitter">
               <i class="fa fa-twitter"></i>
             </a>
           </li>
