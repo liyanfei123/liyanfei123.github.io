@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>Python 异步 协程 线程 进程 | Good Coding</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Go Ahead">
+  
+  <meta name="description" content="概要当我们在对某些网页进行抓取时，通常会抱怨程序运行时间太长，有时候一个10页的网页都有可能需要运行个一分多钟。其实在这一分多钟里，我们的程序大部分时间是在等待网页响应，也就是说当我们在抓取第一页时，程序需要等待这个第一页加载完毕然后再去提取数据，接着才能进行下一页的抓取，这就导致了过程阻塞。 事实上，在等待响应的时候，我们可以去干其他的事情，比如再发送别的请求，或进行网页解析。这个时候，我们就可">
+<meta name="keywords" content="异步,线程,进程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python 异步 协程 线程 进程">
+<meta property="og:url" content="http://liyanfei123.github.io/2019/04/30/Python-异步-协程-线程-进程/index.html">
+<meta property="og:site_name" content="Good Coding">
+<meta property="og:description" content="概要当我们在对某些网页进行抓取时，通常会抱怨程序运行时间太长，有时候一个10页的网页都有可能需要运行个一分多钟。其实在这一分多钟里，我们的程序大部分时间是在等待网页响应，也就是说当我们在抓取第一页时，程序需要等待这个第一页加载完毕然后再去提取数据，接着才能进行下一页的抓取，这就导致了过程阻塞。 事实上，在等待响应的时候，我们可以去干其他的事情，比如再发送别的请求，或进行网页解析。这个时候，我们就可">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2019030220311195.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70#pic_center =200x200">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190302210047214.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190302225756268.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70#pic_center =300x300">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190302225906773.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70#pic_center =300x300">
+<meta property="og:updated_time" content="2019-04-30T07:04:44.139Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python 异步 协程 线程 进程">
+<meta name="twitter:description" content="概要当我们在对某些网页进行抓取时，通常会抱怨程序运行时间太长，有时候一个10页的网页都有可能需要运行个一分多钟。其实在这一分多钟里，我们的程序大部分时间是在等待网页响应，也就是说当我们在抓取第一页时，程序需要等待这个第一页加载完毕然后再去提取数据，接着才能进行下一页的抓取，这就导致了过程阻塞。 事实上，在等待响应的时候，我们可以去干其他的事情，比如再发送别的请求，或进行网页解析。这个时候，我们就可">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/2019030220311195.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70#pic_center =200x200">
+  
+  
+    <link rel="icon" href="images/touxiang.jpg">
+  
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/pace.min.js"></script>
+  
+
+  
+  
+
+</head>
+</html>
+<body>
+  <div id="container">
+      <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer">
+        <div id="header-menu" class="header-menu-pos animated">
+            <div class="header-menu-container">
+                <a href="/" class="left">
+                    <span class="site-title">Li yanfei&#39;s Blog</span>
+                </a>
+                <nav id="header-menu-nav" class="right">
+                    
+                    <a href="/">
+                        <i class="fa fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                    
+                    <a href="/archives">
+                        <i class="fa fa-archive"></i>
+                        <span>Archives</span>
+                    </a>
+                    
+                    <a href="/about">
+                        <i class="fa fa-user"></i>
+                        <span>About</span>
+                    </a>
+                    
+                </nav>
+                <a class="mobile-header-menu-button">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </div>
+        <div id="header-row">
+            <div id="logo">
+                <a href="/">
+                    <img src="/images/logo.png" alt="logo">
+                </a>
+            </div>
+            <div class="header-info">
+                <div id="header-title">
+                    
+                    <h2>
+                        Li yanfei&#39;s Blog
+                    </h2>
+                    
+                </div>
+                <div id="header-description">
+                    
+                    <h3>
+                        好好学习，天天向上
+                    </h3>
+                    
+                </div>
+            </div>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a title="Github" target="_blank" href="https://github.com/liyanfei123">
+                            <i class="fa fa-github fa-2x"></i></a>
+                    
+                        <a title="Weibo" target="_blank" ">
+                            <i class="fa fa-weibo fa-2x"></i></a>
+                    
+                        <a title="Twitter" target="_blank" ">
+                            <i class="fa fa-twitter fa-2x"></i></a>
+                    
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+      <div class="outer">
+        <section id="main" class="body-wrap"><article id="post-Python-异步-协程-线程-进程" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="post-title" itemprop="name">
+      Python 异步 协程 线程 进程
+    </h1>
+    <div class="post-title-bar">
+      <ul>
+          
+              <li>
+                  <i class="fa fa-book"></i>
+                  
+                      <a href="/categories/Python/">Python</a>
+                  
+              </li>
+          
+        <li>
+          <i class="fa fa-calendar"></i>  2019-04-30
+        </li>
+        <li>
+          <i class="fa fa-eye"></i>
+          <span id="busuanzi_value_page_pv"></span>
+        </li>
+      </ul>
+    </div>
+  
+
+          
+      </header>
+    
+    <div class="article-entry post-content" itemprop="articleBody">
+      
+            
+            <h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><p>当我们在对某些网页进行抓取时，通常会抱怨程序运行时间太长，有时候一个10页的网页都有可能需要运行个一分多钟。其实在这一分多钟里，我们的程序大部分时间是在等待网页响应，也就是说当我们在抓取第一页时，程序需要等待这个第一页加载完毕然后再去提取数据，接着才能进行下一页的抓取，这就导致了<code>过程阻塞</code>。</p>
+<p>事实上，在等待响应的时候，我们可以去干其他的事情，比如再发送别的请求，或进行网页解析。这个时候，我们就可以通过异步来解决该问题，即在请求发出之后，程序可以继续执行其他操作，当之前的响应到达时，程序再去处理这个响应。</p>
+<p>当你要处理数据量较为庞大，又或者请求较多时，我们可以使用协程、线程(池)、 进程(池)来进行处理。对于协程、线程、进程的概念再此不过多阐述，已经有好多大佬对这些东西进行了解释。在这里我们仅通过几张图来进行说明。<br><img src="https://img-blog.csdnimg.cn/2019030220311195.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70#pic_center =200x200" alt="Fig 1"><br><img src="https://img-blog.csdnimg.cn/20190302210047214.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>从第一张图中我们可以明显的看出协程、线程、进程的从属关系；从第二张图我们可以看出一个进程中可包含多个线程，需要指出的是一个线程只能属于一个进程，而一个进程可以有多个线程，但至少有一个线程。</p>
+<p>对于协程的使用，我想大多数应该已经用过了，最简单的就是<code>yield</code>，它可以使当前运行的某个函数将CPU让出，也就是中断的一种。</p>
+<p>接下来，我将通过代码来对异步、协程、线程(池)、进程(池)进行说明。</p>
+<h2 id="一般方法"><a href="#一般方法" class="headerlink" title="一般方法"></a>一般方法</h2><p>首先，我们写出一个通常情况下的函数，由于后文需要使用多线程，多进程，所以我们有必要把该程序所使用的线程ID和进程ID给表示出来，至于协程，我们在这里并未创建<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sleep</span><span class="params">(x)</span>:</span></span><br><span class="line">	print(<span class="string">'函数的线程ID：'</span>, threading.get_ident())</span><br><span class="line">	time.sleep(x)</span><br><span class="line">	<span class="keyword">return</span> <span class="string">'Hello'</span> </span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">	t1 = time.time()</span><br><span class="line">	print(<span class="string">'主进程PID:'</span>,os.getpid())</span><br><span class="line">	print(<span class="string">'主程序线程ID：'</span>, threading.get_ident())</span><br><span class="line">	<span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">5</span>):</span><br><span class="line">		sleep(x)</span><br><span class="line"></span><br><span class="line">	t2 = time.time()</span><br><span class="line">	print(<span class="string">'使用一般方法，总共耗时 %s'</span> % (t2 - t1))</span><br></pre></td></tr></table></figure></p>
+<p>这就是一个自定义延时函数，因为当我们使用异步、协程、线程(池)、进程(池)的最终目的还是为了追求速度，这里的延时可以看作是在等待网页响应。<br>上述代码的运行结果是<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">主进程PID: 12052</span><br><span class="line">主程序线程ID： 4236</span><br><span class="line">函数的线程ID： 4236</span><br><span class="line">函数的线程ID： 4236</span><br><span class="line">函数的线程ID： 4236</span><br><span class="line">函数的线程ID： 4236</span><br><span class="line">函数的线程ID： 4236</span><br><span class="line">使用一般方法，总共耗时 10.001280546188354</span><br></pre></td></tr></table></figure></p>
+<p>我们可以看出，这里至始至终只使用了一个进程和一个线程。我们分析一下这个时间可以知道是由‘0+1+2+3+4’所得到的。我们可以想一下，如果让电脑的性能发挥到极致，对该段代码进行修改，我们最少要多少时间呢？</p>
+<p>答案是，只要4s多一丢丢！</p>
+<h2 id="协程"><a href="#协程" class="headerlink" title="协程"></a>协程</h2><h3 id="异步协程"><a href="#异步协程" class="headerlink" title="异步协程"></a>异步协程</h3><p>在这里我们考虑使用异步协程的方法，对于异步的具体细节就不在此展开了（主要是我还没学到精髓~~~）<br>异步协程的代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> gevent</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">sleep</span><span class="params">(x)</span>:</span></span><br><span class="line">	print(<span class="string">'函数的线程ID：'</span>, threading.get_ident())</span><br><span class="line">	print(<span class="string">'协程目标：'</span>, gevent.getcurrent(), x)</span><br><span class="line">	<span class="keyword">await</span> asyncio.sleep(x)      <span class="comment"># 注意这里不是time.sleep()，若使用time.sleep()将会导致线程阻塞</span></span><br><span class="line">	<span class="keyword">return</span> <span class="string">'Hello'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">	t1 = time.time()</span><br><span class="line">	print(<span class="string">'主进程PID:'</span>,os.getpid())</span><br><span class="line">	print(<span class="string">'主程序线程ID：'</span>, threading.get_ident())</span><br><span class="line">	loop = asyncio.get_event_loop()  <span class="comment"># 得到一个标准的事件循环</span></span><br><span class="line">	tasks = [asyncio.ensure_future(sleep(x)) <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">5</span>)]  <span class="comment"># 获取任务列表</span></span><br><span class="line">	tasks = asyncio.gather(*tasks)</span><br><span class="line">	loop.run_until_complete(tasks)</span><br><span class="line"></span><br><span class="line">	t2 = time.time()</span><br><span class="line">	print(<span class="string">'使用异步方法，总共耗时 %s'</span> % (t2 - t1))</span><br></pre></td></tr></table></figure></p>
+<p>在输出结果之前，我们可以观察一下我们所建立的sleep()函数类型，我们可以通过以下代码来观察：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">typ = sleep(<span class="number">1</span>)</span><br><span class="line">print(typ)</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;coroutine object sleep at 0x00000212EE5EDB48&gt;</span><br></pre></td></tr></table></figure>
+<p>从结果我们可以发现，我们在这里创建了协程，并通过协程来实现了异步操作，当遇到延时阻塞时，便去执行其他操作。</p>
+<p>上述完整代码的输出结果是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">主进程PID: 13064</span><br><span class="line">主程序线程ID： 6492</span><br><span class="line">函数的线程ID： 6492</span><br><span class="line">协程目标： &lt;greenlet.greenlet object at 0x000001EBE1ABEAC8&gt; 0</span><br><span class="line">函数的线程ID： 6492</span><br><span class="line">协程目标： &lt;greenlet.greenlet object at 0x000001EBE1ABEAC8&gt; 1</span><br><span class="line">函数的线程ID： 6492</span><br><span class="line">协程目标： &lt;greenlet.greenlet object at 0x000001EBE1ABEAC8&gt; 2</span><br><span class="line">函数的线程ID： 6492</span><br><span class="line">协程目标： &lt;greenlet.greenlet object at 0x000001EBE1ABEAC8&gt; 3</span><br><span class="line">函数的线程ID： 6492</span><br><span class="line">协程目标： &lt;greenlet.greenlet object at 0x000001EBE1ABEAC8&gt; 4</span><br><span class="line">使用异步方法，总共耗时 4.002932786941528</span><br></pre></td></tr></table></figure></p>
+<p>天哪，我们已经实现了我们的最终目标，得到运行的最快的速度。并且也只用到了一个进程和一个线程，于之前一个程序的不同之处在于，我们使用了协程，并采样了异步操作。在这里我们只创建了一个协程（协程也是单线程），并将所有阻塞的操作都转化为异步操作。</p>
+<p>在这里需要注意的是<strong>我们的耗时操作使用的不是<code>time.sleep()</code>，而是<code>asyncio.sleep()</code>，因为<code>time.sleep()</code>将会导致线程阻塞，而我们的所有异步操作均是在同一个线程中进行了，若使用<code>time.sleep()</code>，会使得程序表面上去是异步的，但实为不然，对此，我们可以通过一组时序图来进行说明</strong>。<br>使用<code>asyncio.sleep()</code>:<br><img src="https://img-blog.csdnimg.cn/20190302225756268.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70#pic_center =300x300" alt="在这里插入图片描述"><br>使用<code>time.sleep()</code>:<br><img src="https://img-blog.csdnimg.cn/20190302225906773.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70#pic_center =300x300" alt="在这里插入图片描述"><br>图中，<strong>红线加粗的部分表示延时，点表示延时完毕执行输出返回</strong>。从使用<code>asyncio.sleep()</code>的图中，我们可以发现，当程序刚遇到延时时，就去执行另外的操作（也就是在1的时候需要延时，马上去执行2的延时，依此类推）。而在使用<code>time.sleep()</code>的图中，则需要去进行等待，等第一个延时结束后，才去执行另外的操作（也就是在1的时候等1s之后再去执行2，依此类推）。所以说，如果在这里我们使用<code>time.sleep()</code>的话就和一般的方法就没有区别了，它的运行时间也需要8s多。</p>
+<h3 id="多协程"><a href="#多协程" class="headerlink" title="多协程"></a>多协程</h3><p>在上面的代码中，我们实际上只创建了一个协程，实际上，我们可以创建多个协程，并且也可以对同时运行的协程的数量进行限制。接下来，我们便创建多个协程，并对同时运行的协程数量进行限制，在这里我们使用了<code>gevent</code>模块来执行协程操作，代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> gevent</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">from</span> gevent <span class="keyword">import</span> monkey</span><br><span class="line"><span class="keyword">from</span> gevent <span class="keyword">import</span> pool</span><br><span class="line"></span><br><span class="line">monkey.patch_socket()          </span><br><span class="line"></span><br><span class="line">POOL_MAXSIZE = <span class="number">2</span>               </span><br><span class="line">pool = pool.Pool(POOL_MAXSIZE) <span class="comment"># 设置最大协程数 </span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sleep</span><span class="params">(x)</span>:</span></span><br><span class="line">	print(<span class="string">'函数的线程ID：'</span>, threading.get_ident())</span><br><span class="line">	print(<span class="string">'协程目标：'</span>, gevent.getcurrent(), x)</span><br><span class="line">	gevent.sleep(x)           <span class="comment"># 协程休眠</span></span><br><span class="line">	<span class="keyword">return</span> <span class="string">'Hello'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">	t1 = time.time()</span><br><span class="line">	print(<span class="string">'主进程PID:'</span>,os.getpid())</span><br><span class="line">	print(<span class="string">'主程序线程ID：'</span>, threading.get_ident())</span><br><span class="line">	<span class="comment"># 方法1</span></span><br><span class="line">	<span class="comment"># groups = ([x for x in range(0, 5)])</span></span><br><span class="line">	<span class="comment"># pool.map(sleep, groups)</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># 方法2</span></span><br><span class="line">	<span class="comment"># for i in range(0, 5):          </span></span><br><span class="line">	<span class="comment"># 	pool.spawn(sleep, i, )</span></span><br><span class="line">	<span class="comment"># pool.join()</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># 方法3 </span></span><br><span class="line">	_list = []</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">5</span>):          </span><br><span class="line">		_list.append(pool.spawn(sleep, i, ))  </span><br><span class="line">	gevent.joinall(_list)</span><br><span class="line"></span><br><span class="line">	t2 = time.time()</span><br><span class="line">	print(<span class="string">'使用协程池方法，总共耗时 %s'</span> % (t2 - t1))</span><br></pre></td></tr></table></figure></p>
+<p>运行结果为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">主进程PID: 3400</span><br><span class="line">主程序线程ID： 4412</span><br><span class="line">函数的线程ID： 4412</span><br><span class="line">协程目标： &lt;Greenlet at 0x23733c48048: sleep(0)&gt; 0</span><br><span class="line">函数的线程ID： 4412</span><br><span class="line">协程目标： &lt;Greenlet at 0x23733c48268: sleep(1)&gt; 1</span><br><span class="line">函数的线程ID： 4412</span><br><span class="line">协程目标： &lt;Greenlet at 0x23733c48378: sleep(2)&gt; 2</span><br><span class="line">函数的线程ID： 4412</span><br><span class="line">协程目标： &lt;Greenlet at 0x23733c48488: sleep(3)&gt; 3</span><br><span class="line">函数的线程ID： 4412</span><br><span class="line">协程目标： &lt;Greenlet at 0x23733c48598: sleep(4)&gt; 4</span><br><span class="line">使用协程池方法，总共耗时 6.006633043289185</span><br></pre></td></tr></table></figure></p>
+<p>我们可以看出在一个线程中一共创建了5个协程，但是在运行的时候只有两个在同时运行（跑代码的时候可以看的出来的）。这里用时达到了6s多（2+4得到的），这是因为我们在每个协程中，都对协程进行了阻塞操作。如果想要同样达到4s的速度，我们只需要将<code>POOL_MAXSIZE</code>设置为5即可。</p>
+<p>我们将在后面线程池和进程池中也将其数量设置为2，用来和该段程序进行比较。</p>
+<h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><h3 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h3><p>一般情况下我们编写的程序只使用到了一个线程，而我们都知道电脑是有许多线程处理的，因此当我们使用多线程时，无疑会加快程序的运行，代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> threading <span class="keyword">import</span> Thread</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sleep</span><span class="params">(x)</span>:</span></span><br><span class="line">	print(<span class="string">'新创建的线程ID：'</span>, threading.get_ident())</span><br><span class="line">	time.sleep(x)</span><br><span class="line">	<span class="keyword">return</span> <span class="string">'Hello'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">	t1 = time.time()</span><br><span class="line">	print(<span class="string">'主程序线程ID：'</span>, threading.get_ident())</span><br><span class="line"></span><br><span class="line">	threads = []        <span class="comment"># 用于存放线程</span></span><br><span class="line">	<span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">5</span>):         </span><br><span class="line">		th = Thread(target = sleep, args = (x,))    <span class="comment"># 创建线程</span></span><br><span class="line">		threads.append(th)</span><br><span class="line">		th.start()                                  <span class="comment"># 启动线程</span></span><br><span class="line">	<span class="comment"># 等待所有线程结束,再运行主程序的线程</span></span><br><span class="line">	<span class="keyword">for</span> th <span class="keyword">in</span> threads:</span><br><span class="line">		th.join()</span><br><span class="line"></span><br><span class="line">	t2 = time.time()</span><br><span class="line">	print(<span class="string">'使用多线程，总共耗时 %s'</span> % (t2 - t1))</span><br></pre></td></tr></table></figure></p>
+<p>运行结果为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">主程序线程ID： 5504</span><br><span class="line">新创建的线程ID： 12600</span><br><span class="line">新创建的线程ID： 3908</span><br><span class="line">新创建的线程ID： 14832</span><br><span class="line">新创建的线程ID： 7080</span><br><span class="line">新创建的线程ID： 13972</span><br><span class="line">使用多线程，总共耗时 4.002230644226074</span><br></pre></td></tr></table></figure></p>
+<p>这里我们创建了5个线程，每个线程对应一个<code>sleep()</code>，因而总耗时也仅需4s多。</p>
+<h3 id="线程的数量设置"><a href="#线程的数量设置" class="headerlink" title="线程的数量设置"></a>线程的数量设置</h3><p>对于多线程，我们可以选择不是有多少个任务就创建多少个线程的，我们可以对线程的数量进行限制，方法有多中，在这里仅讨论两种。</p>
+<p> 方法1：<br>统计当前运行的线程数量<code>len(threading.enumerate())</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> threading <span class="keyword">import</span> Thread</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sleep</span><span class="params">(x)</span>:</span></span><br><span class="line">	print(<span class="string">'新创建的线程ID：'</span>, threading.get_ident())</span><br><span class="line">	time.sleep(x)</span><br><span class="line">	<span class="keyword">return</span> <span class="string">'Hello'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">	t1 = time.time()</span><br><span class="line">	print(<span class="string">'主程序线程ID：'</span>, threading.get_ident())</span><br><span class="line"></span><br><span class="line">	threads = []</span><br><span class="line">	<span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">5</span>):         </span><br><span class="line">		th = Thread(target = sleep, args = (x,))    <span class="comment"># 创建线程</span></span><br><span class="line">		threads.append(th)</span><br><span class="line">	<span class="comment">#	th.start()                                  # 启动线程</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># 设置运行的线程数,在这里我们设置了最大线程数量为3,主程序还有一个线程，也就是说只能再创建2个线程</span></span><br><span class="line">	<span class="keyword">for</span> th <span class="keyword">in</span> threads:</span><br><span class="line">		th.start()</span><br><span class="line">		<span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">			<span class="comment">#判断正在运行的线程数量,如果小于所设置的线程数量就退出while循环,进入for循环启动新的进程</span></span><br><span class="line">			<span class="keyword">if</span>(len(threading.enumerate()) &lt; <span class="number">3</span>):  </span><br><span class="line">				<span class="keyword">break</span>  </span><br><span class="line"></span><br><span class="line">	<span class="comment"># 等待所有线程结束</span></span><br><span class="line">	<span class="keyword">for</span> th <span class="keyword">in</span> threads:</span><br><span class="line">		th.join()</span><br><span class="line"></span><br><span class="line">	t2 = time.time()</span><br><span class="line">	print(<span class="string">'设置最大线程数，总共耗时 %s'</span> % (t2 - t1))</span><br></pre></td></tr></table></figure></p>
+<p><strong>使用上述方法来设置最大线程数时，需考虑到主程序的线程数量，要不然预期的想创建的线程数量将会变少</strong>，因此我们在这里设置了最大线程数为3，即能够再创建两个线程。</p>
+<p>方法2：<br>使用<code>Semaphore</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> threading <span class="keyword">import</span> Thread</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line">sem = threading.Semaphore(<span class="number">2</span>)	<span class="comment"># 最多启用多少个线程</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sleep</span><span class="params">(x)</span>:</span></span><br><span class="line">	sem.acquire()               <span class="comment">#准备创建启用一个线程，可用线程数量就会减1 </span></span><br><span class="line">	print(<span class="string">'新创建的线程ID：'</span>, threading.get_ident())</span><br><span class="line">	time.sleep(x)</span><br><span class="line">	<span class="comment"># return 'Hello'</span></span><br><span class="line">	sem.release()		   <span class="comment"># 释放线程，可用线程数加1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">	t1 = time.time()</span><br><span class="line">	print(<span class="string">'主程序线程ID：'</span>, threading.get_ident())</span><br><span class="line">	</span><br><span class="line">	threads  = []</span><br><span class="line">	<span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">5</span>):</span><br><span class="line">		sem.acquire()               <span class="comment">#准备创建启用一个线程，可用线程数量就会减1         </span></span><br><span class="line">		th = Thread(target = sleep, args = (x,))  <span class="comment"># 创建线程</span></span><br><span class="line">		threads.append(th)</span><br><span class="line">		th.start()                                <span class="comment"># 启动线程</span></span><br><span class="line">	</span><br><span class="line">	<span class="comment"># 等待所有线程结束</span></span><br><span class="line">	<span class="keyword">for</span> th <span class="keyword">in</span> threads:</span><br><span class="line">		th.join()</span><br><span class="line"></span><br><span class="line">	t2 = time.time()</span><br><span class="line">	print(<span class="string">'设置最大线程数，总共耗时 %s'</span> % (t2 - t1))</span><br></pre></td></tr></table></figure></p>
+<p><strong>该方法可以避免考虑主程序的线程数量，只关注于我们想最多创建多少个线程</strong>。在这里我们使用了<code>Semaphore</code>，它是同时允许一定数量的线程对数据进行更改。在这里，我们稍带提一下 <code>acquire()</code>和<code>release()</code>，这两个方法通常用来对线程进行锁操作，这样一来就可以对数据进行保护，以免出现<strong>脏数据（多个线程同时修改同一条数据）</strong>，其主要代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">lock = threading.Lock()     <span class="comment">#实例化一个锁对象</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(n)</span>:</span></span><br><span class="line">    lock.acquire()  <span class="comment">#获取锁</span></span><br><span class="line">    <span class="keyword">global</span> num</span><br><span class="line">    num += <span class="number">1</span></span><br><span class="line">    lock.release()  <span class="comment">#释放锁</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h3><p>其实线程池和刚刚的限制线程的数量差不多，只是我们一开始就将所有的线程给创建出来，再一个个的取出运行，代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> threadpool</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sleep</span><span class="params">(x)</span>:</span></span><br><span class="line">	print(<span class="string">'新创建的线程ID：'</span>, threading.get_ident())</span><br><span class="line">	time.sleep(x)</span><br><span class="line">	<span class="keyword">return</span> <span class="string">'Hello'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">	t1 = time.time()</span><br><span class="line">	print(<span class="string">'主进程PID:'</span>,os.getpid())</span><br><span class="line">	print(<span class="string">'主程序线程ID：'</span>, threading.get_ident())</span><br><span class="line">	pool = threadpool.ThreadPool(<span class="number">2</span>)                  <span class="comment"># 创建线程池</span></span><br><span class="line">	list_ = [x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">5</span>)] </span><br><span class="line">	requests = threadpool.makeRequests(sleep, list_) <span class="comment"># 创建任务，返回的list对象</span></span><br><span class="line">	[pool.putRequest(req) <span class="keyword">for</span> req <span class="keyword">in</span> requests]       <span class="comment"># 线程池依此执行    </span></span><br><span class="line">	pool.wait()                                      <span class="comment"># 等待所有线程完成</span></span><br><span class="line"></span><br><span class="line">	t2 = time.time()</span><br><span class="line">	print(<span class="string">'使用线程池，总共耗时 %s'</span> % (t2 - t1))</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">主进程PID: 8720</span><br><span class="line">主程序线程ID： 14312</span><br><span class="line">新创建的线程ID： 15340</span><br><span class="line">新创建的线程ID： 15340</span><br><span class="line">新创建的线程ID： 1744</span><br><span class="line">新创建的线程ID： 15340</span><br><span class="line">新创建的线程ID： 1744</span><br><span class="line">使用线程池，总共耗时 6.00337815284729</span><br></pre></td></tr></table></figure>
+<p>我们在这里设置线程池中的线程数量为2，换句话说，线程池一次只能执行两个线程。心细的同学可能会发现，在刚开始创建新线程时，创建了两个ID一样的线程，这主要是一开始0s的阻塞所造成的。在这里，我们还需要去看一下所创建的任务列表：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[&lt;threadpool.WorkRequest object at 0x00000189ABD61B70&gt;, &lt;threadpool.WorkRequest object at 0x00000189ABD61BA8&gt;, &lt;threadpool.WorkRequest object at 0x00000189ABD61BE0&gt;, &lt;threadpool.WorkRequest object at 0x00000189ABD61C18&gt;, &lt;threadpool.WorkRequest object at 0x00000189ABD61C50&gt;]</span><br></pre></td></tr></table></figure></p>
+<p>在任务列表中，发现所有的请求任务都被仍进了线程池中，当有线程池余线程时，取出一个请求来执行。</p>
+<h2 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h2><h3 id="多进程"><a href="#多进程" class="headerlink" title="多进程"></a>多进程</h3><p>对于多进程的创建与多线程的创建有异曲同工之妙，其主要通过<code>multiprocessing库</code>中的<code>Process类</code>来实现，代码如下<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Process</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sleep</span><span class="params">(x)</span>:</span></span><br><span class="line">	print(<span class="string">'子进程ID：'</span>,os.getpid())</span><br><span class="line">	time.sleep(x)</span><br><span class="line">	<span class="keyword">return</span> <span class="string">'Hello'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">	t1 = time.time()</span><br><span class="line">	print(<span class="string">'主进程PID:'</span>,os.getpid())</span><br><span class="line">	process_list = []</span><br><span class="line">	<span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">5</span>):</span><br><span class="line">		process = Process(target = sleep, args = (x,))    <span class="comment"># 创建进程</span></span><br><span class="line">		process_list.append(process)</span><br><span class="line">		process.start()                               <span class="comment"># 启用进程</span></span><br><span class="line">		</span><br><span class="line">	<span class="comment"># 等待所有进程结束</span></span><br><span class="line">	<span class="keyword">for</span> process <span class="keyword">in</span> process_list:</span><br><span class="line">		process.join()</span><br><span class="line">		</span><br><span class="line">	t2 = time.time()</span><br><span class="line">	print(<span class="string">'使用多进程，总共耗时 %s'</span> % (t2 - t1))</span><br></pre></td></tr></table></figure></p>
+<p>运行结果为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">主进程PID: 14716</span><br><span class="line">子进程ID： 12728</span><br><span class="line">子进程ID： 11992</span><br><span class="line">子进程ID： 356</span><br><span class="line">子进程ID： 1992</span><br><span class="line">子进程ID： 9076</span><br><span class="line">使用多进程，总共耗时 4.118034839630127</span><br></pre></td></tr></table></figure></p>
+<p><strong>需指出的时，这里是为主进程创建了多个子进程，因为这段代码它本身就是在一个进程中执行</strong>，从之前的多个例子中也可以看出。</p>
+<p>对于进程的数量的限制不进行展开，因为在使用进程时，多使用的是<strong>进程池</strong>。</p>
+<h3 id="进程池"><a href="#进程池" class="headerlink" title="进程池"></a>进程池</h3><p>进程池的概念和线程池也类似，只是它里面是放的是创建的子进程而已，代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> multiprocessing.pool <span class="keyword">import</span> Pool</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sleep</span><span class="params">(x)</span>:</span></span><br><span class="line">	print(<span class="string">'子进程ID：'</span>,os.getpid())</span><br><span class="line">	time.sleep(x)</span><br><span class="line">	<span class="keyword">return</span> <span class="string">'Hello'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">	t1 = time.time()</span><br><span class="line">	print(<span class="string">'主进程PID:'</span>,os.getpid())</span><br><span class="line">	pool = Pool(<span class="number">2</span>)      <span class="comment"># 设置进程池数量</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># 方法1</span></span><br><span class="line">	<span class="comment"># groups = ([x for x in range(0, 5)])    # 构造任务列表</span></span><br><span class="line">	<span class="comment"># pool.map(sleep, groups)                # 执行任务</span></span><br><span class="line">	<span class="comment"># pool.close()</span></span><br><span class="line">	<span class="comment"># pool.join()</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># 方法2</span></span><br><span class="line">	<span class="comment"># for x in range(0, 5):</span></span><br><span class="line">	<span class="comment"># 	pool.apply_async(sleep, (x,))   # 执行子进程</span></span><br><span class="line">	<span class="comment"># pool.close()</span></span><br><span class="line">	<span class="comment"># pool.join()</span></span><br><span class="line"></span><br><span class="line">	t2 = time.time()</span><br><span class="line">	print(<span class="string">'使用进程池，总共耗时 %s'</span> % (t2 - t1))</span><br></pre></td></tr></table></figure></p>
+<p>在方法1中，我们使用了<code>map</code>函数，来对我们任务列表中的任务进行执行；而在方法2中，我们使用了<code>apply_async</code>来执行任务，这主要是因为<code>apply_async</code>是异步非阻塞的，不用等待当前进程执行完毕，而不取使用阻塞的<code>apply</code>，若使用<code>apply</code>，所有的子进程就要排着队一个个等了。</p>
+<p>程序执行结果为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">主进程PID: 12376</span><br><span class="line">子进程ID： 1472</span><br><span class="line">子进程ID： 1472</span><br><span class="line">子进程ID： 1472</span><br><span class="line">子进程ID： 9952</span><br><span class="line">子进程ID： 9952</span><br><span class="line">使用进程池，总共耗时 6.170445919036865</span><br></pre></td></tr></table></figure></p>
+<p>到这里，我们已经将异步、协程、线程(池)、进程(池)的程序都已经罗列出来，现在，我们需要对他们各种的性能进行比较，将每个程序的运行时间给提取出来，<br><strong>多线程、多进程</strong>：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">使用多线程，总共耗时 4.002230644226074</span><br><span class="line">使用多进程，总共耗时 4.118034839630127</span><br></pre></td></tr></table></figure></p>
+<p><strong>协程池、线程池、进程池</strong>：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">使用协程池方法，总共耗时 6.006633043289185</span><br><span class="line">使用线程池，总共耗时 6.00337815284729</span><br><span class="line">使用进程池，总共耗时 6.170445919036865</span><br></pre></td></tr></table></figure></p>
+<p>协程池也可以看作是多协程的一种</p>
+<p>我们可以看出，多进程的耗时多于多线程和协程的耗时，这主要是因为在多进程中进行进程切换时需要运行时间，因而其需要额外的运行时间。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>到这儿里了，你可能会问那我在编程的时候该用什么方法呢？多进程和多线程各有优缺点（可参阅该<a href="https://blog.csdn.net/yinhangxitong36/article/details/79591875" target="_blank" rel="noopener">博客</a>），多进程稳定性好，一个子进程崩溃了，不会影响主进程以及其余进程，但是其需要系统调度，代价较大；多线程效率较高一些，但是任何一个线程崩溃都可能造成整个进程的崩溃。爬虫，web等可使用多进程，数据分析等可使用多进程。对于协程，可中断控制，性能较好，效率高。所以说，在日常生活中使用那种方法还是要视情况（看会写那个吧）。但是，对于这些方法的组合，无疑可以达到<strong>百万并发</strong>！！！</p>
+<p>以后将通过爬虫来进一步分析。</p>
+<p>好好学习，天天向上！</p>
+
+            <div class="post-copyright">
+    <div class="content">
+        <p>最后更新： 2019年04月30日 15:04</p>
+        <p>原始链接： <a class="post-url" href="/2019/04/30/Python-异步-协程-线程-进程/" title="Python 异步 协程 线程 进程">http://liyanfei123.github.io/2019/04/30/Python-异步-协程-线程-进程/</a></p>
+        <footer>
+            <a href="http://liyanfei123.github.io">
+                <img src="/images/logo.png" alt="Li yanfei">
+                Li yanfei
+            </a>
+        </footer>
+    </div>
+</div>
+
+      
+        
+            
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;">赏</a>
+</div>
+
+<div id="reward" class="post-modal reward-lay">
+    <a class="close" href="javascript:;" id="reward-close">×</a>
+    <span class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我吃糖~
+        <i class="icon icon-quote-right"></i>
+    </span>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/images/wechat_code.jpg" alt="打赏二维码">
+        </div>
+        <div class="reward-select">
+            
+            <label class="reward-select-item checked" data-id="wechat" data-wechat="/images/wechat_code.jpg">
+                <img class="reward-select-item-wechat" src="/images/wechat.png" alt="微信">
+            </label>
+            
+            
+            <label class="reward-select-item" data-id="alipay" data-alipay="/images/alipay_code.jpg">
+                <img class="reward-select-item-alipay" src="/images/alipay.png" alt="支付宝">
+            </label>
+            
+        </div>
+    </div>
+</div>
+
+
+        
+    </div>
+    <footer class="article-footer">
+        
+        
+<div class="post-share">
+    <a href="javascript:;" id="share-sub" class="post-share-fab">
+        <i class="fa fa-share-alt"></i>
+    </a>
+    <div class="post-share-list" id="share-list">
+        <ul class="share-icons">
+          <li>
+            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://liyanfei123.github.io/2019/04/30/Python-异步-协程-线程-进程/&title=《Python 异步 协程 线程 进程》 — Good Coding&pic=images/Session模拟登陆.jpg" data-title="微博">
+              <i class="fa fa-weibo"></i>
+            </a>
+          </li>
+          <li>
+            <a class="weixin share-sns" id="wxFab" href="javascript:;" data-title="微信">
+              <i class="fa fa-weixin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://liyanfei123.github.io/2019/04/30/Python-异步-协程-线程-进程/&title=《Python 异步 协程 线程 进程》 — Good Coding&source=" data-title="QQ">
+              <i class="fa fa-qq"></i>
+            </a>
+          </li>
+          <li>
+            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://liyanfei123.github.io/2019/04/30/Python-异步-协程-线程-进程/" data-title="Facebook">
+              <i class="fa fa-facebook"></i>
+            </a>
+          </li>
+          <li>
+            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Python 异步 协程 线程 进程》 — Good Coding&url=http://liyanfei123.github.io/2019/04/30/Python-异步-协程-线程-进程/&via=http://liyanfei123.github.io" data-title="Twitter">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+          <li>
+            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://liyanfei123.github.io/2019/04/30/Python-异步-协程-线程-进程/" data-title="Google+">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        </ul>
+     </div>
+</div>
+<div class="post-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;" id="wxShare-close">×</a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=http://liyanfei123.github.io/2019/04/30/Python-异步-协程-线程-进程/" alt="微信分享二维码">
+</div>
+
+<div class="mask"></div>
+
+        
+        <ul class="article-footer-menu">
+            
+            
+  <li class="article-footer-tags">
+    <i class="fa fa-tags"></i>
+      
+    <a href="/tags/异步/" class="color3">异步</a>
+      
+    <a href="/tags/线程/" class="color3">线程</a>
+      
+    <a href="/tags/进程/" class="color3">进程</a>
+      
+  </li>
+
+        </ul>
+        
+    </footer>
+  </div>
+</article>
+
+
+    <aside class="post-toc-pos post-toc-top" id="post-toc">
+        <nav class="post-toc-wrap">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#概要"><span class="post-toc-text">概要</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#一般方法"><span class="post-toc-text">一般方法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#协程"><span class="post-toc-text">协程</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#异步协程"><span class="post-toc-text">异步协程</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#多协程"><span class="post-toc-text">多协程</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#线程"><span class="post-toc-text">线程</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#多线程"><span class="post-toc-text">多线程</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#线程的数量设置"><span class="post-toc-text">线程的数量设置</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#线程池"><span class="post-toc-text">线程池</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#进程"><span class="post-toc-text">进程</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#多进程"><span class="post-toc-text">多进程</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#进程池"><span class="post-toc-text">进程池</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#结语"><span class="post-toc-text">结语</span></a></li></ol>
+        </nav>
+    </aside>
+    
+
+<nav id="article-nav">
+  
+    <a href="/2019/04/30/Python装饰器/" id="article-nav-newer" class="article-nav-link-wrap">
+
+      <span class="article-nav-title">
+        <i class="fa fa-hand-o-left" aria-hidden="true"></i>
+        
+          Python装饰器
+        
+      </span>
+    </a>
+  
+  
+    <a href="/2019/04/30/Scrapy模拟登陆豆瓣抓取数据/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-title">Scrapy模拟登陆豆瓣抓取数据</span>
+      <i class="fa fa-hand-o-right" aria-hidden="true"></i>
+    </a>
+  
+</nav>
+
+
+
+    
+</section>
+        
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+      <p>
+        Powered by  <a href="http://hexo.io/" target="_blank">Hexo</a>
+        Theme <a href="//github.com/wongminho/hexo-theme-miho" target="_blank">MiHo</a>
+      &copy; 2019 Li yanfei<br>
+      </p>
+    </div>
+  </div>
+</footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  var mihoConfig = {
+      root: "http://liyanfei123.github.io",
+      animate: true,
+      isHome: false,
+      share: true,
+      reward: 1
+  }
+</script>
+<div class="sidebar">
+    <div id="sidebar-search" title="Search">
+        <i class="fa fa-search"></i>
+    </div>
+    <div id="sidebar-category" title="Categories">
+        <i class="fa fa-book"></i>
+    </div>
+    <div id="sidebar-tag" title="Tags">
+        <i class="fa fa-tags"></i>
+    </div>
+    <div id="sidebar-top">
+        <span class="sidebar-top-icon"><i class="fa fa-angle-up"></i></span>
+    </div>
+</div>
+<div class="sidebar-menu-box" id="sidebar-menu-box">
+    <div class="sidebar-menu-box-container">
+        <div id="sidebar-menu-box-categories">
+            <a class="category-link" href="/categories/Python/">Python</a>
+        </div>
+        <div id="sidebar-menu-box-tags">
+            <a href="/tags/Scrapy/" style="font-size: 10px;">Scrapy</a> <a href="/tags/Session/" style="font-size: 10px;">Session</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/数据分析/" style="font-size: 10px;">数据分析</a> <a href="/tags/模拟登陆/" style="font-size: 20px;">模拟登陆</a> <a href="/tags/线程/" style="font-size: 10px;">线程</a> <a href="/tags/装饰器/" style="font-size: 10px;">装饰器</a> <a href="/tags/进程/" style="font-size: 10px;">进程</a>
+        </div>
+    </div>
+    <a href="javascript:;" class="sidebar-menu-box-close">&times;</a>
+</div>
+<div class="mobile-header-menu-nav" id="mobile-header-menu-nav">
+    <div class="mobile-header-menu-container">
+        <span class="title">Menus</span>
+        <ul class="mobile-header-menu-navbar">
+            
+            <li>
+                <a href="/">
+                    <i class="fa fa-home"></i><span>Home</span>
+                </a>
+            </li>
+            
+            <li>
+                <a href="/archives">
+                    <i class="fa fa-archive"></i><span>Archives</span>
+                </a>
+            </li>
+            
+            <li>
+                <a href="/about">
+                    <i class="fa fa-user"></i><span>About</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    <div class="mobile-header-tag-container">
+        <span class="title">Tags</span>
+        <div id="mobile-header-container-tags">
+            <a href="/tags/Scrapy/" style="font-size: 10px;">Scrapy</a> <a href="/tags/Session/" style="font-size: 10px;">Session</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/数据分析/" style="font-size: 10px;">数据分析</a> <a href="/tags/模拟登陆/" style="font-size: 20px;">模拟登陆</a> <a href="/tags/线程/" style="font-size: 10px;">线程</a> <a href="/tags/装饰器/" style="font-size: 10px;">装饰器</a> <a href="/tags/进程/" style="font-size: 10px;">进程</a>
+        </div>
+    </div>
+</div>
+<div class="search-wrap">
+    <span class="search-close">&times;</span>
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+            <i class="icon icon-lg icon-chevron-left"></i>
+        </a>
+        <input class="search-field" placeholder="Search..." id="keywords">
+        <a id="search-submit" href="javascript:;">
+            <i class="fa fa-search"></i>
+        </a>
+    <div class="search-container" id="search-container">
+        <ul class="search-result" id="search-result">
+        </ul>
+    </div>
+</div>
+
+<div id="search-tpl">
+    <li class="search-result-item">
+        <a href="{url}" class="search-item-li">
+            <span class="search-item-li-title" title="{title}">{title}</span>
+        </a>
+    </li>
+</div>
+<script src="/js/search.js"></script>
+<script src="/js/main.js"></script>
+
+
+  <script src="//cdn.bootcss.com/particles.js/2.0.0/particles.min.js"></script>
+  <div id="particles"></div>
+  <script src="/js/particles.js"></script>
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  <script src="//cdn.bootcss.com/scrollReveal.js/3.0.5/scrollreveal.js"></script>
+  <script src="/js/animate.js"></script>
+
+
+  <script src="/js/pop-img.js"></script>
+  <script>
+     $(".article-entry p img").popImg();
+  </script>
+
+  </div>
+</body>
+</html>

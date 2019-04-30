@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>Python装饰器 | Good Coding</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Go Ahead">
+  
+  <meta name="description" content="最近在学Python的进阶知识，然后看到了装饰器，整理总结一下装饰器中的知识点以作备忘。 在讲装饰器之前，有必要先提及一下Python中的闭包，因为装饰器的本质就是闭包，并且当我们在编写参数化的装饰器时，往往都会出现闭包。 闭包维基百科中对于闭包的解释是这样的，在一些语言中，在函数中可以（嵌套）定义另一个函数时，如果内部的函数引用了外部的函数的变量，则可能产生闭包。闭包可以用来在一个函数与一组“私">
+<meta name="keywords" content="装饰器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python装饰器">
+<meta property="og:url" content="http://liyanfei123.github.io/2019/04/30/Python装饰器/index.html">
+<meta property="og:site_name" content="Good Coding">
+<meta property="og:description" content="最近在学Python的进阶知识，然后看到了装饰器，整理总结一下装饰器中的知识点以作备忘。 在讲装饰器之前，有必要先提及一下Python中的闭包，因为装饰器的本质就是闭包，并且当我们在编写参数化的装饰器时，往往都会出现闭包。 闭包维基百科中对于闭包的解释是这样的，在一些语言中，在函数中可以（嵌套）定义另一个函数时，如果内部的函数引用了外部的函数的变量，则可能产生闭包。闭包可以用来在一个函数与一组“私">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-04-30T07:15:33.300Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python装饰器">
+<meta name="twitter:description" content="最近在学Python的进阶知识，然后看到了装饰器，整理总结一下装饰器中的知识点以作备忘。 在讲装饰器之前，有必要先提及一下Python中的闭包，因为装饰器的本质就是闭包，并且当我们在编写参数化的装饰器时，往往都会出现闭包。 闭包维基百科中对于闭包的解释是这样的，在一些语言中，在函数中可以（嵌套）定义另一个函数时，如果内部的函数引用了外部的函数的变量，则可能产生闭包。闭包可以用来在一个函数与一组“私">
+  
+  
+    <link rel="icon" href="images/touxiang.jpg">
+  
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/pace.min.js"></script>
+  
+
+  
+  
+
+</head>
+</html>
+<body>
+  <div id="container">
+      <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer">
+        <div id="header-menu" class="header-menu-pos animated">
+            <div class="header-menu-container">
+                <a href="/" class="left">
+                    <span class="site-title">Li yanfei&#39;s Blog</span>
+                </a>
+                <nav id="header-menu-nav" class="right">
+                    
+                    <a href="/">
+                        <i class="fa fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                    
+                    <a href="/archives">
+                        <i class="fa fa-archive"></i>
+                        <span>Archives</span>
+                    </a>
+                    
+                    <a href="/about">
+                        <i class="fa fa-user"></i>
+                        <span>About</span>
+                    </a>
+                    
+                </nav>
+                <a class="mobile-header-menu-button">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </div>
+        <div id="header-row">
+            <div id="logo">
+                <a href="/">
+                    <img src="/images/logo.png" alt="logo">
+                </a>
+            </div>
+            <div class="header-info">
+                <div id="header-title">
+                    
+                    <h2>
+                        Li yanfei&#39;s Blog
+                    </h2>
+                    
+                </div>
+                <div id="header-description">
+                    
+                    <h3>
+                        好好学习，天天向上
+                    </h3>
+                    
+                </div>
+            </div>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a title="Github" target="_blank" href="https://github.com/liyanfei123">
+                            <i class="fa fa-github fa-2x"></i></a>
+                    
+                        <a title="Weibo" target="_blank" ">
+                            <i class="fa fa-weibo fa-2x"></i></a>
+                    
+                        <a title="Twitter" target="_blank" ">
+                            <i class="fa fa-twitter fa-2x"></i></a>
+                    
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+      <div class="outer">
+        <section id="main" class="body-wrap"><article id="post-Python装饰器" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="post-title" itemprop="name">
+      Python装饰器
+    </h1>
+    <div class="post-title-bar">
+      <ul>
+          
+              <li>
+                  <i class="fa fa-book"></i>
+                  
+                      <a href="/categories/Python/">Python</a>
+                  
+              </li>
+          
+        <li>
+          <i class="fa fa-calendar"></i>  2019-04-30
+        </li>
+        <li>
+          <i class="fa fa-eye"></i>
+          <span id="busuanzi_value_page_pv"></span>
+        </li>
+      </ul>
+    </div>
+  
+
+          
+      </header>
+    
+    <div class="article-entry post-content" itemprop="articleBody">
+      
+            
+            <p>最近在学Python的进阶知识，然后看到了装饰器，整理总结一下装饰器中的知识点以作备忘。</p>
+<p>在讲装饰器之前，有必要先提及一下Python中的闭包，因为装饰器的本质就是闭包，并且当我们在编写参数化的装饰器时，往往都会出现闭包。</p>
+<h2 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h2><p>维基百科中对于闭包的解释是这样的，在一些语言中，在函数中可以（嵌套）定义另一个函数时，如果内部的函数引用了外部的函数的变量，则可能产生闭包。闭包可以用来在一个函数与一组“私有”变量之间创建关联关系。在给定函数被多次调用的过程中，这些私有变量能够保持其持久性。</p>
+<p>我们可以看下面一个简单的例子，<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">make_func</span><span class="params">(x)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">return</span> x ** x</span><br><span class="line">    <span class="keyword">return</span> func</span><br><span class="line"></span><br><span class="line">f = make_func(<span class="number">5</span>)</span><br><span class="line">f()   <span class="comment"># 输出为 3125</span></span><br></pre></td></tr></table></figure></p>
+<p>在上例中<code>x</code>是<code>make_func</code>的变量，对于<code>func</code>而言是外部变量，并对其使用并计算返回，这样一来我们便实现了一个简单的闭包。因此闭包简单来说就是内层函数引用了外层函数的变量，然后返回内层函数的情况。</p>
+<h2 id="装饰器"><a href="#装饰器" class="headerlink" title="装饰器"></a>装饰器</h2><p>装饰器是可调用对象，其参数是另外一个函数，它可以让其他函数在不需要做任何代码变动的前提下增加额外功能（如：插入日志、性能测试等），装饰器可能会处理被装饰的函数，然后把他返回，或者将其替换成另一个函数或可调用对象。当我们定义了一个函数，想在运行时动态的增加功能，又不想改动函数本身的代码的时候，就可以使用装饰器。</p>
+<p>我们现在有如下的代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">target</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'running target()'</span>)</span><br></pre></td></tr></table></figure></p>
+<p>但是我们想在运行时打印出函数的调用，最简单的方法就是直接在函数中增加<code>print(&#39;call function&#39;, target.__name__)</code>即可，当然也可以去新定义一个调用函数<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">call_func</span><span class="params">(f)</span>:</span></span><br><span class="line">    print(<span class="string">'call function'</span>, f.__name__)</span><br><span class="line">    <span class="keyword">return</span> f()</span><br></pre></td></tr></table></figure></p>
+<p>但是，上述方法都不是我们所要考虑的（虽然很容易看懂，毕竟我们要讲装饰器啊）。我们都知道Python是支持高阶函数的，所谓高阶函数就是接受函数为参数，或者把函数作为结果返回的函数，我们所遇到的<code>map,filter,sorted</code>等都是高阶函数，大家可能在刚学习Python的时候就有用到过，比如<code>sorted(lists, key = len)</code>，其根据列表中字符串的长短进行排序。所以，要打印出函数调用，我们也可以通过一个高阶函数来实现，完整的代码如下<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">call_func</span><span class="params">(f)</span>:</span>  <span class="comment"># 装饰器函数，f是被装饰的函数</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fn</span><span class="params">()</span>:</span></span><br><span class="line">        print(<span class="string">'call function'</span>, f.__name__)</span><br><span class="line">        <span class="keyword">return</span> f()</span><br><span class="line">    <span class="keyword">return</span> fn</span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">target</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'running target()'</span>)</span><br><span class="line">    </span><br><span class="line">target = call_func(target)</span><br><span class="line">target()</span><br></pre></td></tr></table></figure></p>
+<p>该代码便实现了一个装饰器的功能，原来的函数<code>target</code>通过<code>call_func</code>来对其进行装饰。</p>
+<p>不过当我们编写的代码较多时，会觉得写<code>target = call_func(target)</code>这样一条指令过于繁琐，所以Python中内置的<code>@语法糖</code>可以简化装饰器调用，对于上述代码的后半段，我们可以改写为：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@call_func</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">target</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'running target()'</span>)</span><br><span class="line">target()</span><br></pre></td></tr></table></figure></p>
+<p>其输出为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">call function target</span><br><span class="line">running target()</span><br></pre></td></tr></table></figure></p>
+<p>在这里我们可以看下<code>target</code>的输出（也就是不使用调用运算符‘()’），其输出内容为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;function __main__.call_func.&lt;locals&gt;.fn()&gt;</span><br></pre></td></tr></table></figure></p>
+<p>从结果中可以看出<code>target</code>现在是<code>fn</code>的引用，我们再来看一下<code>target</code>的<code>__name__</code>还是不是<code>target</code>，执行<code>target.__name__</code>，可以得到<code>fn</code>,<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">target.__name__</span><br></pre></td></tr></table></figure></p>
+<p>不难看出，<code>target</code>函数已被替换成函数<code>fn</code>。</p>
+<p>因此，装饰器的一大特性是，<strong>能把被装饰的函数替换成其他函数</strong>。</p>
+<p>大多数装饰器会在内部定义一个函数然后将其返回（如上例中的<code>fn</code>），但是也有时候为了减少代码量的编写，不在内部定义函数，而是直接让装饰器返回原来的函数。当我们定义的函数中有参数计算时，我们需在内部定义一个函数然后将其返回；若定义的函数不需要参数时，便可以将定义函数的环节省去，如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在内部定义函数的示例</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">call_func</span><span class="params">(f)</span>:</span> </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fn</span><span class="params">(x)</span>:</span></span><br><span class="line">        print(<span class="string">'call function'</span>, f.__name__)</span><br><span class="line">        <span class="keyword">return</span> f(x)</span><br><span class="line">    <span class="keyword">return</span> fn</span><br><span class="line">    </span><br><span class="line"><span class="meta">@call_func   </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">target</span><span class="params">(x)</span>:</span></span><br><span class="line">    print(x ** x)</span><br><span class="line">target(<span class="number">3</span>)</span><br><span class="line"><span class="comment"># 输出结果为</span></span><br><span class="line"><span class="comment"># call function target</span></span><br><span class="line"><span class="comment"># 27</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在内部不定义函数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">call_func</span><span class="params">(f)</span>:</span></span><br><span class="line">    print(<span class="string">'call function'</span>, f.__name__)</span><br><span class="line">    <span class="keyword">return</span> f</span><br><span class="line"></span><br><span class="line"><span class="meta">@call_func</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">target</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'running target()'</span>)  </span><br><span class="line">target()</span><br><span class="line"><span class="comment"># 输出结果为</span></span><br><span class="line"><span class="comment"># call function target</span></span><br><span class="line"><span class="comment"># running target()</span></span><br><span class="line"><span class="comment"># 这里需要注意的是，查看target.__name__结果时输出仍为target,因为在装饰器函数中，其返回的是之前传入的函数</span></span><br></pre></td></tr></table></figure></p>
+<p>不过个人感觉还是在装饰器里面再定义一个函数稍好。</p>
+<p>之前说到装饰器的一大特性是，能把被装饰的函数替换成其他函数。当然，装饰器还有另一大特性，<strong>装饰器在加载模块时立即执行</strong>，也就是说装饰器在被装饰的函数定义之后立即运行，我们可以看下面一个简单的例子，<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">deco</span><span class="params">(f)</span>:</span></span><br><span class="line">    print(<span class="string">'running deco(%s)'</span> % f)</span><br><span class="line">    <span class="keyword">return</span> f</span><br><span class="line"></span><br><span class="line"><span class="meta">@deco</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f1</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'running f1()'</span>)</span><br></pre></td></tr></table></figure></p>
+<p>结果为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">running deco(&lt;function f1 at 0x00000218294FE048&gt;)</span><br></pre></td></tr></table></figure></p>
+<p>可以看出我们并没有去执行调用函数的语句（装饰器除外），它却将装饰器函数中的<code>print</code>语句输出，而<code>f1</code>中的语句只有在明确调用时才会去执行，由此可见装饰器将会在被装饰的函数定义之后立即运行。</p>
+<p>在这里，需要指出的是，若在上述装饰器函数中内建一个函数，将看不出这样的效果，这是因为我们返回的内建函数并没有被调用，只有等到调用被装饰的函数时才会去调用它。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">deco</span><span class="params">(f)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">()</span>:</span></span><br><span class="line">        print(<span class="string">'running deco(%s)'</span> % f)</span><br><span class="line">        <span class="keyword">return</span> f</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line"></span><br><span class="line"><span class="meta">@deco</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f1</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'running f1()'</span>)</span><br></pre></td></tr></table></figure></p>
+<p>我们可以将装饰器对函数的装饰用一个过程来表示，<code>@deco 等价于 f1 = deco(f1) -&gt; f1 = inner</code>，从该过程我们可以明显的看出，<code>inner</code>并没有被调用。</p>
+<h2 id="装饰具有单个参数或无参数的函数"><a href="#装饰具有单个参数或无参数的函数" class="headerlink" title="装饰具有单个参数或无参数的函数"></a>装饰具有单个参数或无参数的函数</h2><p>对于我们所定义的一个函数，当前无参数时，我们可直接在装饰器内建一个不带参数的函数；当具有一个参数时，需给在装饰器内建的函数中给定，如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">call_func</span><span class="params">(f)</span>:</span> </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fn</span><span class="params">(x)</span>:</span>    <span class="comment"># 定义内部函数fn,它接收一个参数x</span></span><br><span class="line">        print(<span class="string">'call function'</span>, f.__name__)</span><br><span class="line">        <span class="keyword">return</span> f(x)</span><br><span class="line">    <span class="keyword">return</span> fn</span><br><span class="line">    </span><br><span class="line"><span class="meta">@call_func   </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">target</span><span class="params">(x)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> x ** x</span><br><span class="line">target(<span class="number">3</span>)</span><br></pre></td></tr></table></figure></p>
+<h2 id="装饰具有多个参数的函数"><a href="#装饰具有多个参数的函数" class="headerlink" title="装饰具有多个参数的函数"></a>装饰具有多个参数的函数</h2><p>对于上例，我们对<code>target</code>函数稍加修改，使其接收两个参数，并对其进行计算，<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">target</span><span class="params">(x, y)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br></pre></td></tr></table></figure></p>
+<p>当对上述代码使用我们之前定义的装饰器，将会报如下错误<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TypeError: fn() takes 1 positional argument but 2 were given</span><br></pre></td></tr></table></figure></p>
+<p>聪明的同学肯定会说，既然报错说少给了参数，那我们就根据它的要求多给它一个参数呗。没错，我们可以直接在装饰器函数<code>call_func</code>中添加一个参数，但是，当我们需要添加的参数上百个时，我们也要一个个去添加嘛？这当然时不行的，因此，我们在传递参数时可考虑<code>仅限关键字参数</code>，也就是我们通常所见到的‘*’,‘**’的标记。对于该类标记，做个简单的介绍。</p>
+<p><strong>*kw是以元组的形式存放的，其对于无具名参数使用</strong><br><strong>**kw是以字典的形式存放的，其对于具名参数使用</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">(*kw, **kws)</span>:</span></span><br><span class="line">    print(<span class="string">'kw:'</span>, kw)</span><br><span class="line">    print(<span class="string">'kws:'</span>, kws)</span><br><span class="line">test(<span class="number">1</span>, <span class="number">2</span>, name = <span class="string">'xiaoming'</span>, age = <span class="string">'12'</span>)</span><br></pre></td></tr></table></figure></p>
+<p>结果为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kw: (1, 2)</span><br><span class="line">kws: &#123;&apos;name&apos;: &apos;xiaoming&apos;, &apos;age&apos;: &apos;12&apos;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>需指出的时，对于‘**’有另外一种用法，如下<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">(name, *kw, **kws)</span>:</span></span><br><span class="line">    print(<span class="string">'kws:'</span>, kws)</span><br><span class="line"></span><br><span class="line">tag = &#123;<span class="string">'name'</span>: <span class="string">'xiaoming'</span>, <span class="string">'age'</span>: <span class="number">12</span>, <span class="string">'gender'</span>: <span class="string">'male'</span>&#125;</span><br><span class="line">test(**tag)</span><br></pre></td></tr></table></figure></p>
+<p>结果为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kws: &#123;&apos;age&apos;: 12, &apos;gender&apos;: &apos;male&apos;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>发现<code>kws</code>中的输出无<code>name</code>键了，这是因为在<code>tag</code>前加了’<strong>‘，使得字典<code>tag</code>中的所有元素作为单个参数传入，同名键会被绑定到对应的具名参数上，余下的则被`</strong>kws`捕获。</p>
+<p>好了，还回到我们装饰器的问题上了，当我们所定义的函数具有多个参数时，我们便可以在装饰器中使用<code>仅限关键字参数</code>以使其 自适应任何参数定义的函数。如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">call_func</span><span class="params">(f)</span>:</span> </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fn</span><span class="params">(*args, **kwargs)</span>:</span>    <span class="comment"># 定义内部函数fn,它接收一个参数x</span></span><br><span class="line">        print(<span class="string">'call function'</span>, f.__name__)</span><br><span class="line">        print(<span class="string">'args中参数：'</span>,<span class="string">', '</span>.join(repr(arg) <span class="keyword">for</span> arg <span class="keyword">in</span> args))</span><br><span class="line">        print(<span class="string">'kwargs中参数：'</span>,<span class="string">', '</span>.join(<span class="string">'%s=%r'</span> % (k, w) <span class="keyword">for</span> k, w <span class="keyword">in</span> kwargs.items()))</span><br><span class="line">        <span class="keyword">return</span> f(*args, **kwargs)  <span class="comment"># 将全部参数再传给原函数进行计算打印</span></span><br><span class="line">    <span class="keyword">return</span> fn</span><br><span class="line"></span><br><span class="line"><span class="meta">@call_func</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">target</span><span class="params">(x, y, name, age)</span>:</span></span><br><span class="line">    print(x + y)</span><br><span class="line"></span><br><span class="line">target(<span class="number">3</span>, <span class="number">4</span>, name = <span class="string">'xiaoming'</span>, age = <span class="number">12</span>)</span><br></pre></td></tr></table></figure></p>
+<p>结果为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">call function target</span><br><span class="line">args中参数： 3, 4</span><br><span class="line">kwargs中参数： name=&apos;xiaoming&apos;, age=12</span><br><span class="line">7</span><br></pre></td></tr></table></figure></p>
+<h2 id="参数化装饰器"><a href="#参数化装饰器" class="headerlink" title="参数化装饰器"></a>参数化装饰器</h2><p>在上面的有关装饰器的例子中，我们都是直接写出<code>@***</code>的形式，其Python是把被装饰的函数作为第一个参数传给装饰器函数，那怎么让装饰器接收其他的参数呢？答案是：创建一个装饰器工厂函数，把参数传给它，返回一个装饰器，然后再把它应用到要装饰的函数上？没看懂？我刚看这句话的时候也没有看懂，后来经过一番研究才了解少许，换句话说，就是在我们原本定义的装饰器A的外围再去定义一个函数func，让他来为装饰器A接收除被装饰的函数外的其他参数，并让函数func返回装饰器A的函数，装饰器A视情况决定是否使用该参数。可能大多数同学还是不能明白，没关系，我们上代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">registry = set()   <span class="comment"># 定义一个set对象,用于存放被装饰的函数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">register</span><span class="params">(active = True)</span>:</span>   <span class="comment"># 装饰器工厂函数</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">deco</span><span class="params">(func)</span>:</span>    <span class="comment"># 真正的装饰器函数</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">fn</span><span class="params">()</span>:</span></span><br><span class="line">            <span class="keyword">if</span> active:   <span class="comment"># 若active = True,则将该被装饰的函数放入registry当中</span></span><br><span class="line">                registry.add(func)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                registry.discard(func)</span><br><span class="line">            <span class="keyword">return</span> func</span><br><span class="line">        <span class="keyword">return</span> fn</span><br><span class="line">    <span class="keyword">return</span> deco</span><br><span class="line"></span><br><span class="line"><span class="meta">@register(active = False)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f1</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'running f1()'</span>)</span><br><span class="line">    </span><br><span class="line"><span class="meta">@register(active = True)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f2</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'running f2()'</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@register()   # 默认为active = True</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f3</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'running f3()'</span>)</span><br><span class="line"></span><br><span class="line">f1()</span><br><span class="line">f2()</span><br><span class="line">f3()</span><br><span class="line">registry</span><br></pre></td></tr></table></figure></p>
+<p>控制台的显示结果为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&lt;function __main__.f2()&gt;, &lt;function __main__.f3()&gt;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>从结果中我们可以看出，<code>registry</code>中最后只存放了<code>f2,f3</code>，而<code>f1</code>却没有，这就是装饰器中参数在做怪，<code>f1</code>的装饰器函数中的参数<code>active</code>被置为<code>False</code>，从而使得其无法和它的伙伴们一起加入到<code>registry</code>中。</p>
+<p>上例中的<code>register</code>函数就是一个装饰器工厂函数，其用来接收我们所传给装饰器的其他参数。因此对于上述代码我们可以将其用伪代码简述一下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">定义(def)一个装饰器工厂函数，带有我们所要传递的参数</span><br><span class="line">	定义(def)一个实际应用的装饰器函数</span><br><span class="line">		装饰器函数内部，进行对参数判断等操作</span><br><span class="line">	返回(return)我们之前所定义的装饰器函数</span><br></pre></td></tr></table></figure></p>
+<p>这里需要注意的时，由于我们定义了一个装饰器工厂函数，所以<strong>在使用@语法糖时，一定要传入变量，或者直接使用默认的变量（使用默认的变量也需要加上’()’），否则会报错</strong>。</p>
+<p>有的同学可能会问，为什么我们这里调用了被装饰后的函数，可是却没有输出类似<code>running f1()</code>的语句，这是因为我们在<code>return func</code>中并没有调用<code>func</code>，而在本文刚开始的是<code>return func()</code>，故有输出，大家可以观察一下。</p>
+<p>为了更好的理解这一过程，我们用等价的语言来进行描述，以<code>f2</code>为例， <code>@register(active = True) ==&gt; f2 = register(active = True)(f2) ==&gt; f2 = deco(f2) ==&gt; f2 = fn</code>，由此可见，<code>fn</code>并没有被调用，也就无法对<code>registry</code>进行操作。</p>
+<h2 id="叠放装饰器"><a href="#叠放装饰器" class="headerlink" title="叠放装饰器"></a>叠放装饰器</h2><p>有时候我们会编写多个装饰器，并且需要将这多个装饰器都应用到某个函数上时，这就需要我们对装饰器进行叠放，在进行叠放时，需根据自己编写的代码注意一定的顺序，以免装饰器执行错误。例如，把@d1和@d2两个装饰器按顺序应用到f函数上，作用相当于<code>f = d1(d2(f))</code>，代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@d1</span></span><br><span class="line"><span class="meta">@d2</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">()</span>:</span></span><br><span class="line">	print(<span class="string">'f'</span>)</span><br></pre></td></tr></table></figure></p>
+<h2 id="完善装饰器"><a href="#完善装饰器" class="headerlink" title="完善装饰器"></a>完善装饰器</h2><p>虽然装饰器可以让我们的代码更加优雅，减少重复，不需要对代码进行修改，但是也会带来一些问题，最常见的就是<strong>错误的函数签名和文档</strong>，我们在一开始的装饰器的例子中，对<code>target.__name__</code>的结果进行了查看，其输出结果不再是<code>target</code>，而是<code>fn</code>(大家可以拉到上面再去看一下)，这就是使用装饰器所带来的问题，<strong>装饰器会遮盖被装饰函数的<code>__name__，__doc__</code>等属性</strong>，也就是对原函数会输出替换后的函数的<code>__name__，__doc__</code>等属性，这对于我们去查看函数说明时会带来不少的麻烦。我们想看<code>target</code>函数的名称或说明，你却给我输出<code>fn</code>函数的名称或说明，这可不行，不能给你糖吃了你就听它的话了，就跟着它走了，我们还得把你给拽回来，所以我们可以将装饰器中的函数的<code>__name__，__doc__</code>等属性替换为被装饰函数的属性，见如下代码<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">call_func</span><span class="params">(f)</span>:</span>  <span class="comment"># 装饰器函数，f是被装饰的函数</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fn</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">return</span> f</span><br><span class="line">    fn.__name__ = f.__name__</span><br><span class="line">    fn.__doc__ = f.__doc__</span><br><span class="line">    <span class="keyword">return</span> fn</span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">target</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'running target()'</span>)</span><br><span class="line">    </span><br><span class="line">target = call_func(target)</span><br><span class="line">target.__name__</span><br></pre></td></tr></table></figure></p>
+<p>输出为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&apos;target&apos;</span><br></pre></td></tr></table></figure></p>
+<p>可见我们将<code>target.__name__</code>原来的属性还给拽了回来，在这里面我们需要知道被装饰的函数装饰后的函数名是什么，并对其进行修改（在该层函数的外围进行修改，return之前）。</p>
+<p>但是每次都通过写这样的语句来进行属性的修改，未免有些过于麻烦，当然Python也考虑到了这样，因此Python提供了<code>functools.wraps</code>装饰器把被装饰函数的相关属性从原来的函数复制到装饰器中定义的函数中，上述代码可修改为：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">call_func</span><span class="params">(f)</span>:</span>  <span class="comment"># 装饰器函数，f是被装饰的函数</span></span><br><span class="line"><span class="meta">    @functools.wraps(f)</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fn</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">return</span> f</span><br><span class="line">    <span class="keyword">return</span> fn</span><br><span class="line">    </span><br><span class="line"><span class="meta">@call_func</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">target</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'running target()'</span>)</span><br><span class="line">    </span><br><span class="line">target.__name__</span><br></pre></td></tr></table></figure></p>
+<h2 id="内置的一些装饰器"><a href="#内置的一些装饰器" class="headerlink" title="内置的一些装饰器"></a>内置的一些装饰器</h2><p>Python中内置了三个用于装饰方法的函数：<code>property、classmethod、staticmethod</code></p>
+<h3 id="classmethod"><a href="#classmethod" class="headerlink" title="@classmethod"></a>@classmethod</h3><p>在类<code>class</code>中定义的全部是实例方法，实例方法的第一个参数<code>self</code>是实例本身，要想在<code>class</code>中定义类方法，需要用到<code>@classmethod</code>，从而将该方法绑定到我们定义的类上，而非类的实例，即定义操作类，而不是操作实例的方法，也就是说类可以直接操作该方法，见下例：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(object)</span>:</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">how_many</span><span class="params">(cls)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> cls.count</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        Person.count = Person.count + <span class="number">1</span></span><br><span class="line"> </span><br><span class="line">Person.how_many()  <span class="comment"># 类直接调用，输出为 0</span></span><br><span class="line">Person.how_many()  <span class="comment"># 由于没有实例化，所以例中的属性不会加1，输出仍然为 0</span></span><br><span class="line">p1 = Person(<span class="string">'Bob'</span>)        </span><br><span class="line">Person.how_many()  <span class="comment"># 由于实例化了，故count属性加1，输出为 1</span></span><br></pre></td></tr></table></figure></p>
+<p><code>@classmethod</code>改变了调用方法的方式，因此类构造的第一个参数是类本身，而不是实例，通常将参数名命名为<code>cls</code>(<strong>cls不可省略！！！</strong>)，上面的<code>cls.count</code>实际上相当于<code>Person.count</code>。<strong>因为是在类上调用，而非实例上调用，因此类方法无法获得任何实例变量，只能获得类的引用</strong>，也就是说类方法只能使用类中的属性，实例化传入的参数无法使用。</p>
+<p>通常在爬虫框架<code>Scrapy</code>中数据库的操作中会用到该装饰方法：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MongoPipeline</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, mongo_uri, mongo_db)</span>:</span></span><br><span class="line">        self.mongo_uri = mongo_uri</span><br><span class="line">        self.mongo_db = mongo_db</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">from_crawler</span><span class="params">(cls, crawler)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> cls( </span><br><span class="line">              mongo_uri = crawler.settings.get(<span class="string">'MONGO_URI'</span>), mongo_db = crawler.settings.get(<span class="string">'MONGO_DB'</span>)</span><br><span class="line">            )</span><br></pre></td></tr></table></figure></p>
+<h3 id="staticmethod"><a href="#staticmethod" class="headerlink" title="@staticmethod"></a>@staticmethod</h3><p><code>@staticmethod</code>装饰器也会改变方法的调用方式，但是第一个参数不是特殊的值，其实<code>staticmethod</code>是一种普通函数，位于类定义的命名空间中，不会对任何实例类型进行操作，见如下例子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Static</span><span class="params">(object)</span>:</span></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sta</span><span class="params">()</span>:</span></span><br><span class="line">        print(<span class="string">'running staticmethod'</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">Static.sta()  <span class="comment"># 输出为 'running staticmethod'</span></span><br></pre></td></tr></table></figure></p>
+<p>当我们编写类时需要采用很多不同的方式来创建实例，而我们只有一个<strong>init</strong>函数，此时<code>staticmethod</code>就派上用场了，如下（<a href="http://www.cnblogs.com/wangyongsong/p/6750454.html#_label1" target="_blank" rel="noopener">参考文章</a>）：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Date</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, year, month, day)</span>:</span></span><br><span class="line">        self.year = year</span><br><span class="line">        self.month = month</span><br><span class="line">        self.day = day</span><br><span class="line">        </span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">now</span><span class="params">()</span>:</span> <span class="comment"># 用Date.now()的形式去产生实例,该实例用的是当前时间</span></span><br><span class="line">        t = time.localtime() <span class="comment">#获取结构化的时间格式</span></span><br><span class="line">        <span class="keyword">return</span> Date(t.tm_year, t.tm_mon, t.tm_mday) <span class="comment">#新建实例并且返回</span></span><br><span class="line">        </span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">tomorrow</span><span class="params">()</span>:</span> <span class="comment"># 用Date.tomorrow()的形式去产生实例,该实例用的是明天的时间</span></span><br><span class="line">        t = time.localtime(time.time() + <span class="number">86400</span>)</span><br><span class="line">        <span class="keyword">return</span> Date(t.tm_year, t.tm_mon, t.tm_mday)</span><br><span class="line"></span><br><span class="line">a = Date(<span class="string">'1987'</span>,<span class="number">11</span>,<span class="number">27</span>)    <span class="comment"># 自己定义时间</span></span><br><span class="line">b = Date.now()            <span class="comment"># 采用当前时间</span></span><br><span class="line">c = Date.tomorrow()       <span class="comment"># 采用明天的时间</span></span><br></pre></td></tr></table></figure></p>
+<p>我们来比较一下<code>classmethod</code>和<code>staticmethod</code>的区别，见如下代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Compare</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        </span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">clsmethod</span><span class="params">(cls)</span>:</span></span><br><span class="line">        name = <span class="string">'compare function'</span></span><br><span class="line">        <span class="keyword">return</span> cls(name)</span><br><span class="line">    </span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">stamethod</span><span class="params">()</span>:</span></span><br><span class="line">        name = <span class="string">'compare function'</span></span><br><span class="line">        <span class="keyword">return</span> Compare(name)</span><br><span class="line">        </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Son_compare</span><span class="params">(Compare)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'%s'</span> % self.name</span><br><span class="line"></span><br><span class="line">print(Son_compare.stamethod())</span><br><span class="line">print(Son_compare.clsmethod())</span><br><span class="line"></span><br><span class="line">&lt;__main__.Compare object at <span class="number">0x000002182952BDD8</span>&gt;</span><br><span class="line">compare function</span><br></pre></td></tr></table></figure></p>
+<p><code>Son_compare.stamethod()</code>输出的是目标地址，并没有得到我们预期的输出的字符串，这是因为我们虽然在<code>Son_compare</code>中定义了<code>__str__</code>，但是在调用<code>Son_compare.stamethod()</code>时，又去创建了<code>Compare</code>对象，所以<code>Son_compare</code>中的<code>__str__</code>不会被触发；而<code>Son_compare.clsmethod()</code>中创建的时<code>Son_compare</code>对象，因此能够输出我们想要的结果。</p>
+<p>由此我们可以发现使用<code>stamethod</code>会带来一定的缺点，就是其采用硬编码的方式，当我们修改一个类的名称时，其相应的<code>stamethod</code>的类名称也需要修改，而不同于<code>clsmethod</code>中用<code>cls</code>来代替了我们所修改的类名。对于上例，若需要<code>stamethod</code>的输出与<code>clsmethod</code>的输出相同，只需要将<code>stamethod()</code>中的<code>Compare</code>修改为<code>Son_compare</code>即可。</p>
+<h3 id="property"><a href="#property" class="headerlink" title="@property"></a>@property</h3><p>@property用来装饰读值方法<br>首先见如下代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, score)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.__score = score</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_score</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.__score</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">set_score</span><span class="params">(self, score)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> score &lt; <span class="number">0</span> <span class="keyword">or</span> score &gt; <span class="number">100</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">'invalid score'</span>)</span><br><span class="line">        self.__score = score</span><br></pre></td></tr></table></figure></p>
+<p>上述代码可以实现学生分数的修改，并且当输入的分数小于0或大于100时，报错‘无效分数’，我们对上述代码进行如下操作：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">s = Student(<span class="string">'Bob'</span>, <span class="number">59</span>)</span><br><span class="line">s.get_score()   <span class="comment"># 输出为 59</span></span><br><span class="line"><span class="comment"># 将该学生的成绩进行修改</span></span><br><span class="line">s.set_score(<span class="number">99</span>)</span><br><span class="line">s.get_score()   <span class="comment"># 输出为 99</span></span><br><span class="line"><span class="comment"># 将该学生的成绩修改为1000,将会报错</span></span><br><span class="line">s.set_score(<span class="number">1000</span>)</span><br><span class="line">s.get_score()</span><br><span class="line"><span class="comment"># ValueError: invalid score</span></span><br></pre></td></tr></table></figure></p>
+<p>但是通过这样调用函数的方式来得到和修改学生的<code>score</code>属性，显得比较麻烦，所以这个时候可以使用<code>property</code>装饰器来把<code>get/set</code>方法装饰成属性调用，也就是我们可以直接使用<code>s.score</code>来进行读取和设置，上述代码使用<code>property</code>装饰器后为：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, score)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.__score = score</span><br><span class="line">        </span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">score</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.__score</span><br><span class="line">        </span><br><span class="line"><span class="meta">    @score.setter</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">score</span><span class="params">(self, score)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> score &lt; <span class="number">0</span> <span class="keyword">or</span> score &gt; <span class="number">100</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">'invalid score'</span>)</span><br><span class="line">        self.__score = score</span><br><span class="line">    </span><br><span class="line">s = Student(<span class="string">'xiaoming'</span>, <span class="number">59</span>)</span><br><span class="line">s.score   <span class="comment"># 输出为 59</span></span><br><span class="line">s.score = <span class="number">99</span>   <span class="comment"># 将学生成绩修改为 99</span></span><br><span class="line">s.score   <span class="comment"># 输出为 99</span></span><br><span class="line">s.score = <span class="number">1000</span>   <span class="comment"># 将学生成绩修改为 99</span></span><br><span class="line">s.score   <span class="comment"># 输出为 ValueError: invalid score</span></span><br></pre></td></tr></table></figure></p>
+<p>上述代码明显比第一种方法方便的多。第一个<code>score(self)</code>是<code>get</code>方法，用<code>@property</code>装饰，第二个<code>score(self, score)</code>是<code>set</code>方法，用<a href="mailto:`@score.setter" target="_blank" rel="noopener">`@score.setter</a><code>装饰，</code>@score.setter<code>是前一个</code>@property`装饰后的副产品。</p>
+<p>编程快乐！</p>
+
+            <div class="post-copyright">
+    <div class="content">
+        <p>最后更新： 2019年04月30日 15:15</p>
+        <p>原始链接： <a class="post-url" href="/2019/04/30/Python装饰器/" title="Python装饰器">http://liyanfei123.github.io/2019/04/30/Python装饰器/</a></p>
+        <footer>
+            <a href="http://liyanfei123.github.io">
+                <img src="/images/logo.png" alt="Li yanfei">
+                Li yanfei
+            </a>
+        </footer>
+    </div>
+</div>
+
+      
+        
+            
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;">赏</a>
+</div>
+
+<div id="reward" class="post-modal reward-lay">
+    <a class="close" href="javascript:;" id="reward-close">×</a>
+    <span class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我吃糖~
+        <i class="icon icon-quote-right"></i>
+    </span>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/images/wechat_code.jpg" alt="打赏二维码">
+        </div>
+        <div class="reward-select">
+            
+            <label class="reward-select-item checked" data-id="wechat" data-wechat="/images/wechat_code.jpg">
+                <img class="reward-select-item-wechat" src="/images/wechat.png" alt="微信">
+            </label>
+            
+            
+            <label class="reward-select-item" data-id="alipay" data-alipay="/images/alipay_code.jpg">
+                <img class="reward-select-item-alipay" src="/images/alipay.png" alt="支付宝">
+            </label>
+            
+        </div>
+    </div>
+</div>
+
+
+        
+    </div>
+    <footer class="article-footer">
+        
+        
+<div class="post-share">
+    <a href="javascript:;" id="share-sub" class="post-share-fab">
+        <i class="fa fa-share-alt"></i>
+    </a>
+    <div class="post-share-list" id="share-list">
+        <ul class="share-icons">
+          <li>
+            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://liyanfei123.github.io/2019/04/30/Python装饰器/&title=《Python装饰器》 — Good Coding&pic=images/python装饰器.jpg" data-title="微博">
+              <i class="fa fa-weibo"></i>
+            </a>
+          </li>
+          <li>
+            <a class="weixin share-sns" id="wxFab" href="javascript:;" data-title="微信">
+              <i class="fa fa-weixin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://liyanfei123.github.io/2019/04/30/Python装饰器/&title=《Python装饰器》 — Good Coding&source=" data-title="QQ">
+              <i class="fa fa-qq"></i>
+            </a>
+          </li>
+          <li>
+            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://liyanfei123.github.io/2019/04/30/Python装饰器/" data-title="Facebook">
+              <i class="fa fa-facebook"></i>
+            </a>
+          </li>
+          <li>
+            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Python装饰器》 — Good Coding&url=http://liyanfei123.github.io/2019/04/30/Python装饰器/&via=http://liyanfei123.github.io" data-title="Twitter">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+          <li>
+            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://liyanfei123.github.io/2019/04/30/Python装饰器/" data-title="Google+">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        </ul>
+     </div>
+</div>
+<div class="post-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;" id="wxShare-close">×</a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=http://liyanfei123.github.io/2019/04/30/Python装饰器/" alt="微信分享二维码">
+</div>
+
+<div class="mask"></div>
+
+        
+        <ul class="article-footer-menu">
+            
+            
+  <li class="article-footer-tags">
+    <i class="fa fa-tags"></i>
+      
+    <a href="/tags/装饰器/" class="color4">装饰器</a>
+      
+  </li>
+
+        </ul>
+        
+    </footer>
+  </div>
+</article>
+
+
+    <aside class="post-toc-pos post-toc-top" id="post-toc">
+        <nav class="post-toc-wrap">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#闭包"><span class="post-toc-text">闭包</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#装饰器"><span class="post-toc-text">装饰器</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#装饰具有单个参数或无参数的函数"><span class="post-toc-text">装饰具有单个参数或无参数的函数</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#装饰具有多个参数的函数"><span class="post-toc-text">装饰具有多个参数的函数</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#参数化装饰器"><span class="post-toc-text">参数化装饰器</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#叠放装饰器"><span class="post-toc-text">叠放装饰器</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#完善装饰器"><span class="post-toc-text">完善装饰器</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#内置的一些装饰器"><span class="post-toc-text">内置的一些装饰器</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#classmethod"><span class="post-toc-text">@classmethod</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#staticmethod"><span class="post-toc-text">@staticmethod</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#property"><span class="post-toc-text">@property</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+
+<nav id="article-nav">
+  
+  
+    <a href="/2019/04/30/Python-异步-协程-线程-进程/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-title">Python 异步 协程 线程 进程</span>
+      <i class="fa fa-hand-o-right" aria-hidden="true"></i>
+    </a>
+  
+</nav>
+
+
+
+    
+</section>
+        
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+      <p>
+        Powered by  <a href="http://hexo.io/" target="_blank">Hexo</a>
+        Theme <a href="//github.com/wongminho/hexo-theme-miho" target="_blank">MiHo</a>
+      &copy; 2019 Li yanfei<br>
+      </p>
+    </div>
+  </div>
+</footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  var mihoConfig = {
+      root: "http://liyanfei123.github.io",
+      animate: true,
+      isHome: false,
+      share: true,
+      reward: 1
+  }
+</script>
+<div class="sidebar">
+    <div id="sidebar-search" title="Search">
+        <i class="fa fa-search"></i>
+    </div>
+    <div id="sidebar-category" title="Categories">
+        <i class="fa fa-book"></i>
+    </div>
+    <div id="sidebar-tag" title="Tags">
+        <i class="fa fa-tags"></i>
+    </div>
+    <div id="sidebar-top">
+        <span class="sidebar-top-icon"><i class="fa fa-angle-up"></i></span>
+    </div>
+</div>
+<div class="sidebar-menu-box" id="sidebar-menu-box">
+    <div class="sidebar-menu-box-container">
+        <div id="sidebar-menu-box-categories">
+            <a class="category-link" href="/categories/Python/">Python</a>
+        </div>
+        <div id="sidebar-menu-box-tags">
+            <a href="/tags/Scrapy/" style="font-size: 10px;">Scrapy</a> <a href="/tags/Session/" style="font-size: 10px;">Session</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/数据分析/" style="font-size: 10px;">数据分析</a> <a href="/tags/模拟登陆/" style="font-size: 20px;">模拟登陆</a> <a href="/tags/线程/" style="font-size: 10px;">线程</a> <a href="/tags/装饰器/" style="font-size: 10px;">装饰器</a> <a href="/tags/进程/" style="font-size: 10px;">进程</a>
+        </div>
+    </div>
+    <a href="javascript:;" class="sidebar-menu-box-close">&times;</a>
+</div>
+<div class="mobile-header-menu-nav" id="mobile-header-menu-nav">
+    <div class="mobile-header-menu-container">
+        <span class="title">Menus</span>
+        <ul class="mobile-header-menu-navbar">
+            
+            <li>
+                <a href="/">
+                    <i class="fa fa-home"></i><span>Home</span>
+                </a>
+            </li>
+            
+            <li>
+                <a href="/archives">
+                    <i class="fa fa-archive"></i><span>Archives</span>
+                </a>
+            </li>
+            
+            <li>
+                <a href="/about">
+                    <i class="fa fa-user"></i><span>About</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    <div class="mobile-header-tag-container">
+        <span class="title">Tags</span>
+        <div id="mobile-header-container-tags">
+            <a href="/tags/Scrapy/" style="font-size: 10px;">Scrapy</a> <a href="/tags/Session/" style="font-size: 10px;">Session</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/数据分析/" style="font-size: 10px;">数据分析</a> <a href="/tags/模拟登陆/" style="font-size: 20px;">模拟登陆</a> <a href="/tags/线程/" style="font-size: 10px;">线程</a> <a href="/tags/装饰器/" style="font-size: 10px;">装饰器</a> <a href="/tags/进程/" style="font-size: 10px;">进程</a>
+        </div>
+    </div>
+</div>
+<div class="search-wrap">
+    <span class="search-close">&times;</span>
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+            <i class="icon icon-lg icon-chevron-left"></i>
+        </a>
+        <input class="search-field" placeholder="Search..." id="keywords">
+        <a id="search-submit" href="javascript:;">
+            <i class="fa fa-search"></i>
+        </a>
+    <div class="search-container" id="search-container">
+        <ul class="search-result" id="search-result">
+        </ul>
+    </div>
+</div>
+
+<div id="search-tpl">
+    <li class="search-result-item">
+        <a href="{url}" class="search-item-li">
+            <span class="search-item-li-title" title="{title}">{title}</span>
+        </a>
+    </li>
+</div>
+<script src="/js/search.js"></script>
+<script src="/js/main.js"></script>
+
+
+  <script src="//cdn.bootcss.com/particles.js/2.0.0/particles.min.js"></script>
+  <div id="particles"></div>
+  <script src="/js/particles.js"></script>
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  <script src="//cdn.bootcss.com/scrollReveal.js/3.0.5/scrollreveal.js"></script>
+  <script src="/js/animate.js"></script>
+
+
+  <script src="/js/pop-img.js"></script>
+  <script>
+     $(".article-entry p img").popImg();
+  </script>
+
+  </div>
+</body>
+</html>
