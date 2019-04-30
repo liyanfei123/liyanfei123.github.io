@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>Python反爬虫 自定义字体1 | Good Coding</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Go Ahead">
+  
+  <meta name="description" content="在进行数据抓取时，有些网页会使用一些特殊的字符来将我们所需要的数据进行替换显示。我们以实习僧网站为例，在网页中我们可以看到我们所要的数据，但是当我们查看源码时，他却显示的是，显然，该网页把我们所需要的数据给隐藏起来了。我们不妨继续查看源码，会发现有如下的代码从上图中我们可以知道，网页中是把我们所需要的数据给用别的类似代码的东西给替换掉了，我们只要能够将它反向给替换回来就能够得到我们的数据了。 根">
+<meta name="keywords" content="反爬虫">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python反爬虫 自定义字体1">
+<meta property="og:url" content="http://liyanfei123.github.io/2019/04/30/Python反爬虫-自定义字体1/index.html">
+<meta property="og:site_name" content="Good Coding">
+<meta property="og:description" content="在进行数据抓取时，有些网页会使用一些特殊的字符来将我们所需要的数据进行替换显示。我们以实习僧网站为例，在网页中我们可以看到我们所要的数据，但是当我们查看源码时，他却显示的是，显然，该网页把我们所需要的数据给隐藏起来了。我们不妨继续查看源码，会发现有如下的代码从上图中我们可以知道，网页中是把我们所需要的数据给用别的类似代码的东西给替换掉了，我们只要能够将它反向给替换回来就能够得到我们的数据了。 根">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190427111438462.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190427111547161.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190427112226342.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190427112617148.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190427114949808.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190427124754234.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70">
+<meta property="og:updated_time" content="2019-04-30T08:16:07.583Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python反爬虫 自定义字体1">
+<meta name="twitter:description" content="在进行数据抓取时，有些网页会使用一些特殊的字符来将我们所需要的数据进行替换显示。我们以实习僧网站为例，在网页中我们可以看到我们所要的数据，但是当我们查看源码时，他却显示的是，显然，该网页把我们所需要的数据给隐藏起来了。我们不妨继续查看源码，会发现有如下的代码从上图中我们可以知道，网页中是把我们所需要的数据给用别的类似代码的东西给替换掉了，我们只要能够将它反向给替换回来就能够得到我们的数据了。 根">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20190427111438462.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70">
+  
+  
+    <link rel="icon" href="images/touxiang.jpg">
+  
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/pace.min.js"></script>
+  
+
+  
+  
+
+</head>
+</html>
+<body>
+  <div id="container">
+      <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer">
+        <div id="header-menu" class="header-menu-pos animated">
+            <div class="header-menu-container">
+                <a href="/" class="left">
+                    <span class="site-title">Li yanfei&#39;s Blog</span>
+                </a>
+                <nav id="header-menu-nav" class="right">
+                    
+                    <a href="/">
+                        <i class="fa fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                    
+                    <a href="/archives">
+                        <i class="fa fa-archive"></i>
+                        <span>Archives</span>
+                    </a>
+                    
+                    <a href="/about">
+                        <i class="fa fa-user"></i>
+                        <span>About</span>
+                    </a>
+                    
+                </nav>
+                <a class="mobile-header-menu-button">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </div>
+        <div id="header-row">
+            <div id="logo">
+                <a href="/">
+                    <img src="/images/logo.png" alt="logo">
+                </a>
+            </div>
+            <div class="header-info">
+                <div id="header-title">
+                    
+                    <h2>
+                        Li yanfei&#39;s Blog
+                    </h2>
+                    
+                </div>
+                <div id="header-description">
+                    
+                    <h3>
+                        好好学习，天天向上
+                    </h3>
+                    
+                </div>
+            </div>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a title="Github" target="_blank" href="https://github.com/liyanfei123">
+                            <i class="fa fa-github fa-2x"></i></a>
+                    
+                        <a title="Weibo" target="_blank" ">
+                            <i class="fa fa-weibo fa-2x"></i></a>
+                    
+                        <a title="Twitter" target="_blank" ">
+                            <i class="fa fa-twitter fa-2x"></i></a>
+                    
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+      <div class="outer">
+        <section id="main" class="body-wrap"><article id="post-Python反爬虫-自定义字体1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="post-title" itemprop="name">
+      Python反爬虫 自定义字体1
+    </h1>
+    <div class="post-title-bar">
+      <ul>
+          
+              <li>
+                  <i class="fa fa-book"></i>
+                  
+                      <a href="/categories/Python/">Python</a>
+                  
+              </li>
+          
+        <li>
+          <i class="fa fa-calendar"></i>  2019-04-30
+        </li>
+        <li>
+          <i class="fa fa-eye"></i>
+          <span id="busuanzi_value_page_pv"></span>
+        </li>
+      </ul>
+    </div>
+  
+
+          
+      </header>
+    
+    <div class="article-entry post-content" itemprop="articleBody">
+      
+            
+            <p>在进行数据抓取时，有些网页会使用一些特殊的字符来将我们所需要的数据进行替换显示。我们以实习僧网站为例，<br><img src="https://img-blog.csdnimg.cn/20190427111438462.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70" alt="!\[在这里插入图片描述\](https://img-blog.csdnimg.cn/20190427110913479.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70">在网页中我们可以看到我们所要的数据，但是当我们查看源码时，他却显示的是，显然，该网页把我们所需要的数据给隐藏起来了。我们不妨继续查看源码，会发现有如下的代码<br><img src="https://img-blog.csdnimg.cn/20190427111547161.png" alt="在这里插入图片描述"><br>从上图中我们可以知道，网页中是把我们所需要的数据给用别的类似代码的东西给替换掉了，我们只要能够将它反向给替换回来就能够得到我们的数据了。</p>
+<p>根据在上图中的显示，我们可以知道’&amp;#xe139’对应的是’师’，但是我们不可能把每个对应的字符都人工找出来，这样的话就和我们爬取数据的初衷违背了，那有没有什么方法可以把网页中的所有编码以及对应的真实字符给全部找到呢？答案当然是有。</p>
+<p>我们在源码中搜索<code>font</code>字符，会找到如下的内容<br><img src="https://img-blog.csdnimg.cn/20190427112226342.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>这上面的那一场串的看不懂的东西便是本网页中所使用的字体文件。由于这里使用<code>base64</code>来进行加密了，所以我们将这串字符复制下来并通过<code>base64.b64decode</code>解密保存到本地，注意须将其保存为<code>woff或ttf</code>文件。由于所得到的文件无法直接打开，我们可以将其转化为<code>xml</code>文件来查看。<br><img src="https://img-blog.csdnimg.cn/20190427112617148.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>仔细观察该文件，我们可以知道上面的<code>code</code>编码对应的值便是在网页中所替换的值，而<code>name</code>所对应的值便是我们所要的真实值。由于实习僧网页是直接使用的字符编码，直接将真实字符使用uni编码，所以我们只要将<code>name</code>的值转化为真实的值即可（这里我们可以使用python中的<code>chr`</code>方法）。</p>
+<p>我们举几个例子<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&apos;0xe064&apos;:&apos;uni5E74&apos;,         &apos;0xe064&apos;:&apos;年&apos;，</span><br><span class="line">&apos;0xe0df&apos;:&apos;uni56&apos;,           &apos;0xe0df&apos;:&apos;V&apos;,</span><br><span class="line">&apos;0xe112&apos;:&apos;uni4d&apos;,           &apos;0xe112&apos;:&apos;M&apos;,</span><br><span class="line">根据上述两个映射关系，我们便可以得到当前网页中所使用的编码与真实字符的映射关系</span><br><span class="line">&apos;0xe064&apos;:&apos;年&apos;，</span><br><span class="line">&apos;0xe0df&apos;:&apos;V&apos;,</span><br><span class="line">&apos;0xe112&apos;:&apos;M&apos;,</span><br><span class="line">之后再根据上述映射，将网页源码中的内容进行替换即可</span><br></pre></td></tr></table></figure></p>
+<p>多尝试几次字体文件的抓取，并通过xml文件观察，我们会发现实习僧网站中所使用的编码<code>code</code>和<code>name</code>的值在一段时间内不会发生变化，因此，在一段时间内，我们只要把所有编码的映射找出来就行了。当然也可以自己手写一个映射表，这里我们可以借助<code>High-Logic FontCreator</code>软件，他可以直接把网页中的字体文件显示为真实的字符，如下<br><img src="https://img-blog.csdnimg.cn/20190427114949808.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>把鼠标放在字符上便可以看到其对应的编码（如果没有显示的话，按下Alt键）。</p>
+<p>一般来说对于这种固定的自定义字体的网页来说，自己把所有的编码字体映射写出来过于麻烦，当然有些网页使用的字体会一直变化，这就需要我们都写出来了，这个我们以后再讲。因此在确定编码字体映射时一般会借助<code>fontTools</code>库来实现。其首先通过<code>getBestCmap()</code>方法来获取所有的<code>code:name</code>键值对，然后再根据我们所确定的<code>name:真实值</code>映射表，来确定当前网页中所使用的编码字体映射。</p>
+<p>完整代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> base64   </span><br><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"><span class="keyword">from</span> fontTools.ttLib <span class="keyword">import</span> TTFont</span><br><span class="line"><span class="keyword">from</span> pyquery <span class="keyword">import</span> PyQuery <span class="keyword">as</span> pq</span><br><span class="line"></span><br><span class="line">HEADERS = &#123;</span><br><span class="line">		<span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.109 Safari/537.36'</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">abnormal</span><span class="params">(f)</span>:</span>  <span class="comment"># 异常装饰器</span></span><br><span class="line"><span class="meta">	@functools.wraps(f)</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">		<span class="keyword">try</span>:</span><br><span class="line">			<span class="keyword">return</span> f(*args, **kwargs)</span><br><span class="line">		<span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">			print(<span class="string">'==== insert exception --&gt;&gt;&gt; %s'</span>% e)</span><br><span class="line">	<span class="keyword">return</span> func</span><br><span class="line"></span><br><span class="line"><span class="meta">@abnormal</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">download_html</span><span class="params">(url)</span>:</span></span><br><span class="line">	<span class="string">"""</span></span><br><span class="line"><span class="string">	用于下载网页源码</span></span><br><span class="line"><span class="string">	:param url: 网页链接</span></span><br><span class="line"><span class="string">	:return: 网页源码</span></span><br><span class="line"><span class="string">	"""</span></span><br><span class="line">	response = requests.get(url = url, headers = HEADERS)</span><br><span class="line">	<span class="keyword">if</span> response.status_code == <span class="number">200</span>:</span><br><span class="line">		<span class="keyword">return</span> response.text</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		<span class="keyword">raise</span> Exception(<span class="string">'url download failed, please retry'</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@abnormal</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">font_map</span><span class="params">(content)</span>:</span></span><br><span class="line">	<span class="string">"""</span></span><br><span class="line"><span class="string">	用于获取当前页面自定义字体所使用的映射表，供后面替换使用</span></span><br><span class="line"><span class="string">	:param content: 所获得的网页源码</span></span><br><span class="line"><span class="string">	:return: 当前网页中所使用的字符代码和真实字符映射</span></span><br><span class="line"><span class="string">	"""</span></span><br><span class="line">	font_face = re.findall(<span class="string">r'font-face.*?base64,(.*?==?=?)'</span>, content, re.M)   <span class="comment"># 获取当前页面所使用由base64加密的字符串 </span></span><br><span class="line">	font_decode = base64.b64decode(font_face[<span class="number">0</span>])   <span class="comment"># 使用base64解密</span></span><br><span class="line">	<span class="keyword">with</span> open(<span class="string">'shixiseng.woff'</span>, <span class="string">'wb'</span>) <span class="keyword">as</span> f:    <span class="comment"># 将解密得到的内容保存到本地</span></span><br><span class="line">		f.write(font_decode)</span><br><span class="line">	font = TTFont(<span class="string">'shixiseng.woff'</span>)</span><br><span class="line">	<span class="comment"># font.saveXML('shixiseng.xml')  # 由于ttf文件需要一些专门的软件才能够打开，为能够直接的对其内容进行观察，我们可以将其转化为xml文件后可以直接查看</span></span><br><span class="line">	font_map = &#123;&#125;         <span class="comment"># 用于存储当前页面所使用的自定义字体的映射表</span></span><br><span class="line">	<span class="keyword">for</span> key, value <span class="keyword">in</span> font.getBestCmap().items():   <span class="comment"># 使用getBestCmap方法来获取字体文件中包含的映射关系</span></span><br><span class="line">	<span class="comment"># 这里需要注意的是，由于getBestCmap()会将内容转化为10机制，因此在后面存入字典的时候还要转化为16进制，使用hex(), 或者使用'\u&#123;:x&#125;'.format(x)</span></span><br><span class="line">		<span class="keyword">if</span> value.startswith(<span class="string">'uni'</span>):                 <span class="comment"># 判断是否是uni编码</span></span><br><span class="line">			font_map[hex(key)] =  chr(int(value[<span class="number">3</span>:], <span class="number">16</span>))    <span class="comment"># 由于实习僧网页中直接使用的是字符编码，所以可以直接用chr方法显示出真实字符</span></span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			font_map[hex(key)] = value</span><br><span class="line">	font_map.pop(<span class="string">'0x78'</span>)  <span class="comment"># 由于第一行的map没有用，将其去除</span></span><br><span class="line">	new_font_map = &#123;&#125;</span><br><span class="line">	<span class="keyword">for</span> key, value <span class="keyword">in</span> font_map.items():        <span class="comment"># 根据网页源码显示内容将映射表中的内容进行相应的替换</span></span><br><span class="line">		key = key.replace(<span class="string">'0x'</span>, <span class="string">'&amp;#x'</span>)</span><br><span class="line">		new_fonew_font_mapnt_map[key] = value</span><br><span class="line">	<span class="comment"># print(new_font_map)</span></span><br><span class="line">	<span class="keyword">return</span> new_font_map</span><br><span class="line"></span><br><span class="line"><span class="meta">@abnormal</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">font_replace</span><span class="params">(content, new_font_map)</span>:</span></span><br><span class="line">	<span class="string">"""</span></span><br><span class="line"><span class="string">	将网页中的自定义字体使用我们得到的字体映射进行替换</span></span><br><span class="line"><span class="string">	判断寻找映射中的键是否在未处理的网页源码中，若存在，则用相应的值进行替换</span></span><br><span class="line"><span class="string">	:param content: 有编码字体的网页源码</span></span><br><span class="line"><span class="string">	:param new_font_map: 网页中所使用的自定义字体映射</span></span><br><span class="line"><span class="string">	:return: 根据自定义字体映射进行替换后得到的网页源码</span></span><br><span class="line"><span class="string">	"""</span></span><br><span class="line">	<span class="keyword">for</span> key, value <span class="keyword">in</span> new_font_map.items():</span><br><span class="line">		<span class="keyword">if</span> key <span class="keyword">in</span> content:</span><br><span class="line">			content = re.sub(key, value, content)</span><br><span class="line">	<span class="keyword">return</span> content</span><br><span class="line"></span><br><span class="line"><span class="meta">@abnormal</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse_html</span><span class="params">(content)</span>:</span></span><br><span class="line">	<span class="string">"""</span></span><br><span class="line"><span class="string">	提取我们所需要的数据信息</span></span><br><span class="line"><span class="string">	:param content_replace: 替换之后的网页源码</span></span><br><span class="line"><span class="string">	"""</span></span><br><span class="line">	doc = pq(content)</span><br><span class="line">	<span class="keyword">for</span> result <span class="keyword">in</span> doc(<span class="string">'div.info1.clearfix'</span>).items():</span><br><span class="line">		position_name = result(<span class="string">'a.position-name'</span>).text()</span><br><span class="line">		position_salary = result(<span class="string">'span.position-salary'</span>).text()</span><br><span class="line">		print(position_name, position_salary)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(url)</span>:</span></span><br><span class="line">	<span class="string">"""</span></span><br><span class="line"><span class="string">	爬虫入口</span></span><br><span class="line"><span class="string">	:param url: 当前抓取页面的链接</span></span><br><span class="line"><span class="string">	"""</span></span><br><span class="line">	html = download_html(url)</span><br><span class="line">	new_font_map = font_map(html)</span><br><span class="line">	content_replace = font_replace(html, new_font_map)</span><br><span class="line">	parse_html(content_replace)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">	url = <span class="string">'https://www.shixiseng.com/interns/c-None_st-None_?k=python'</span></span><br><span class="line">	main(url)</span><br></pre></td></tr></table></figure></p>
+<p>得到的结果为<br><img src="https://img-blog.csdnimg.cn/20190427124754234.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>发现与网页中显示的结果一致，这样我们便解决了一个简单的自定义字体的反爬虫。</p>
+<p>好好学习，天天向上。</p>
+
+            <div class="post-copyright">
+    <div class="content">
+        <p>最后更新： 2019年04月30日 16:16</p>
+        <p>原始链接： <a class="post-url" href="/2019/04/30/Python反爬虫-自定义字体1/" title="Python反爬虫 自定义字体1">http://liyanfei123.github.io/2019/04/30/Python反爬虫-自定义字体1/</a></p>
+        <footer>
+            <a href="http://liyanfei123.github.io">
+                <img src="/images/logo.png" alt="Li yanfei">
+                Li yanfei
+            </a>
+        </footer>
+    </div>
+</div>
+
+      
+        
+            
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;">赏</a>
+</div>
+
+<div id="reward" class="post-modal reward-lay">
+    <a class="close" href="javascript:;" id="reward-close">×</a>
+    <span class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我吃糖~
+        <i class="icon icon-quote-right"></i>
+    </span>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/images/wechat_code.jpg" alt="打赏二维码">
+        </div>
+        <div class="reward-select">
+            
+            <label class="reward-select-item checked" data-id="wechat" data-wechat="/images/wechat_code.jpg">
+                <img class="reward-select-item-wechat" src="/images/wechat.png" alt="微信">
+            </label>
+            
+            
+            <label class="reward-select-item" data-id="alipay" data-alipay="/images/alipay_code.jpg">
+                <img class="reward-select-item-alipay" src="/images/alipay.png" alt="支付宝">
+            </label>
+            
+        </div>
+    </div>
+</div>
+
+
+        
+    </div>
+    <footer class="article-footer">
+        
+        
+<div class="post-share">
+    <a href="javascript:;" id="share-sub" class="post-share-fab">
+        <i class="fa fa-share-alt"></i>
+    </a>
+    <div class="post-share-list" id="share-list">
+        <ul class="share-icons">
+          <li>
+            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://liyanfei123.github.io/2019/04/30/Python反爬虫-自定义字体1/&title=《Python反爬虫 自定义字体1》 — Good Coding&pic=images/blogs/Python反爬虫自定义字体1.png" data-title="微博">
+              <i class="fa fa-weibo"></i>
+            </a>
+          </li>
+          <li>
+            <a class="weixin share-sns" id="wxFab" href="javascript:;" data-title="微信">
+              <i class="fa fa-weixin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://liyanfei123.github.io/2019/04/30/Python反爬虫-自定义字体1/&title=《Python反爬虫 自定义字体1》 — Good Coding&source=" data-title="QQ">
+              <i class="fa fa-qq"></i>
+            </a>
+          </li>
+          <li>
+            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://liyanfei123.github.io/2019/04/30/Python反爬虫-自定义字体1/" data-title="Facebook">
+              <i class="fa fa-facebook"></i>
+            </a>
+          </li>
+          <li>
+            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Python反爬虫 自定义字体1》 — Good Coding&url=http://liyanfei123.github.io/2019/04/30/Python反爬虫-自定义字体1/&via=http://liyanfei123.github.io" data-title="Twitter">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+          <li>
+            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://liyanfei123.github.io/2019/04/30/Python反爬虫-自定义字体1/" data-title="Google+">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        </ul>
+     </div>
+</div>
+<div class="post-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;" id="wxShare-close">×</a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=http://liyanfei123.github.io/2019/04/30/Python反爬虫-自定义字体1/" alt="微信分享二维码">
+</div>
+
+<div class="mask"></div>
+
+        
+        <ul class="article-footer-menu">
+            
+            
+  <li class="article-footer-tags">
+    <i class="fa fa-tags"></i>
+      
+    <a href="/tags/反爬虫/" class="color4">反爬虫</a>
+      
+  </li>
+
+        </ul>
+        
+    </footer>
+  </div>
+</article>
+
+
+
+<nav id="article-nav">
+  
+  
+    <a href="/2019/04/30/Matlab-黎卡提方程/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-title">Matlab 黎卡提方程</span>
+      <i class="fa fa-hand-o-right" aria-hidden="true"></i>
+    </a>
+  
+</nav>
+
+
+
+    
+</section>
+        
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+      <p>
+        Powered by  <a href="http://hexo.io/" target="_blank">Hexo</a>
+        Theme <a href="//github.com/wongminho/hexo-theme-miho" target="_blank">MiHo</a>
+      &copy; 2019 Li yanfei<br>
+      </p>
+    </div>
+  </div>
+</footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  var mihoConfig = {
+      root: "http://liyanfei123.github.io",
+      animate: true,
+      isHome: false,
+      share: true,
+      reward: 1
+  }
+</script>
+<div class="sidebar">
+    <div id="sidebar-search" title="Search">
+        <i class="fa fa-search"></i>
+    </div>
+    <div id="sidebar-category" title="Categories">
+        <i class="fa fa-book"></i>
+    </div>
+    <div id="sidebar-tag" title="Tags">
+        <i class="fa fa-tags"></i>
+    </div>
+    <div id="sidebar-top">
+        <span class="sidebar-top-icon"><i class="fa fa-angle-up"></i></span>
+    </div>
+</div>
+<div class="sidebar-menu-box" id="sidebar-menu-box">
+    <div class="sidebar-menu-box-container">
+        <div id="sidebar-menu-box-categories">
+            <a class="category-link" href="/categories/Matlab/">Matlab</a><a class="category-link" href="/categories/Python/">Python</a>
+        </div>
+        <div id="sidebar-menu-box-tags">
+            <a href="/tags/Scrapy/" style="font-size: 10px;">Scrapy</a> <a href="/tags/Session/" style="font-size: 10px;">Session</a> <a href="/tags/反爬虫/" style="font-size: 20px;">反爬虫</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/数据分析/" style="font-size: 10px;">数据分析</a> <a href="/tags/模拟登陆/" style="font-size: 20px;">模拟登陆</a> <a href="/tags/生成器/" style="font-size: 10px;">生成器</a> <a href="/tags/稳定性分析/" style="font-size: 10px;">稳定性分析</a> <a href="/tags/线程/" style="font-size: 20px;">线程</a> <a href="/tags/装饰器/" style="font-size: 10px;">装饰器</a> <a href="/tags/进程/" style="font-size: 10px;">进程</a> <a href="/tags/迭代器/" style="font-size: 10px;">迭代器</a>
+        </div>
+    </div>
+    <a href="javascript:;" class="sidebar-menu-box-close">&times;</a>
+</div>
+<div class="mobile-header-menu-nav" id="mobile-header-menu-nav">
+    <div class="mobile-header-menu-container">
+        <span class="title">Menus</span>
+        <ul class="mobile-header-menu-navbar">
+            
+            <li>
+                <a href="/">
+                    <i class="fa fa-home"></i><span>Home</span>
+                </a>
+            </li>
+            
+            <li>
+                <a href="/archives">
+                    <i class="fa fa-archive"></i><span>Archives</span>
+                </a>
+            </li>
+            
+            <li>
+                <a href="/about">
+                    <i class="fa fa-user"></i><span>About</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    <div class="mobile-header-tag-container">
+        <span class="title">Tags</span>
+        <div id="mobile-header-container-tags">
+            <a href="/tags/Scrapy/" style="font-size: 10px;">Scrapy</a> <a href="/tags/Session/" style="font-size: 10px;">Session</a> <a href="/tags/反爬虫/" style="font-size: 20px;">反爬虫</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/数据分析/" style="font-size: 10px;">数据分析</a> <a href="/tags/模拟登陆/" style="font-size: 20px;">模拟登陆</a> <a href="/tags/生成器/" style="font-size: 10px;">生成器</a> <a href="/tags/稳定性分析/" style="font-size: 10px;">稳定性分析</a> <a href="/tags/线程/" style="font-size: 20px;">线程</a> <a href="/tags/装饰器/" style="font-size: 10px;">装饰器</a> <a href="/tags/进程/" style="font-size: 10px;">进程</a> <a href="/tags/迭代器/" style="font-size: 10px;">迭代器</a>
+        </div>
+    </div>
+</div>
+<div class="search-wrap">
+    <span class="search-close">&times;</span>
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+            <i class="icon icon-lg icon-chevron-left"></i>
+        </a>
+        <input class="search-field" placeholder="Search..." id="keywords">
+        <a id="search-submit" href="javascript:;">
+            <i class="fa fa-search"></i>
+        </a>
+    <div class="search-container" id="search-container">
+        <ul class="search-result" id="search-result">
+        </ul>
+    </div>
+</div>
+
+<div id="search-tpl">
+    <li class="search-result-item">
+        <a href="{url}" class="search-item-li">
+            <span class="search-item-li-title" title="{title}">{title}</span>
+        </a>
+    </li>
+</div>
+<script src="/js/search.js"></script>
+<script src="/js/main.js"></script>
+
+
+  <script src="//cdn.bootcss.com/particles.js/2.0.0/particles.min.js"></script>
+  <div id="particles"></div>
+  <script src="/js/particles.js"></script>
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  <script src="//cdn.bootcss.com/scrollReveal.js/3.0.5/scrollreveal.js"></script>
+  <script src="/js/animate.js"></script>
+
+
+  <script src="/js/pop-img.js"></script>
+  <script>
+     $(".article-entry p img").popImg();
+  </script>
+
+  </div>
+</body>
+</html>

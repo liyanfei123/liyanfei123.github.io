@@ -3,22 +3,23 @@
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
-  <title>Good Coding</title>
+  <title>Matlab 黎卡提方程 | Good Coding</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
     <meta name="keywords" content="Go Ahead">
   
-  <meta name="description" content="关于我正在南邮读书的一名研究生，从事多智能体一致性方面的研究，但由于对其不感兴趣，个人转战程序员一类。 主要开发语言Python，熟悉使用Scrapy爬虫框架，可独立爬取一些较大型网站。 关于学习正在往终身学习者前进…学习方向：人工智能 关于座右铭 The Harder You Work, The Luckier You Will Be. (越努力，越幸运)  关于爱好热爱运动，尤其喜爱篮球、阅读">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Good Coding">
-<meta property="og:url" content="http://liyanfei123.github.io/about/index.html">
+  <meta name="description" content="在稳定性分析中，我们会经常使用李雅普诺夫稳定性分析方法进行分析。并且在稳定性分析当中经常会出现两个方程，如下：（1）$A^{T}P+PA=-Q$（2）$A^{T}P+PA-PBR^{-1}B^{T}P+Q=0$其中第二个方程又称为黎卡提(Riccati)方程，在一般的线性系统当中经常会使用它来证明系统的渐近稳定。 由于经常会用到上述两个方程的求解，并且每次都会忘记怎么求，故以此博客来记录一下，免得">
+<meta name="keywords" content="稳定性分析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Matlab 黎卡提方程">
+<meta property="og:url" content="http://liyanfei123.github.io/2019/04/30/Matlab-黎卡提方程/index.html">
 <meta property="og:site_name" content="Good Coding">
-<meta property="og:description" content="关于我正在南邮读书的一名研究生，从事多智能体一致性方面的研究，但由于对其不感兴趣，个人转战程序员一类。 主要开发语言Python，熟悉使用Scrapy爬虫框架，可独立爬取一些较大型网站。 关于学习正在往终身学习者前进…学习方向：人工智能 关于座右铭 The Harder You Work, The Luckier You Will Be. (越努力，越幸运)  关于爱好热爱运动，尤其喜爱篮球、阅读">
+<meta property="og:description" content="在稳定性分析中，我们会经常使用李雅普诺夫稳定性分析方法进行分析。并且在稳定性分析当中经常会出现两个方程，如下：（1）$A^{T}P+PA=-Q$（2）$A^{T}P+PA-PBR^{-1}B^{T}P+Q=0$其中第二个方程又称为黎卡提(Riccati)方程，在一般的线性系统当中经常会使用它来证明系统的渐近稳定。 由于经常会用到上述两个方程的求解，并且每次都会忘记怎么求，故以此博客来记录一下，免得">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-04-29T13:08:53.026Z">
+<meta property="og:updated_time" content="2019-04-30T07:53:17.215Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Good Coding">
-<meta name="twitter:description" content="关于我正在南邮读书的一名研究生，从事多智能体一致性方面的研究，但由于对其不感兴趣，个人转战程序员一类。 主要开发语言Python，熟悉使用Scrapy爬虫框架，可独立爬取一些较大型网站。 关于学习正在往终身学习者前进…学习方向：人工智能 关于座右铭 The Harder You Work, The Luckier You Will Be. (越努力，越幸运)  关于爱好热爱运动，尤其喜爱篮球、阅读">
+<meta name="twitter:title" content="Matlab 黎卡提方程">
+<meta name="twitter:description" content="在稳定性分析中，我们会经常使用李雅普诺夫稳定性分析方法进行分析。并且在稳定性分析当中经常会出现两个方程，如下：（1）$A^{T}P+PA=-Q$（2）$A^{T}P+PA-PBR^{-1}B^{T}P+Q=0$其中第二个方程又称为黎卡提(Riccati)方程，在一般的线性系统当中经常会使用它来证明系统的渐近稳定。 由于经常会用到上述两个方程的求解，并且每次都会忘记怎么求，故以此博客来记录一下，免得">
   
   
     <link rel="icon" href="images/touxiang.jpg">
@@ -106,31 +107,52 @@
     </div>
 </header>
       <div class="outer">
-        <section id="main" class="body-wrap"><article id="page-" class="article article-type-page" itemscope itemprop="blogPost">
+        <section id="main" class="body-wrap"><article id="post-Matlab-黎卡提方程" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
-    <div class="article-entry " itemprop="articleBody">
+      <header class="article-header">
+        
+  
+    <h1 class="post-title" itemprop="name">
+      Matlab 黎卡提方程
+    </h1>
+    <div class="post-title-bar">
+      <ul>
+          
+              <li>
+                  <i class="fa fa-book"></i>
+                  
+                      <a href="/categories/Matlab/">Matlab</a>
+                  
+              </li>
+          
+        <li>
+          <i class="fa fa-calendar"></i>  2019-04-30
+        </li>
+        <li>
+          <i class="fa fa-eye"></i>
+          <span id="busuanzi_value_page_pv"></span>
+        </li>
+      </ul>
+    </div>
+  
+
+          
+      </header>
+    
+    <div class="article-entry post-content" itemprop="articleBody">
       
             
-            <h3 id="关于我"><a href="#关于我" class="headerlink" title="关于我"></a>关于我</h3><p>正在南邮读书的一名研究生，从事多智能体一致性方面的研究，但由于对其不感兴趣，个人转战程序员一类。</p>
-<p>主要开发语言<code>Python</code>，熟悉使用<code>Scrapy</code>爬虫框架，可独立爬取一些较大型网站。</p>
-<h3 id="关于学习"><a href="#关于学习" class="headerlink" title="关于学习"></a>关于学习</h3><p>正在往终身学习者前进…<br>学习方向：人工智能</p>
-<h3 id="关于座右铭"><a href="#关于座右铭" class="headerlink" title="关于座右铭"></a>关于座右铭</h3><blockquote>
-<p>The Harder You Work, The Luckier You Will Be. (越努力，越幸运)</p>
-</blockquote>
-<h3 id="关于爱好"><a href="#关于爱好" class="headerlink" title="关于爱好"></a>关于爱好</h3><p>热爱<code>运动</code>，尤其喜爱<code>篮球</code>、<code>阅读</code>、<code>电影（Top250）</code>。</p>
-<h3 id="联系我"><a href="#联系我" class="headerlink" title="联系我"></a>联系我</h3><ul>
-<li>Blog: <a href="https://liyanfei123.github.io/">liyanfei123.github.io</a></li>
-<li>Email: <a href="mailto:710662952@qq.com" target="_blank" rel="noopener">710662952@qq.com</a></li>
-<li>GitHub: ———-</li>
-<li>WeiBo: ———-</li>
-<li>Twitter: ———-</li>
-</ul>
+            <p>在稳定性分析中，我们会经常使用李雅普诺夫稳定性分析方法进行分析。并且在稳定性分析当中经常会出现两个方程，如下：<br>（1）$A^{T}P+PA=-Q$<br>（2）$A^{T}P+PA-PBR^{-1}B^{T}P+Q=0$<br>其中第二个方程又称为黎卡提(Riccati)方程，在一般的线性系统当中经常会使用它来证明系统的渐近稳定。</p>
+<p>由于经常会用到上述两个方程的求解，并且每次都会忘记怎么求，故以此博客来记录一下，免得以后遇到的时候再去查资料。</p>
+<p>取如下几个矩阵：<br>$A=\begin{bmatrix}0 &amp; 1\ -1 &amp; 0\ \end{bmatrix}$, $B=\begin{bmatrix}0 \ 1\end{bmatrix}$, $Q=\begin{bmatrix}0 &amp; 1\ 1 &amp; 0\ \end{bmatrix}$, $R=0.5$</p>
+<p>求解$A^{T}P+PA=-Q$中的P，命令格式为<code>P = lyap(A&#39;, Q)</code><br>代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">A = [<span class="number">0</span> <span class="number">1</span>; <span class="number">-1</span> <span class="number">0</span>];</span><br><span class="line">Q = [<span class="number">0</span> <span class="number">1</span>; <span class="number">1</span> <span class="number">0</span>];</span><br><span class="line">R = <span class="number">0.5</span>;</span><br><span class="line">P = lyap(A<span class="string">',Q)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># 输出结果</span></span><br><span class="line"><span class="string">P =</span></span><br><span class="line"><span class="string">     0     0</span></span><br><span class="line"><span class="string">     0     1</span></span><br></pre></td></tr></table></figure></p>
+<p>求解$A^{T}P+PA-PBR^{-1}B^{T}P+Q=0$中的P，命令格式为<code>[P,l,g] = care(A, B, Q, R)</code><br>代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">A = [<span class="number">0</span> <span class="number">1</span>; <span class="number">-1</span> <span class="number">0</span>];</span><br><span class="line">B = [<span class="number">0</span>; <span class="number">1</span>];</span><br><span class="line">Q = [<span class="number">0</span> <span class="number">1</span>; <span class="number">1</span> <span class="number">0</span>];</span><br><span class="line">R = <span class="number">0.5</span>;</span><br><span class="line">[P,l,g] = care(A, B, Q, R)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出结果</span></span><br><span class="line">P =</span><br><span class="line">   <span class="number">-1.0000</span>    <span class="number">0.0000</span></span><br><span class="line">    <span class="number">0.0000</span>    <span class="number">0.0000</span></span><br><span class="line">    </span><br><span class="line">l =</span><br><span class="line">  <span class="number">-0.0000</span> + <span class="number">1.0000</span>i</span><br><span class="line">  <span class="number">-0.0000</span> - <span class="number">1.0000</span>i</span><br><span class="line"></span><br><span class="line">g =</span><br><span class="line">   <span class="number">1.0e-07</span> *</span><br><span class="line">    <span class="number">0.0000</span>    <span class="number">0.2584</span></span><br></pre></td></tr></table></figure></p>
 
             <div class="post-copyright">
     <div class="content">
-        <p>最后更新： 2019年04月29日 21:08</p>
-        <p>原始链接： <a class="post-url" href="/about/index.html" title>http://liyanfei123.github.io/about/index.html</a></p>
+        <p>最后更新： 2019年04月30日 15:53</p>
+        <p>原始链接： <a class="post-url" href="/2019/04/30/Matlab-黎卡提方程/" title="Matlab 黎卡提方程">http://liyanfei123.github.io/2019/04/30/Matlab-黎卡提方程/</a></p>
         <footer>
             <a href="http://liyanfei123.github.io">
                 <img src="/images/logo.png" alt="Li yanfei">
@@ -187,7 +209,7 @@
     <div class="post-share-list" id="share-list">
         <ul class="share-icons">
           <li>
-            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://liyanfei123.github.io/about/&title=Good Coding&pic=http://liyanfei123.github.ioimages/logo.png" data-title="微博">
+            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://liyanfei123.github.io/2019/04/30/Matlab-黎卡提方程/&title=《Matlab 黎卡提方程》 — Good Coding&pic=images/blogs/Matlab黎卡提方程.png" data-title="微博">
               <i class="fa fa-weibo"></i>
             </a>
           </li>
@@ -197,22 +219,22 @@
             </a>
           </li>
           <li>
-            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://liyanfei123.github.io/about/&title=Good Coding&source=" data-title="QQ">
+            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://liyanfei123.github.io/2019/04/30/Matlab-黎卡提方程/&title=《Matlab 黎卡提方程》 — Good Coding&source=" data-title="QQ">
               <i class="fa fa-qq"></i>
             </a>
           </li>
           <li>
-            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://liyanfei123.github.io/about/" data-title="Facebook">
+            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://liyanfei123.github.io/2019/04/30/Matlab-黎卡提方程/" data-title="Facebook">
               <i class="fa fa-facebook"></i>
             </a>
           </li>
           <li>
-            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=Good Coding&url=http://liyanfei123.github.io/about/&via=http://liyanfei123.github.io" data-title="Twitter">
+            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Matlab 黎卡提方程》 — Good Coding&url=http://liyanfei123.github.io/2019/04/30/Matlab-黎卡提方程/&via=http://liyanfei123.github.io" data-title="Twitter">
               <i class="fa fa-twitter"></i>
             </a>
           </li>
           <li>
-            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://liyanfei123.github.io/about/" data-title="Google+">
+            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://liyanfei123.github.io/2019/04/30/Matlab-黎卡提方程/" data-title="Google+">
               <i class="fa fa-google-plus"></i>
             </a>
           </li>
@@ -222,7 +244,7 @@
 <div class="post-modal wx-share" id="wxShare">
     <a class="close" href="javascript:;" id="wxShare-close">×</a>
     <p>扫一扫，分享到微信</p>
-    <img src="//api.qrserver.com/v1/create-qr-code/?data=http://liyanfei123.github.io/about/" alt="微信分享二维码">
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=http://liyanfei123.github.io/2019/04/30/Matlab-黎卡提方程/" alt="微信分享二维码">
 </div>
 
 <div class="mask"></div>
@@ -231,6 +253,13 @@
         <ul class="article-footer-menu">
             
             
+  <li class="article-footer-tags">
+    <i class="fa fa-tags"></i>
+      
+    <a href="/tags/稳定性分析/" class="color1">稳定性分析</a>
+      
+  </li>
+
         </ul>
         
     </footer>
@@ -238,12 +267,26 @@
 </article>
 
 
-    <aside class="post-toc-pos post-toc-top" id="post-toc">
-        <nav class="post-toc-wrap">
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#关于我"><span class="post-toc-text">关于我</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#关于学习"><span class="post-toc-text">关于学习</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#关于座右铭"><span class="post-toc-text">关于座右铭</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#关于爱好"><span class="post-toc-text">关于爱好</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#联系我"><span class="post-toc-text">联系我</span></a></li></ol>
-        </nav>
-    </aside>
-    
+
+<nav id="article-nav">
+  
+    <a href="/2019/04/30/Python反爬虫-自定义字体1/" id="article-nav-newer" class="article-nav-link-wrap">
+
+      <span class="article-nav-title">
+        <i class="fa fa-hand-o-left" aria-hidden="true"></i>
+        
+          Python反爬虫 自定义字体1
+        
+      </span>
+    </a>
+  
+  
+    <a href="/2019/04/30/CSS反爬虫-大众点评/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-title">CSS反爬虫 大众点评</span>
+      <i class="fa fa-hand-o-right" aria-hidden="true"></i>
+    </a>
+  
+</nav>
 
 
 
