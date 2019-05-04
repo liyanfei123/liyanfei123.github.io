@@ -8,13 +8,13 @@
   
     <meta name="keywords" content="Go Ahead">
   
-  <meta name="description" content="上一篇讲的是网页中使用固定的字体映射表，也就是网页中显示的数据编码和真实数据的映射在一段时间内不会发生变化。但是，有的网页中对应的映射会随时发生变化，我们以东方财富网为例，下图是我们一开始所抓取得到的部分信息我们在不同的时间内分别下次其网页中使用的字体文件，并将其转化为xml文件来进行查看。    字体1 字体2          会发现每个字体文件中的code都会发生变化，并且name也是一些看">
+  <meta name="description" content="上一篇讲的是网页中使用固定的字体映射表，也就是网页中显示的数据编码和真实数据的映射在一段时间内不会发生变化。但是，有的网页中对应的映射会随时发生变化，我们以东方财富网为例，下图是我们一开始所抓取得到的部分信息我们在不同的时间内分别下次其网页中使用的字体文件，并将其转化为xml文件来进行查看。 字体 1： 字体 2： 会发现每个字体文件中的code都会发生变化，并且name也是一些看不懂的字符串，不">
 <meta name="keywords" content="反爬虫">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python反爬虫 自定义字体 二">
 <meta property="og:url" content="http://liyanfei123.github.io/2019/04/30/Python反爬虫-自定义字体-二/index.html">
 <meta property="og:site_name" content="Good Coding">
-<meta property="og:description" content="上一篇讲的是网页中使用固定的字体映射表，也就是网页中显示的数据编码和真实数据的映射在一段时间内不会发生变化。但是，有的网页中对应的映射会随时发生变化，我们以东方财富网为例，下图是我们一开始所抓取得到的部分信息我们在不同的时间内分别下次其网页中使用的字体文件，并将其转化为xml文件来进行查看。    字体1 字体2          会发现每个字体文件中的code都会发生变化，并且name也是一些看">
+<meta property="og:description" content="上一篇讲的是网页中使用固定的字体映射表，也就是网页中显示的数据编码和真实数据的映射在一段时间内不会发生变化。但是，有的网页中对应的映射会随时发生变化，我们以东方财富网为例，下图是我们一开始所抓取得到的部分信息我们在不同的时间内分别下次其网页中使用的字体文件，并将其转化为xml文件来进行查看。 字体 1： 字体 2： 会发现每个字体文件中的code都会发生变化，并且name也是一些看不懂的字符串，不">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20190428204126593.png">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/2019042819520786.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70">
@@ -23,10 +23,10 @@
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20190428201055245.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20190428201701670.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20190428210604994.png">
-<meta property="og:updated_time" content="2019-04-30T10:07:43.407Z">
+<meta property="og:updated_time" content="2019-05-04T08:09:24.187Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python反爬虫 自定义字体 二">
-<meta name="twitter:description" content="上一篇讲的是网页中使用固定的字体映射表，也就是网页中显示的数据编码和真实数据的映射在一段时间内不会发生变化。但是，有的网页中对应的映射会随时发生变化，我们以东方财富网为例，下图是我们一开始所抓取得到的部分信息我们在不同的时间内分别下次其网页中使用的字体文件，并将其转化为xml文件来进行查看。    字体1 字体2          会发现每个字体文件中的code都会发生变化，并且name也是一些看">
+<meta name="twitter:description" content="上一篇讲的是网页中使用固定的字体映射表，也就是网页中显示的数据编码和真实数据的映射在一段时间内不会发生变化。但是，有的网页中对应的映射会随时发生变化，我们以东方财富网为例，下图是我们一开始所抓取得到的部分信息我们在不同的时间内分别下次其网页中使用的字体文件，并将其转化为xml文件来进行查看。 字体 1： 字体 2： 会发现每个字体文件中的code都会发生变化，并且name也是一些看不懂的字符串，不">
 <meta name="twitter:image" content="https://img-blog.csdnimg.cn/20190428204126593.png">
   
   
@@ -152,20 +152,8 @@
       
             
             <p>上一篇讲的是网页中使用固定的字体映射表，也就是网页中显示的数据编码和真实数据的映射在一段时间内不会发生变化。但是，有的网页中对应的映射会随时发生变化，我们以<a href="http://www.eastmoney.com/" target="_blank" rel="noopener">东方财富网</a>为例，下图是我们一开始所抓取得到的部分信息<br><img src="https://img-blog.csdnimg.cn/20190428204126593.png" alt="在这里插入图片描述"><br>我们在不同的时间内分别下次其网页中使用的字体文件，并将其转化为xml文件来进行查看。</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">字体1</th>
-<th style="text-align:center">字体2</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center"><img src="https://img-blog.csdnimg.cn/2019042819520786.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70" alt="centered 文本居中"></td>
-<td style="text-align:center"><img src="https://img-blog.csdnimg.cn/20190428195232247.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70" alt="right-aligned 文本居右"></td>
-</tr>
-</tbody>
-</table>
+<p>字体 1：<br><img src="https://img-blog.csdnimg.cn/2019042819520786.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70" alt="centered 文本居中"></p>
+<p>字体 2：<br><img src="https://img-blog.csdnimg.cn/20190428195232247.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70" alt="right-aligned 文本居右"></p>
 <p>会发现每个字体文件中的<code>code</code>都会发生变化，并且<code>name</code>也是一些看不懂的字符串，不像我们之前所看到的<code>uni</code>编码的字符可以直接进行转化，那怎么办呢？仔细观察的话可以发现两个字体文件中的<code>name</code>的值都是一样，因此我们可以判断不管你在网页中使用什么样的自定义字体，虽然每一次<code>code</code>都会发生变化，但是其中的<code>name</code>并不会发生变化，多尝试几次后发现事实便是如此。因此我们只需要把<code>name</code>多代表的真实数据的映射给表示出来即可，再通过该映射把网页中使用的自定义字体的<code>code:name</code>映射进行替换即可。</p>
 <p>对于<code>name</code>所对应的值，我们可以去查看xml文件中其对应的对象，以<code>bgldyy</code>为例，可以看到<br><img src="https://img-blog.csdnimg.cn/20190428200104995.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>其中每对(x,y)表示的便是<code>bgldyy</code>所代表的真实数据的坐标，如下<br><img src="https://img-blog.csdnimg.cn/20190428201055245.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>显然，通过我们自己是无法知道这些坐标的组合所代表的数据到底是多少，因此这个时候就需要借助其他软件了，这里我们使用<a href="http://fontstore.baidu.com/static/editor/index.html#" target="_blank" rel="noopener">百度字体编辑器</a>，将我们得到的字体文件导入到其中，可得(论文推导多了，现在不管什么都是写个可得(捂脸))<br><img src="https://img-blog.csdnimg.cn/20190428201701670.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>因此我们可以写出<code>name</code>与真实数据的映射（上图中的$xxxx为网页中所对应的代码点）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&apos;zbxtdyc&apos;:&apos;4&apos;, &apos;whyhyx&apos;:&apos;9&apos;, &apos;wqqdzs&apos;:&apos;3&apos;, &apos;bgldyy&apos;:&apos;7&apos;, &apos;nhpdjl&apos;:&apos;5&apos;, &apos;qqdwzl&apos;:&apos;1&apos;, &apos;bdzypyc&apos;:&apos;0&apos;, &apos;zwdxtdy&apos;:&apos;8&apos;, &apos;sxyzdxn&apos;: &apos;6&apos;, &apos;zrwqqdl&apos;:&apos;2&apos;&#125;</span><br></pre></td></tr></table></figure></p>
 <p>通过上述映射，我们便可以实现当前网页中所使用的自定义字体的映射表，如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;&apos;0xe273&apos;:&apos;nhpdjl&apos;,</span><br><span class="line">&apos;0xe375&apos;:&apos;bdzypyc&apos;,</span><br><span class="line">&apos;0xe426&apos;:&apos;bgldyy&apos;&#125;</span><br></pre></td></tr></table></figure></p>
@@ -177,7 +165,7 @@
 
             <div class="post-copyright">
     <div class="content">
-        <p>最后更新： 2019年04月30日 18:07</p>
+        <p>最后更新： 2019年05月04日 16:09</p>
         <p>原始链接： <a class="post-url" href="/2019/04/30/Python反爬虫-自定义字体-二/" title="Python反爬虫 自定义字体 二">http://liyanfei123.github.io/2019/04/30/Python反爬虫-自定义字体-二/</a></p>
         <footer>
             <a href="http://liyanfei123.github.io">
@@ -296,7 +284,7 @@
 
 <nav id="article-nav">
   
-    <a href="/2019/05/04/Python反爬虫-自定义字体-三/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/05/04/Python反爬虫-自定义字体-三/Python反爬虫-自定义字体-三/" id="article-nav-newer" class="article-nav-link-wrap">
 
       <span class="article-nav-title">
         <i class="fa fa-hand-o-left" aria-hidden="true"></i>
