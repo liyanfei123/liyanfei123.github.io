@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>Python岗位数据分析 | Good Coding</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Go Ahead">
+  
+  <meta name="description" content="Python岗位需求如何?Python程序员的待遇如何？作为一名Python程序员需要掌握其他什么技能？本文将对上述问题通过数据分析可视化对其进行解答。 数据抓取我们在这里选择对前程无忧上关于Python的工作岗位进行抓取。本来是想去抓上万条数据的，可是点击Python关键字搜索后的25页左右，发现招聘岗位并无python关键词，只是在点击进去的工作要求里面提出了需要会python而已，所以，我们">
+<meta name="keywords" content="数据分析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python岗位数据分析">
+<meta property="og:url" content="http://liyanfei123.github.io/2019/03/15/岗位数据并分析/岗位数据并分析/index.html">
+<meta property="og:site_name" content="Good Coding">
+<meta property="og:description" content="Python岗位需求如何?Python程序员的待遇如何？作为一名Python程序员需要掌握其他什么技能？本文将对上述问题通过数据分析可视化对其进行解答。 数据抓取我们在这里选择对前程无忧上关于Python的工作岗位进行抓取。本来是想去抓上万条数据的，可是点击Python关键字搜索后的25页左右，发现招聘岗位并无python关键词，只是在点击进去的工作要求里面提出了需要会python而已，所以，我们">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190315142454798.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190315150956393.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190315151022652.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190315152925403.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190315195152605.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2019031520010029.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190315201224865.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190315201907922.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190315203138800.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70">
+<meta property="og:updated_time" content="2019-05-04T09:53:02.466Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python岗位数据分析">
+<meta name="twitter:description" content="Python岗位需求如何?Python程序员的待遇如何？作为一名Python程序员需要掌握其他什么技能？本文将对上述问题通过数据分析可视化对其进行解答。 数据抓取我们在这里选择对前程无忧上关于Python的工作岗位进行抓取。本来是想去抓上万条数据的，可是点击Python关键字搜索后的25页左右，发现招聘岗位并无python关键词，只是在点击进去的工作要求里面提出了需要会python而已，所以，我们">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20190315142454798.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70">
+  
+  
+    <link rel="icon" href="images/touxiang.jpg">
+  
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/pace.min.js"></script>
+  
+
+  
+  
+
+</head>
+</html>
+<body>
+  <div id="container">
+      <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer">
+        <div id="header-menu" class="header-menu-pos animated">
+            <div class="header-menu-container">
+                <a href="/" class="left">
+                    <span class="site-title">Li yanfei&#39;s Blog</span>
+                </a>
+                <nav id="header-menu-nav" class="right">
+                    
+                    <a href="/">
+                        <i class="fa fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                    
+                    <a href="/archives">
+                        <i class="fa fa-archive"></i>
+                        <span>Archives</span>
+                    </a>
+                    
+                    <a href="/about">
+                        <i class="fa fa-user"></i>
+                        <span>About</span>
+                    </a>
+                    
+                </nav>
+                <a class="mobile-header-menu-button">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </div>
+        <div id="header-row">
+            <div id="logo">
+                <a href="/">
+                    <img src="/images/logo.png" alt="logo">
+                </a>
+            </div>
+            <div class="header-info">
+                <div id="header-title">
+                    
+                    <h2>
+                        Li yanfei&#39;s Blog
+                    </h2>
+                    
+                </div>
+                <div id="header-description">
+                    
+                    <h3>
+                        好好学习，天天向上
+                    </h3>
+                    
+                </div>
+            </div>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a title="Github" target="_blank" href="https://github.com/liyanfei123">
+                            <i class="fa fa-github fa-2x"></i></a>
+                    
+                        <a title="Weibo" target="_blank" ">
+                            <i class="fa fa-weibo fa-2x"></i></a>
+                    
+                        <a title="Twitter" target="_blank" ">
+                            <i class="fa fa-twitter fa-2x"></i></a>
+                    
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+      <div class="outer">
+        <section id="main" class="body-wrap"><article id="post-岗位数据并分析/岗位数据并分析" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="post-title" itemprop="name">
+      Python岗位数据分析
+    </h1>
+    <div class="post-title-bar">
+      <ul>
+          
+              <li>
+                  <i class="fa fa-book"></i>
+                  
+                      <a href="/categories/Python/">Python</a>
+                  
+              </li>
+          
+        <li>
+          <i class="fa fa-calendar"></i>  2019-03-15
+        </li>
+        <li>
+          <i class="fa fa-eye"></i>
+          <span id="busuanzi_value_page_pv"></span>
+        </li>
+      </ul>
+    </div>
+  
+
+          
+      </header>
+    
+    <div class="article-entry post-content" itemprop="articleBody">
+      
+            
+            <p>Python岗位需求如何?<br>Python程序员的待遇如何？<br>作为一名Python程序员需要掌握其他什么技能？<br>本文将对上述问题通过数据分析可视化对其进行解答。</p>
+<h3 id="数据抓取"><a href="#数据抓取" class="headerlink" title="数据抓取"></a>数据抓取</h3><p>我们在这里选择对前程无忧上关于Python的工作岗位进行抓取。本来是想去抓上万条数据的，可是点击Python关键字搜索后的25页左右，发现招聘岗位并无python关键词，只是在点击进去的工作要求里面提出了需要会python而已，所以，我们在这里只抓取了前25页的内容(抓取的量很少，但对分析的影响不大)。</p>
+<p>由于对工作的抓取需要进入一个新的URL，对于每一个页面，我们需要在增加50个请求（大概数了一下，好像一页大概有50条岗位需求），我们这里一共抓取24个岗位页面，也就是总共需要发出1200次请求，就算按0.5s处理一个来算，也需要600s，显然这需要的时间太长，对于性子急的人来说可不是什么好事儿。所以这个时候我们可以考虑使用异步的方法来进行数据的抓取。<br>代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests </span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line"><span class="keyword">from</span> pyquery <span class="keyword">import</span> PyQuery <span class="keyword">as</span> pq</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> threading <span class="keyword">import</span> Thread</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> aiohttp</span><br><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line">START_URL = (</span><br><span class="line">	<span class="string">'https://search.51job.com/list/000000,000000,0000,00,9,99,python,2,&#123;&#125;.html?'</span></span><br><span class="line">	<span class="string">'lang=c&amp;stype=1&amp;postchannel=0000&amp;workyear=99&amp;cotype=99&amp;degreefrom=99&amp;jobterm=99'</span></span><br><span class="line">	<span class="string">'&amp;companysize=99&amp;lonlat=0%2C0&amp;radius=-1&amp;ord_field=0&amp;confirmdate=9&amp;fromType=&amp;dibiaoid=0'</span></span><br><span class="line">	<span class="string">'&amp;address=&amp;line=&amp;specialarea=00&amp;from=&amp;welfare='</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">HEADERS = &#123;</span><br><span class="line">	<span class="string">'X-Requested-With'</span>: <span class="string">'XMLHttpRequest'</span>,</span><br><span class="line">	<span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36'</span></span><br><span class="line">	<span class="string">'(KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">sem = threading.Semaphore(<span class="number">500</span>)	<span class="comment"># 最多同时启用多少个线程</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">JobSpider</span><span class="params">()</span>:</span></span><br><span class="line">	<span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">download_html</span><span class="params">(self, url)</span>:</span></span><br><span class="line">		<span class="string">"""</span></span><br><span class="line"><span class="string">		异步下载网页</span></span><br><span class="line"><span class="string">		:param session: 异步打开请求</span></span><br><span class="line"><span class="string">		:param url: 职位页面</span></span><br><span class="line"><span class="string">		"""</span></span><br><span class="line">		<span class="keyword">async</span> <span class="keyword">with</span> aiohttp.ClientSession() <span class="keyword">as</span> session:</span><br><span class="line">			<span class="keyword">async</span> <span class="keyword">with</span> session.get(url, headers = HEADERS) <span class="keyword">as</span> response:</span><br><span class="line">				<span class="keyword">return</span> <span class="keyword">await</span> response.text(encoding = <span class="string">'gbk'</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">job_spider</span><span class="params">(self, main_html)</span>:</span></span><br><span class="line">		<span class="string">"""</span></span><br><span class="line"><span class="string">		爬取工作大体信息</span></span><br><span class="line"><span class="string">		:param session: 异步打开请求</span></span><br><span class="line"><span class="string">		:param url: 职位页面</span></span><br><span class="line"><span class="string">		"""</span></span><br><span class="line">		doc = pq(main_html)</span><br><span class="line">		results = doc(<span class="string">'div.dw_table &gt; div.el'</span>)</span><br><span class="line">		<span class="keyword">for</span> result <span class="keyword">in</span> results.items():</span><br><span class="line">			href = result.find(<span class="string">'a'</span>).attr(<span class="string">'href'</span>)     <span class="comment"># 岗位详情</span></span><br><span class="line">			<span class="keyword">if</span> href == <span class="literal">None</span>:                         <span class="comment"># 去除第一条数据(表头)</span></span><br><span class="line">				<span class="keyword">continue</span></span><br><span class="line">			<span class="keyword">else</span>:          <span class="comment"># 对每个岗位详情页使用线程来进行抓取</span></span><br><span class="line">				th = Thread(target = self.main, args = (href, result, ))    <span class="comment"># 创建线程</span></span><br><span class="line">				th.start()                                <span class="comment"># 启动线程</span></span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(self, href, result)</span>:</span></span><br><span class="line">		sem.acquire()                                         <span class="comment"># 准备创建启用一个线程，可用线程数量就会减1</span></span><br><span class="line">		response = requests.get(href, headers = HEADERS)</span><br><span class="line">		job_information_html = pq(response.text)</span><br><span class="line">		<span class="keyword">try</span>:</span><br><span class="line">			item = pd.DataFrame(&#123;             </span><br><span class="line">				<span class="string">'post_name'</span>: result.find(<span class="string">'a'</span>).attr(<span class="string">'title'</span>),     <span class="comment"># 岗位名称,</span></span><br><span class="line">				<span class="string">'company_name'</span>: result.find(<span class="string">'span.t2'</span>).text(),    <span class="comment"># 公司名称              </span></span><br><span class="line">				<span class="string">'location'</span>: result.find(<span class="string">'span.t3'</span>).text(),      <span class="comment"># 工作地点</span></span><br><span class="line">				<span class="string">'salary'</span>: result.find(<span class="string">'span.t4'</span>).text(),    <span class="comment"># 薪资水平</span></span><br><span class="line">				<span class="string">'experience'</span>: job_information_html(<span class="string">'p.msg.ltype'</span>).attr(<span class="string">'title'</span>).split(<span class="string">'  |  '</span>)[<span class="number">1</span>],    <span class="comment"># 工作经验要求</span></span><br><span class="line">				<span class="string">'education'</span>: job_information_html(<span class="string">'p.msg.ltype'</span>).attr(<span class="string">'title'</span>).split(<span class="string">'  |  '</span>)[<span class="number">2</span>],     <span class="comment"># 教育要求</span></span><br><span class="line">				<span class="string">'job_info'</span>: job_information_html(<span class="string">'div.bmsg.job_msg.inbox'</span>).text().split(<span class="string">'\n职能类别： '</span>)[<span class="number">0</span>].replace(<span class="string">'\n'</span>, <span class="string">' '</span>),            <span class="comment"># 职位信息</span></span><br><span class="line">				<span class="string">'job_class'</span>: job_information_html(<span class="string">'div.mt10 &gt; p.fp'</span>).text().split(<span class="string">'职能类别： '</span>)[<span class="number">1</span>],   <span class="comment">#  工作类别</span></span><br><span class="line">								&#125;, index = [<span class="number">0</span>])    <span class="comment"># index = [0] 不能省！，省掉的话会报错</span></span><br><span class="line">			self.write_to_csv(item)</span><br><span class="line">		<span class="keyword">except</span>:</span><br><span class="line">			<span class="keyword">pass</span></span><br><span class="line">		sem.release()		        <span class="comment"># 释放线程，可用线程数加1</span></span><br><span class="line">		</span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">write_to_csv</span><span class="params">(self, item)</span>:</span></span><br><span class="line">		item.to_csv(<span class="string">'datas/Python职位.csv'</span>, mode = <span class="string">'a'</span>, encoding = <span class="string">'utf_8_sig'</span>, index = <span class="literal">False</span>, header = <span class="literal">None</span>)  <span class="comment"># 数据存储</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self, url)</span>:</span></span><br><span class="line">		<span class="string">"""</span></span><br><span class="line"><span class="string">		爬虫入口</span></span><br><span class="line"><span class="string">		"""</span></span><br><span class="line">		main_html = <span class="keyword">await</span> self.download_html(url)</span><br><span class="line">		<span class="keyword">await</span> self.job_spider(main_html)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">	jobspider = JobSpider()</span><br><span class="line">	url_tasks = [START_URL.format(page) <span class="keyword">for</span> page <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">26</span>)]   <span class="comment"># 构建url列表</span></span><br><span class="line">	loop = asyncio.get_event_loop()  <span class="comment"># 利用asyncio模块解析异步IO处理</span></span><br><span class="line">	tasks = [asyncio.ensure_future(jobspider.run(url)) <span class="keyword">for</span> url <span class="keyword">in</span> url_tasks]  <span class="comment"># 获取任务列表</span></span><br><span class="line">	tasks = asyncio.gather(*tasks)</span><br><span class="line">	loop.run_until_complete(tasks)</span><br></pre></td></tr></table></figure></p>
+<p>在这里，将异步和线程结合起来，对于24个岗位页面的请求是异步的，然后对每个岗位请求里面的40个岗位介绍通过创建一个新的线程来实现我们所需要的数据的抓取和保存。同时对于发生异常的数据直接将其抛弃。该段代码的数据抓取仅用时36.5s，一共抓取了1195条数据。</p>
+<p><img src="https://img-blog.csdnimg.cn/20190315142454798.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>目前为止，我们对于数据的收集已经完成了，接下来就需要对得到的数据来进行分析了。对于数据的分析最常用的就是<code>pandas</code>，其方便快捷，能帮助我们快速的完成数据分析。<code>pandas</code>中对于本地文件的读取很方便，只需通过<code>read_csv</code>即可（我们这里保存的是csv文件）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">names = [<span class="string">'post_name'</span>, <span class="string">'company_name'</span>, <span class="string">'city'</span>, <span class="string">'salary'</span>, <span class="string">'experience'</span>, <span class="string">'education'</span>, <span class="string">'job_info'</span>, <span class="string">'job_class'</span>]</span><br><span class="line">datas = pd.read_csv(<span class="string">'Python职位.csv'</span>, names = names, encoding = <span class="string">'utf-8'</span>)</span><br></pre></td></tr></table></figure>
+<p>由于我们在保存数据时未设置列标题，所以需要通过names来规定读取结果的列名列表。</p>
+<h3 id="数据分析及可视化"><a href="#数据分析及可视化" class="headerlink" title="数据分析及可视化"></a>数据分析及可视化</h3><p>首先让我们看一下全国对于Python岗位的需求，我们选择绘制全国各地招聘数量的热力图和对Top10地区的招聘数量的柱状图，<br>代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">city_counter</span><span class="params">()</span>:</span></span><br><span class="line">	<span class="string">"""</span></span><br><span class="line"><span class="string">	全国工作分布热力图, 全国招聘职位top10地区</span></span><br><span class="line"><span class="string">	"""</span></span><br><span class="line">	datas_copy = datas</span><br><span class="line">	datas_copy[<span class="string">'city'</span>] = datas_copy[<span class="string">'city'</span>].apply(<span class="keyword">lambda</span> x :x.split(<span class="string">'-'</span>)[<span class="number">0</span>])</span><br><span class="line">	datas_copy = datas_copy[~datas_copy[<span class="string">'city'</span>].str.contains(<span class="string">'异地招聘'</span>)]   <span class="comment"># 去除含有'异地招聘'的地区所在行</span></span><br><span class="line">	grouped_city = datas_copy.groupby(datas[<span class="string">'city'</span>])</span><br><span class="line">	grouped_city_count = grouped_city[<span class="string">'city'</span>].agg([<span class="string">'count'</span>])    <span class="comment"># 对城市数量进行统计</span></span><br><span class="line">	grouped_city_count.reset_index(inplace = <span class="literal">True</span>)                  <span class="comment"># 若不进行此操作，将会报错</span></span><br><span class="line">	grouped_city_count[<span class="string">'city'</span>][grouped_city_count[<span class="string">'city'</span>] == <span class="string">'澄迈'</span>] = <span class="string">'澄迈县'</span>   <span class="comment"># pyecharts中'澄迈'为'澄迈县'</span></span><br><span class="line">	city_data = [(grouped_city_count[<span class="string">'city'</span>][i], grouped_city_count[<span class="string">'count'</span>][i]) <span class="keyword">for</span> i <span class="keyword">in</span> range(grouped_city_count.shape[<span class="number">0</span>])]</span><br><span class="line">	<span class="comment"># 全国工作分布热力图</span></span><br><span class="line">	style = Style(title_color = <span class="string">'#fff'</span>, title_pos = <span class="string">'center'</span>, width = <span class="number">1200</span>, height = <span class="number">600</span>, background_color = <span class="string">'#404a59'</span>)</span><br><span class="line">	geo = Geo(<span class="string">'Python职位招聘地理位置'</span>, **style.init_style)</span><br><span class="line">	attr, value = geo.cast(city_data)</span><br><span class="line">	geo.add(<span class="string">''</span>, attr, value, type = <span class="string">'heatmap'</span>, visual_range = [<span class="number">0</span>, <span class="number">20</span>], visual_text_color = <span class="string">'#fff'</span>,</span><br><span class="line">			symbol_size = <span class="number">20</span>, is_visualmap = <span class="literal">True</span>, is_roam = <span class="literal">False</span>, is_piecewise = <span class="literal">True</span>, visual_splite_number = <span class="number">4</span>)</span><br><span class="line">	geo.render(<span class="string">'Python岗位全国热力图.html'</span>)</span><br><span class="line">	<span class="comment"># 全国招聘职位top10地区</span></span><br><span class="line">	bar = Bar(<span class="string">'Python岗位全国分布柱状图'</span>)</span><br><span class="line">	city_top10 = sorted(city_data, key = <span class="keyword">lambda</span> x: x[<span class="number">1</span>], reverse = <span class="literal">True</span>)[<span class="number">0</span>:<span class="number">10</span>]</span><br><span class="line">	attr, value = bar.cast(city_top10)</span><br><span class="line">	bar.add(<span class="string">''</span>, attr, value, is_splitline_show = <span class="literal">False</span>, is_label_show = <span class="literal">True</span>,</span><br><span class="line">			xaxis_rotate = <span class="number">30</span>)</span><br><span class="line">	bar.render(<span class="string">'Python岗位分布柱状图.html'</span>)</span><br></pre></td></tr></table></figure></p>
+<p>需指出的是在抓到的数据中的城市是精确到各个区的，在这里我们只需使用城市名，通过使用<code>apply</code>和<code>lambda</code>结合可以快速的对city列的数据进行修改，同时在抓取的数据里面会有’异地招聘’的信息，在城市数量统计里面我们需要将其过滤掉，<code>pandas</code>中使用<code>~</code>即为取反操作。</p>
+<p>有些时候会看到有些数据显示为NaN，这个时候就需要我们对其进行处理，一般都是将其过滤掉，我们可先观察一下是否含有NaN值，以上述代码为例，可执行一下操作：<br><code>print(datas_copy.index[datas_copy[&#39;location&#39;].isna()])</code><br>上述代码获取某列有NaN值的索引，如果不加datas_copy.index[]的话返回的是每个元素的布尔值，若想直接去掉NaN，使用<code>~</code>即可<br><code>datas_copy = datas_copy[~datas_copy[&#39;location&#39;].isna()]</code></p>
+<p>上述代码绘制的图如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20190315150956393.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/20190315151022652.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>通过热力图发现，对于Python岗位的需求主要集中在江浙沪一带（亲，包邮哦），还有广东等地方，在柱状图中发现在收集到的1195条数据中，上海的招聘量已经达到235了（魔都就是厉害），而深圳只有162（看来深圳还是看重老牌的语言呀）。所以，会python的你想去多尝试点与python相关的工作可以去大上海看看，总有一种适合你。</p>
+<p>你可能会问，这些岗位对学位有要求吗，我们需要提高一下学历嘛（学历这个东西不管哪行哪业，都是高点吃香呀）？我们对刚刚得到的1195条数据中的学历要求进行统计<br>代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">education_require</span><span class="params">()</span>:</span></span><br><span class="line">	<span class="string">"""</span></span><br><span class="line"><span class="string">	学历要求饼图</span></span><br><span class="line"><span class="string">	"""</span></span><br><span class="line">	datas_copy = datas</span><br><span class="line">	datas_copy = datas_copy[~datas_copy[<span class="string">'education'</span>].str.contains(<span class="string">'人'</span>)]   <span class="comment"># 去掉'招多少人'的值</span></span><br><span class="line">	grouped_eductaion = datas_copy.groupby(datas_copy[<span class="string">'education'</span>])</span><br><span class="line">	grouped_eductaion_count = grouped_eductaion[<span class="string">'education'</span>].agg([<span class="string">'count'</span>])</span><br><span class="line">	grouped_eductaion_count.reset_index(inplace = <span class="literal">True</span>)</span><br><span class="line">	attr = [<span class="string">'中专'</span>, <span class="string">'大专'</span>, <span class="string">'本科'</span>, <span class="string">'硕士'</span>, <span class="string">'高中'</span>]</span><br><span class="line">	value = [(grouped_eductaion_count[<span class="string">'count'</span>][i]) <span class="keyword">for</span> i <span class="keyword">in</span> range(len(grouped_eductaion_count))]</span><br><span class="line">	pie = Pie(<span class="string">'学历要求饼图'</span>, title_pos = <span class="string">'center'</span>)</span><br><span class="line">	pie.add(<span class="string">''</span>, attr, value, valuecenter = [<span class="number">60</span>, <span class="number">60</span>], is_random = <span class="literal">True</span>, radius = [<span class="number">20</span>, <span class="number">65</span>], rosetype = <span class="string">'area'</span>,</span><br><span class="line">			is_legend_show = <span class="literal">True</span>, legend_orient = <span class="string">'vertical'</span>, legend_pos = <span class="string">'left'</span>, is_label_show = <span class="literal">True</span>)</span><br><span class="line">	pie.render(<span class="string">'学历要求饼图.html'</span>)</span><br></pre></td></tr></table></figure></p>
+<p>结果为：</p>
+<p><img src="https://img-blog.csdnimg.cn/20190315152925403.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>通过上图可以发现，Python岗位对于学历的要求不是很高的，只要你高中毕业了，还是能找到一份好工作的（程序员这种东西，看的还是实力和经验嘛）。不过还在学习的同学可要继续好好学习哟。</p>
+<p>对于Python工作岗位，要求会Python是毋庸置疑的，你要是连Python都不会的话，应该也就不会找和Python相关的工作了吧。当然，岗位招聘的时候，不可能只需要你会Python，只是Python是主要的而已，大多数公司还会要求你具有一些其他的专业技能，比如操作系统、数据库等。那接下来就让我们看看，Python岗位还需要会哪些专业的语言技能吧，这里我们仅选出Top10来分析，毕竟一辈子就那么长，不可能把所有要求的都学一遍的（<code>人生苦短，我用python</code>）。<br>代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">job_requirement</span><span class="params">()</span>:</span></span><br><span class="line">	datas_copy = datas</span><br><span class="line">	text = <span class="string">''</span>.join(datas_copy[<span class="string">'job_info'</span>])</span><br><span class="line">	requirements = [word <span class="keyword">for</span> word <span class="keyword">in</span> jieba.cut_for_search(text)]</span><br><span class="line">	requirements = stopwords(requirements)              <span class="comment"># 设置停用词</span></span><br><span class="line">	requirements_top = re.findall(<span class="string">r'[a-zA-Z]+'</span>, str(requirements).lower())</span><br><span class="line">	requirements_top = Counter(requirements_top)</span><br><span class="line">	requirements_top.pop(<span class="string">'and'</span>)   <span class="comment"># 删除'and'</span></span><br><span class="line">	requirements_top10 = requirements_top.most_common(<span class="number">10</span>)    <span class="comment"># 统计最多的10个</span></span><br><span class="line">	bar = Bar(<span class="string">'Python技能要求'</span>)</span><br><span class="line">	attr, value = bar.cast(requirements_top10)</span><br><span class="line">	bar.add(<span class="string">''</span>, attr, value, is_splitline_show = <span class="literal">False</span>, is_label_show = <span class="literal">True</span>, xaxis_rotate = <span class="number">30</span>)</span><br><span class="line">	bar.render(<span class="string">'Python技能要求.html'</span>)</span><br></pre></td></tr></table></figure></p>
+<p>由于每个专业技能都是包含在职位要求里的，所以需要通过<code>jieba</code>来进行分词，并设置停用词，继而匹配出我们所需要的专业技能词汇。在对各个专业技能进行统计时，我们使用了<code>collections</code>中的<code>Counter</code>，它返回一个以元素为 key 、元素个数为 value 的Counter对象集合，同时使用<code>most_common()</code>方法可以提取出我们想要的前多少个键值对。</p>
+<p><img src="https://img-blog.csdnimg.cn/20190315195152605.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>可以发现，除python外，大多数公司都需要会操作Linux系统，毕竟Linux可比Win强多了。对于数据库的要求，mysql排在第一位，其次时redis，mongodb。对于准备从事网络编程的同学的话，django看来是不可避免的了。对于想从事Python开发的你，还在等什么，赶快多学几个技能吧。</p>
+<p>当然，各大公司除了需要你掌握专业性技能，还对你有些其他的要求。这里为了更好的体现其他的工作要求，我们选用词云并根据词频来表示。</p>
+<p><img src="https://img-blog.csdnimg.cn/2019031520010029.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>从词云中可以看出，大多数的公司还是需要你熟悉某些东西（就是上面的专业技能），能够开发一些东西，会对数据进行一些处理，当然了，有一点，在各行各业都不能少的，那就是经验！！！所以还是趁着年轻，多攒点经验吧。</p>
+<p>对于Python岗位的选择，大家最看重的还是薪资水平了，你说要是一个公司给你2k一个月，你会去干吗？所以，对于Python岗位的薪资分析很有必要。由于抓到的数据大部分都是’A-B千/月’等，不利于分析，所以在这里我们将数字给提取出来，对于每个岗位都取A与B的中值来进行分析，并计算每个城市的平均薪资。<br>代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">deal_salary</span><span class="params">(salary_data)</span>:</span></span><br><span class="line">	<span class="string">"""</span></span><br><span class="line"><span class="string">	对工资数据进行修改</span></span><br><span class="line"><span class="string">	:param salary_data: 工资数据</span></span><br><span class="line"><span class="string">	:return: 月工资中值</span></span><br><span class="line"><span class="string">	"""</span></span><br><span class="line">	<span class="keyword">if</span> re.match(<span class="string">'.*万/月'</span>, salary_data):</span><br><span class="line">		<span class="keyword">return</span> float((float(re.findall(<span class="string">r'(.*?)万/月'</span>, salary_data)[<span class="number">0</span>].split(<span class="string">'-'</span>)[<span class="number">0</span>]) * <span class="number">10000</span> + </span><br><span class="line">				 	float(re.findall(<span class="string">r'(.*?)万/月'</span>, salary_data)[<span class="number">0</span>].split(<span class="string">'-'</span>)[<span class="number">1</span>]) * <span class="number">10000</span>) / <span class="number">2</span>)</span><br><span class="line">	<span class="keyword">if</span> re.match(<span class="string">'.*万/年'</span>, salary_data):</span><br><span class="line">		<span class="keyword">return</span> float((float(re.findall(<span class="string">r'(.*?)万/年'</span>, salary_data)[<span class="number">0</span>].split(<span class="string">'-'</span>)[<span class="number">0</span>]) * <span class="number">10000</span> / <span class="number">12</span> + </span><br><span class="line">		 			float(re.findall(<span class="string">r'(.*?)万/年'</span>, salary_data)[<span class="number">0</span>].split(<span class="string">'-'</span>)[<span class="number">1</span>]) * <span class="number">10000</span> / <span class="number">12</span>) / <span class="number">2</span>)</span><br><span class="line">	<span class="keyword">if</span> re.match(<span class="string">'.*千/月'</span>, salary_data):</span><br><span class="line">		<span class="keyword">return</span> float((float(re.findall(<span class="string">r'(.*?)千/月'</span>, salary_data)[<span class="number">0</span>].split(<span class="string">'-'</span>)[<span class="number">0</span>]) * <span class="number">1000</span> + </span><br><span class="line">		 			float(re.findall(<span class="string">r'(.*?)千/月'</span>, salary_data)[<span class="number">0</span>].split(<span class="string">'-'</span>)[<span class="number">1</span>]) * <span class="number">1000</span>) / <span class="number">2</span>)</span><br><span class="line">	<span class="keyword">if</span> re.match(<span class="string">'.*元/天'</span>, salary_data):</span><br><span class="line">		<span class="keyword">return</span> float(float(re.findall(<span class="string">r'(.*?)元/天'</span>, salary_data)[<span class="number">0</span>]) * <span class="number">20</span>)</span><br><span class="line">	<span class="keyword">if</span> re.match(<span class="string">'.*千以下/月'</span>, salary_data):</span><br><span class="line">		<span class="keyword">return</span> float(float(re.findall(<span class="string">r'(.*?)千以下/月'</span>, salary_data)[<span class="number">0</span>]) * <span class="number">1000</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">city_salary</span><span class="params">()</span>:</span></span><br><span class="line">	<span class="string">"""</span></span><br><span class="line"><span class="string">	每个城市的平均工资折线图</span></span><br><span class="line"><span class="string">	"""</span></span><br><span class="line">	datas_copy = datas</span><br><span class="line">	datas_copy[<span class="string">'city'</span>] = datas_copy[<span class="string">'city'</span>].apply(<span class="keyword">lambda</span> x :x.split(<span class="string">'-'</span>)[<span class="number">0</span>])</span><br><span class="line">	datas_copy = datas_copy[~datas_copy[<span class="string">'city'</span>].str.contains(<span class="string">'异地招聘'</span>)]   <span class="comment"># 去除含有'异地招聘'的地区所在行</span></span><br><span class="line">	datas_copy = datas_copy[~datas_copy[<span class="string">'salary'</span>].isna()]                   <span class="comment"># 去掉含有nan的数据行</span></span><br><span class="line">	datas_copy[<span class="string">'salary'</span>] = datas_copy[<span class="string">'salary'</span>].apply(<span class="keyword">lambda</span> x :deal_salary(x))   <span class="comment"># 对数据中的'salary'列中的数据进行处理</span></span><br><span class="line">	datas_copy = datas_copy[~datas_copy[<span class="string">'salary'</span>].isna()]                   <span class="comment"># 去掉含有nan的数据行</span></span><br><span class="line">	grouped_city_salary = datas_copy[<span class="string">'salary'</span>].groupby(datas_copy[<span class="string">'city'</span>])</span><br><span class="line">	salary_month = grouped_city_salary.agg([<span class="string">'mean'</span>])</span><br><span class="line">	salary_month.reset_index(inplace = <span class="literal">True</span>)</span><br><span class="line">	<span class="comment"># 方式1</span></span><br><span class="line">	bar = Bar(<span class="string">'各城市平均工资'</span>, width = <span class="number">1380</span>, height = <span class="number">300</span>, title_pos = <span class="string">'center'</span>)</span><br><span class="line">	bar.add(<span class="string">''</span>, salary_month[<span class="string">'city'</span>], salary_month[<span class="string">'mean'</span>], is_label_show = <span class="literal">False</span>, </span><br><span class="line">		mark_point = [<span class="string">'max'</span>, <span class="string">'min'</span>], mark_line = [<span class="string">'average'</span>], xaxis_rotate = <span class="number">45</span>)</span><br><span class="line">	bar.render(<span class="string">'各城市平均工资.html'</span>)</span><br><span class="line">	<span class="comment"># 方式2(滑动效果)</span></span><br><span class="line">	<span class="comment"># bar = Bar('各城市平均工资')</span></span><br><span class="line">	<span class="comment"># bar.add('', salary_month['city'], salary_month['mean'], is_datazoom_show = True, datazoom_type = 'both',</span></span><br><span class="line">	<span class="comment"># 		datazoom_range = [10, 25], mark_point = ['max', 'min'], mark_line = ['average'], xaxis_rotate = 30)</span></span><br><span class="line">	<span class="comment"># bar.render('各城市平均工资.html')</span></span><br></pre></td></tr></table></figure></p>
+<p>在这里我们使用了两种方式来绘图，第一种是静态的，就是所有数据都全部显示出来；第二种是动态的，就是我们可以通过滑动坐标轴下方的区域来选择显示的结果。两种方式显示的结果如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20190315201224865.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20190315201907922.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>（请原谅我不会截动图，效果在这里展示不出来）</p>
+<p>需注意的是，在第二个图里的平均值，是所显示出来的地区的平均值，并不是所有崎岖的。从上图中，我们可以知道Python岗位薪资占据前三位的是上海、北京、深圳，北京居然平均薪资都将近1.7w/月（估计得有1w才能来养活自己），看来以后想挣大钱，还是得往大城市跑呀（博主看到自家南通都能达到1.2w，欣慰呀）。全国的平均薪资达到了9k，看来程序员的班没有白加呀，在努点力，就可以月入过万了。所以，从事Python行业，工资这方面看来是不用担心的，应该都可以1w+。</p>
+<p>最后，博主为了玩一下<code>pyecharts</code>中的极坐标系图，大概看了一下工资最高的top20的岗位（都是月入3w+的）的名称，也没有对数据进行清理等操作，就直接拿过来用了，得到了下面这张图</p>
+<p><img src="https://img-blog.csdnimg.cn/20190315203138800.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjkzNzU4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>看了图里的岗位名称，才知道，人家工资高是有理由的呀，这岗位都是工程师级别的呀，还带着’高级’两个字，还不是一般的工程师，看来没个8年多的经验是混不到这种水平啦。</p>
+<p>分析完Python岗位数据，本人发现还有许多要求未能达到，看来得加把劲了。</p>
+<p>你，准备好用Python了吗？</p>
+<p>好好学习，天天向上。</p>
+
+            <div class="post-copyright">
+    <div class="content">
+        <p>最后更新： 2019年05月04日 17:53</p>
+        <p>原始链接： <a class="post-url" href="/2019/03/15/岗位数据并分析/岗位数据并分析/" title="Python岗位数据分析">http://liyanfei123.github.io/2019/03/15/岗位数据并分析/岗位数据并分析/</a></p>
+        <footer>
+            <a href="http://liyanfei123.github.io">
+                <img src="/images/logo.png" alt="Li yanfei">
+                Li yanfei
+            </a>
+        </footer>
+    </div>
+</div>
+
+      
+        
+            
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;">赏</a>
+</div>
+
+<div id="reward" class="post-modal reward-lay">
+    <a class="close" href="javascript:;" id="reward-close">×</a>
+    <span class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我吃糖~
+        <i class="icon icon-quote-right"></i>
+    </span>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/images/wechat_code.jpg" alt="打赏二维码">
+        </div>
+        <div class="reward-select">
+            
+            <label class="reward-select-item checked" data-id="wechat" data-wechat="/images/wechat_code.jpg">
+                <img class="reward-select-item-wechat" src="/images/wechat.png" alt="微信">
+            </label>
+            
+            
+            <label class="reward-select-item" data-id="alipay" data-alipay="/images/alipay_code.jpg">
+                <img class="reward-select-item-alipay" src="/images/alipay.png" alt="支付宝">
+            </label>
+            
+        </div>
+    </div>
+</div>
+
+
+        
+    </div>
+    <footer class="article-footer">
+        
+        
+<div class="post-share">
+    <a href="javascript:;" id="share-sub" class="post-share-fab">
+        <i class="fa fa-share-alt"></i>
+    </a>
+    <div class="post-share-list" id="share-list">
+        <ul class="share-icons">
+          <li>
+            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://liyanfei123.github.io/2019/03/15/岗位数据并分析/岗位数据并分析/&title=《Python岗位数据分析》 — Good Coding&pic=images/blogs/Python岗位数据分析.jpg" data-title="微博">
+              <i class="fa fa-weibo"></i>
+            </a>
+          </li>
+          <li>
+            <a class="weixin share-sns" id="wxFab" href="javascript:;" data-title="微信">
+              <i class="fa fa-weixin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://liyanfei123.github.io/2019/03/15/岗位数据并分析/岗位数据并分析/&title=《Python岗位数据分析》 — Good Coding&source=" data-title="QQ">
+              <i class="fa fa-qq"></i>
+            </a>
+          </li>
+          <li>
+            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://liyanfei123.github.io/2019/03/15/岗位数据并分析/岗位数据并分析/" data-title="Facebook">
+              <i class="fa fa-facebook"></i>
+            </a>
+          </li>
+          <li>
+            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Python岗位数据分析》 — Good Coding&url=http://liyanfei123.github.io/2019/03/15/岗位数据并分析/岗位数据并分析/&via=http://liyanfei123.github.io" data-title="Twitter">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+          <li>
+            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://liyanfei123.github.io/2019/03/15/岗位数据并分析/岗位数据并分析/" data-title="Google+">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        </ul>
+     </div>
+</div>
+<div class="post-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;" id="wxShare-close">×</a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=http://liyanfei123.github.io/2019/03/15/岗位数据并分析/岗位数据并分析/" alt="微信分享二维码">
+</div>
+
+<div class="mask"></div>
+
+        
+        <ul class="article-footer-menu">
+            
+            
+  <li class="article-footer-tags">
+    <i class="fa fa-tags"></i>
+      
+    <a href="/tags/数据分析/" class="color5">数据分析</a>
+      
+  </li>
+
+        </ul>
+        
+    </footer>
+  </div>
+</article>
+
+
+    <aside class="post-toc-pos post-toc-top" id="post-toc">
+        <nav class="post-toc-wrap">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#数据抓取"><span class="post-toc-text">数据抓取</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#数据分析及可视化"><span class="post-toc-text">数据分析及可视化</span></a></li></ol>
+        </nav>
+    </aside>
+    
+
+<nav id="article-nav">
+  
+    <a href="/2019/03/28/Python装饰器/Python装饰器/" id="article-nav-newer" class="article-nav-link-wrap">
+
+      <span class="article-nav-title">
+        <i class="fa fa-hand-o-left" aria-hidden="true"></i>
+        
+          Python装饰器
+        
+      </span>
+    </a>
+  
+  
+    <a href="/2019/03/03/Python-异步-协程-线程-进程/Python-异步-协程-线程-进程/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-title">Python 异步 协程 线程 进程</span>
+      <i class="fa fa-hand-o-right" aria-hidden="true"></i>
+    </a>
+  
+</nav>
+
+
+
+    
+</section>
+        
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+      <p>
+        Powered by  <a href="http://hexo.io/" target="_blank">Hexo</a>
+        Theme <a href="//github.com/wongminho/hexo-theme-miho" target="_blank">MiHo</a>
+      &copy; 2019 Li yanfei<br>
+      </p>
+    </div>
+  </div>
+</footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  var mihoConfig = {
+      root: "http://liyanfei123.github.io",
+      animate: true,
+      isHome: false,
+      share: true,
+      reward: 1
+  }
+</script>
+<div class="sidebar">
+    <div id="sidebar-search" title="Search">
+        <i class="fa fa-search"></i>
+    </div>
+    <div id="sidebar-category" title="Categories">
+        <i class="fa fa-book"></i>
+    </div>
+    <div id="sidebar-tag" title="Tags">
+        <i class="fa fa-tags"></i>
+    </div>
+    <div id="sidebar-top">
+        <span class="sidebar-top-icon"><i class="fa fa-angle-up"></i></span>
+    </div>
+</div>
+<div class="sidebar-menu-box" id="sidebar-menu-box">
+    <div class="sidebar-menu-box-container">
+        <div id="sidebar-menu-box-categories">
+            <a class="category-link" href="/categories/Matlab/">Matlab</a><a class="category-link" href="/categories/Python/">Python</a>
+        </div>
+        <div id="sidebar-menu-box-tags">
+            <a href="/tags/Scrapy/" style="font-size: 10px;">Scrapy</a> <a href="/tags/Session/" style="font-size: 10px;">Session</a> <a href="/tags/反爬虫/" style="font-size: 20px;">反爬虫</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/数据分析/" style="font-size: 15px;">数据分析</a> <a href="/tags/模拟登陆/" style="font-size: 15px;">模拟登陆</a> <a href="/tags/生成器/" style="font-size: 10px;">生成器</a> <a href="/tags/稳定性分析/" style="font-size: 10px;">稳定性分析</a> <a href="/tags/线程/" style="font-size: 15px;">线程</a> <a href="/tags/装饰器/" style="font-size: 10px;">装饰器</a> <a href="/tags/进程/" style="font-size: 10px;">进程</a> <a href="/tags/迭代器/" style="font-size: 10px;">迭代器</a>
+        </div>
+    </div>
+    <a href="javascript:;" class="sidebar-menu-box-close">&times;</a>
+</div>
+<div class="mobile-header-menu-nav" id="mobile-header-menu-nav">
+    <div class="mobile-header-menu-container">
+        <span class="title">Menus</span>
+        <ul class="mobile-header-menu-navbar">
+            
+            <li>
+                <a href="/">
+                    <i class="fa fa-home"></i><span>Home</span>
+                </a>
+            </li>
+            
+            <li>
+                <a href="/archives">
+                    <i class="fa fa-archive"></i><span>Archives</span>
+                </a>
+            </li>
+            
+            <li>
+                <a href="/about">
+                    <i class="fa fa-user"></i><span>About</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    <div class="mobile-header-tag-container">
+        <span class="title">Tags</span>
+        <div id="mobile-header-container-tags">
+            <a href="/tags/Scrapy/" style="font-size: 10px;">Scrapy</a> <a href="/tags/Session/" style="font-size: 10px;">Session</a> <a href="/tags/反爬虫/" style="font-size: 20px;">反爬虫</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/数据分析/" style="font-size: 15px;">数据分析</a> <a href="/tags/模拟登陆/" style="font-size: 15px;">模拟登陆</a> <a href="/tags/生成器/" style="font-size: 10px;">生成器</a> <a href="/tags/稳定性分析/" style="font-size: 10px;">稳定性分析</a> <a href="/tags/线程/" style="font-size: 15px;">线程</a> <a href="/tags/装饰器/" style="font-size: 10px;">装饰器</a> <a href="/tags/进程/" style="font-size: 10px;">进程</a> <a href="/tags/迭代器/" style="font-size: 10px;">迭代器</a>
+        </div>
+    </div>
+</div>
+<div class="search-wrap">
+    <span class="search-close">&times;</span>
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+            <i class="icon icon-lg icon-chevron-left"></i>
+        </a>
+        <input class="search-field" placeholder="Search..." id="keywords">
+        <a id="search-submit" href="javascript:;">
+            <i class="fa fa-search"></i>
+        </a>
+    <div class="search-container" id="search-container">
+        <ul class="search-result" id="search-result">
+        </ul>
+    </div>
+</div>
+
+<div id="search-tpl">
+    <li class="search-result-item">
+        <a href="{url}" class="search-item-li">
+            <span class="search-item-li-title" title="{title}">{title}</span>
+        </a>
+    </li>
+</div>
+<script src="/js/search.js"></script>
+<script src="/js/main.js"></script>
+
+
+  <script src="//cdn.bootcss.com/particles.js/2.0.0/particles.min.js"></script>
+  <div id="particles"></div>
+  <script src="/js/particles.js"></script>
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  <script src="//cdn.bootcss.com/scrollReveal.js/3.0.5/scrollreveal.js"></script>
+  <script src="/js/animate.js"></script>
+
+
+  <script src="/js/pop-img.js"></script>
+  <script>
+     $(".article-entry p img").popImg();
+  </script>
+
+  </div>
+</body>
+</html>

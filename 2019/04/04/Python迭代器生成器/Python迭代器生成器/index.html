@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>Python迭代器生成器 | Good Coding</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Go Ahead">
+  
+  <meta name="description" content="在爬虫中我们会经常去使用生成器来得到数据进行保存，同时会使用for循环来迭代一个对象，来对我们需要的数据进行提取，我们先看一下以前所编写的爬虫的部分代码123456789101112131415def get_data(self, html):		&quot;&quot;&quot;		提取网页上所需要的数据		:param html: 网页源码		:return: 评价数据		&quot;&quot;&quot;		doc = pq(html)		ite">
+<meta name="keywords" content="迭代器,生成器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python迭代器生成器">
+<meta property="og:url" content="http://liyanfei123.github.io/2019/04/04/Python迭代器生成器/Python迭代器生成器/index.html">
+<meta property="og:site_name" content="Good Coding">
+<meta property="og:description" content="在爬虫中我们会经常去使用生成器来得到数据进行保存，同时会使用for循环来迭代一个对象，来对我们需要的数据进行提取，我们先看一下以前所编写的爬虫的部分代码123456789101112131415def get_data(self, html):		&quot;&quot;&quot;		提取网页上所需要的数据		:param html: 网页源码		:return: 评价数据		&quot;&quot;&quot;		doc = pq(html)		ite">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-05-04T09:44:09.783Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python迭代器生成器">
+<meta name="twitter:description" content="在爬虫中我们会经常去使用生成器来得到数据进行保存，同时会使用for循环来迭代一个对象，来对我们需要的数据进行提取，我们先看一下以前所编写的爬虫的部分代码123456789101112131415def get_data(self, html):		&quot;&quot;&quot;		提取网页上所需要的数据		:param html: 网页源码		:return: 评价数据		&quot;&quot;&quot;		doc = pq(html)		ite">
+  
+  
+    <link rel="icon" href="images/touxiang.jpg">
+  
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/pace.min.js"></script>
+  
+
+  
+  
+
+</head>
+</html>
+<body>
+  <div id="container">
+      <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer">
+        <div id="header-menu" class="header-menu-pos animated">
+            <div class="header-menu-container">
+                <a href="/" class="left">
+                    <span class="site-title">Li yanfei&#39;s Blog</span>
+                </a>
+                <nav id="header-menu-nav" class="right">
+                    
+                    <a href="/">
+                        <i class="fa fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                    
+                    <a href="/archives">
+                        <i class="fa fa-archive"></i>
+                        <span>Archives</span>
+                    </a>
+                    
+                    <a href="/about">
+                        <i class="fa fa-user"></i>
+                        <span>About</span>
+                    </a>
+                    
+                </nav>
+                <a class="mobile-header-menu-button">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </div>
+        <div id="header-row">
+            <div id="logo">
+                <a href="/">
+                    <img src="/images/logo.png" alt="logo">
+                </a>
+            </div>
+            <div class="header-info">
+                <div id="header-title">
+                    
+                    <h2>
+                        Li yanfei&#39;s Blog
+                    </h2>
+                    
+                </div>
+                <div id="header-description">
+                    
+                    <h3>
+                        好好学习，天天向上
+                    </h3>
+                    
+                </div>
+            </div>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a title="Github" target="_blank" href="https://github.com/liyanfei123">
+                            <i class="fa fa-github fa-2x"></i></a>
+                    
+                        <a title="Weibo" target="_blank" ">
+                            <i class="fa fa-weibo fa-2x"></i></a>
+                    
+                        <a title="Twitter" target="_blank" ">
+                            <i class="fa fa-twitter fa-2x"></i></a>
+                    
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+      <div class="outer">
+        <section id="main" class="body-wrap"><article id="post-Python迭代器生成器/Python迭代器生成器" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="post-title" itemprop="name">
+      Python迭代器生成器
+    </h1>
+    <div class="post-title-bar">
+      <ul>
+          
+              <li>
+                  <i class="fa fa-book"></i>
+                  
+                      <a href="/categories/Python/">Python</a>
+                  
+              </li>
+          
+        <li>
+          <i class="fa fa-calendar"></i>  2019-04-04
+        </li>
+        <li>
+          <i class="fa fa-eye"></i>
+          <span id="busuanzi_value_page_pv"></span>
+        </li>
+      </ul>
+    </div>
+  
+
+          
+      </header>
+    
+    <div class="article-entry post-content" itemprop="articleBody">
+      
+            
+            <p>在爬虫中我们会经常去使用生成器来得到数据进行保存，同时会使用for循环来迭代一个对象，来对我们需要的数据进行提取，我们先看一下以前所编写的爬虫的部分代码<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_data</span><span class="params">(self, html)</span>:</span></span><br><span class="line">		<span class="string">"""</span></span><br><span class="line"><span class="string">		提取网页上所需要的数据</span></span><br><span class="line"><span class="string">		:param html: 网页源码</span></span><br><span class="line"><span class="string">		:return: 评价数据</span></span><br><span class="line"><span class="string">		"""</span></span><br><span class="line">		doc = pq(html)</span><br><span class="line">		items = doc(<span class="string">'div.comment-item'</span>).items()</span><br><span class="line">		<span class="keyword">for</span> item <span class="keyword">in</span> items:</span><br><span class="line">			<span class="keyword">yield</span> pd.DataFrame(&#123;</span><br><span class="line">				<span class="string">'user_nick'</span>: [item(<span class="string">'span.comment-info &gt; a'</span>).text()],           <span class="comment"># 昵称</span></span><br><span class="line">				<span class="string">'score'</span>: [self.get_point(item(<span class="string">'span.rating'</span>).attr(<span class="string">'title'</span>))],  <span class="comment"># 评分</span></span><br><span class="line">				<span class="string">'content'</span>: [item(<span class="string">'span.short'</span>).text()],                        <span class="comment"># 评价</span></span><br><span class="line">				<span class="string">'userful_num'</span>: [item(<span class="string">'span.votes'</span>).text()]                     <span class="comment"># 多少人觉得有用</span></span><br><span class="line">			&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>这是之前抓取《阿丽塔》的影评的主要数据提取代码，我们都知道<code>for</code>循环是用来迭代的，因此上述代码中我们可以将得到的<code>items</code>称为是一个可迭代对象，然后在<code>for</code>循环中，由于使用了<code>yield</code>语句，因此调用<code>get_data()</code>将会得到一个生成器。因此，当我们在进行大量的数据的抓取时，迭代是必不可少的，而生成器也能够实现代码的优化。说到这儿，可能大部分同学觉得有点偏题了，不是要讲迭代器和生成器嘛，怎么讲爬虫了，上述例子只是为说明迭代器和生成器的使用，毕竟要学以致用，能够用到实际当中才是最好的。</p>
+<p>那到底什么是可迭代对象，迭代器，生成器呢，他们之间又有什么区别呢？由于本人也只是小白一枚，可能会不够全面，还望大家海涵。</p>
+<p>由于本文需要对一个对象进行判断其是什么，因此会使用到<code>isinstance()</code>函数，其具体的判断方法如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections.abc <span class="keyword">import</span> Iterator, Iterable</span><br><span class="line"><span class="keyword">from</span> types <span class="keyword">import</span> GeneratorType</span><br><span class="line">isinstance(obj, Iterable)  <span class="comment"># 判断一个对象obj是否为可迭代对象</span></span><br><span class="line">isinstance(obj, Iterator)  <span class="comment"># 判断一个对象obj是否为迭代器</span></span><br><span class="line">isinstance(obj, GeneratorType)  <span class="comment"># 判断一个对象obj是否为生成器</span></span><br></pre></td></tr></table></figure></p>
+<p>以上代码将会在下文中多次出现。</p>
+<h3 id="可迭代对象"><a href="#可迭代对象" class="headerlink" title="可迭代对象"></a>可迭代对象</h3><p><code>使用iter内置函数可以获取迭代器的对象。如果对象实现了能返回迭代器的__iter__方法，那么对象就是可迭代的。序列都可以迭代；实现了__getitem__方法，而且其参数是从零开始的索引，这种对象也可以迭代。</code></p>
+<p>可能大多数人都不能明白上面的意思，没关系，我们用通俗易懂的方式来在解释一遍。首先，学过Python基础的，应该都知道列表、元组、字典、字符串都是可迭代的，因为我们都会对这些类型的数据使用<code>for</code>语句，因此根据我们之前的编程经验我们可以知道：</p>
+<ul>
+<li><strong>能用for语句的一般都是可迭代对象</strong></li>
+</ul>
+<p>或许，你可能忘记了列表、元组、字典、字符串都是可迭代的，无所谓，我们通过代码来加深我们的影响：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections.abc <span class="keyword">import</span> Iterator, Iterable</span><br><span class="line">isinstance([], Iterable)  <span class="comment"># True</span></span><br><span class="line">isinstance((), Iterable)  <span class="comment"># True</span></span><br><span class="line">isinstance(&#123;&#125;, Iterable)  <span class="comment"># True</span></span><br><span class="line">isinstance(<span class="string">''</span>, Iterable)  <span class="comment"># True</span></span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><strong>如果对象实现了能返回迭代器的<strong>iter</strong>方法，那么对象就是可迭代的</strong></li>
+</ul>
+<p>在此，我们可以先忽略迭代器，上述话的意思就是，我们只要实现了<code>__iter__</code>方法，便可以得到了一个可迭代对象。上文中我们知道了列表是可迭代对象，因此，我们可以先查看<code>list</code>中是否有<code>__iter__</code>方法，可以直接调用<code>dir()</code>来进行查看：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">dir(list)</span><br><span class="line">[<span class="string">'__add__'</span>, <span class="string">'__class__'</span>, <span class="string">'__contains__'</span>, <span class="string">'__delattr__'</span>, </span><br><span class="line"><span class="string">'__delitem__'</span>, <span class="string">'__dir__'</span>, <span class="string">'__doc__'</span>, <span class="string">'__eq__'</span>, <span class="string">'__format__'</span>, </span><br><span class="line"><span class="string">'__ge__'</span>, <span class="string">'__getattribute__'</span>, <span class="string">'__getitem__'</span>, <span class="string">'__gt__'</span>, </span><br><span class="line"><span class="string">'__hash__'</span>, <span class="string">'__iadd__'</span>, <span class="string">'__imul__'</span>, <span class="string">'__init__'</span>, </span><br><span class="line"><span class="string">'__init_subclass__'</span>, <span class="string">'__iter__'</span>, <span class="string">'__le__'</span>, <span class="string">'__len__'</span>, </span><br><span class="line"><span class="string">'__lt__'</span>, ...]  <span class="comment"># 由于结果较多，只截取部分放在这里</span></span><br></pre></td></tr></table></figure></p>
+<p>当然，我们也可以自己在一个类中使用<code>__iter__</code>方法来定义一个可迭代对象，如下<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections.abc <span class="keyword">import</span> Iterator, Iterable</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">my_iter</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">it = my_iter()</span><br><span class="line">isinstance(it, Iterable)   <span class="comment"># True</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 这里类就是可迭代对象，我们可以不创建实例来进行判断</span></span><br><span class="line">issubclass(my_iter, Iterable)   <span class="comment"># True</span></span><br></pre></td></tr></table></figure></p>
+<p>因此，<strong>当对象中实现了<strong>iter</strong>方法，那么对象就是可迭代的</strong>。</p>
+<ul>
+<li><strong>实现了<strong>getitem</strong>方法，而且其参数是从零开始的索引，这种对象也可以迭代</strong></li>
+</ul>
+<p>从上面的话中我们可以知道，在类中仅实现<code>__getitem__</code>方法，也能够创建一个可迭代对象，当然，并不是单纯的实现<code>__getitem__</code>方法即可，我们需要指定其参数是从零开始的索引，也就是说要在<code>__getitem__</code>方法中定义一个索引参数, 如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections.abc <span class="keyword">import</span> Iterator, Iterable</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">my_iter</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span><span class="params">(self, item)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> range(<span class="number">0</span>, <span class="number">5</span>)[item]</span><br><span class="line"></span><br><span class="line">it = my_iter()</span><br><span class="line">isinstance(it, Iterable)  <span class="comment"># False</span></span><br></pre></td></tr></table></figure></p>
+<p>从上述结果，我们发现我们在类中构造了<code>__getitem__</code>方法，但是我们在判断其是否为可迭代对象时，却输出<code>False</code>，难道之前说的定义<code>__getitem__</code>方法能够实现可迭代对象的说法是错误的？不，当然不是，这是因为<code>abc.Iterable</code>并不会去考虑<code>__getitem__</code>，其只要发现无<code>__iter__</code>方法便输出<code>False</code>。从Python 3.4 开始，检查对象obj能否迭代，最准确的方法是调用<code>iter(obj)</code>函数（对于<code>iter</code>函数的说明将在后面提到，在此先不阐述），因为<code>iter(obj)</code>函数会考虑到遗留的<code>__getitem__</code>方法。我们使用<code>iter(obj)</code>函数，然后再对其进行判断<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">it = iter(my_iter())</span><br><span class="line">isinstance(it, Iterable)  <span class="comment"># True</span></span><br></pre></td></tr></table></figure></p>
+<p>这样一来我们便创建了一个可迭代的对象，<code>__getitem__</code>可以让对象实现迭代功能，这样就可以使用<code>for...in...</code>来迭代该对象了<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Company</span>:</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, employ_list)</span>:</span></span><br><span class="line">		self.empoyee = employ_list</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span><span class="params">(self, item)</span>:</span></span><br><span class="line">		<span class="keyword">return</span> self.empoyee[item]</span><br><span class="line"></span><br><span class="line">company = Company([<span class="string">'mike'</span>, <span class="string">'jack'</span>, <span class="string">'lucy'</span>])</span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> company:</span><br><span class="line">	print(item)</span><br><span class="line"></span><br><span class="line">mike</span><br><span class="line">jack</span><br><span class="line">lucy</span><br></pre></td></tr></table></figure></p>
+<p>虽然在上例中没有实现<code>__iter__</code>方法，但是Company实例是可迭代对象，因为发现有<code>__getitem__</code>方法时，Python会调用它，传入从0开始的整数索引，尝试迭代对象。</p>
+<ul>
+<li><strong>序列都可以迭代</strong></li>
+</ul>
+<p>Python有6中种内建的序列：列表、元组、字符串、Unicode字符串、buffer对象、xrange对象，我们这里不对序列进行介绍，而主要对序列为什么可以迭代进行说明。</p>
+<p>任何Python序列都可以迭代的原因是，它们都实现了<code>__getitem__</code>方法，并且标准的序列中也都实现了<code>__iter__</code>方法（从上面<code>dir(list)</code>的结果可以看出）。当我们需要去迭代对象obj时，会自动调用<code>iter(obj)</code>，内置的<code>iter</code>函数执行以下操作（在这里我们可以先剧透一下，<code>iter</code>将会创建一个迭代器）：</p>
+<ul>
+<li>检查对象是否实现了<code>__iter__</code>方法，如果实现了就调用它，获取一个迭代器</li>
+<li>如果没有实现<code>__iter__</code>，但是实现了<code>__getitem__</code>方法，Python会创建一个迭代器，尝试按顺序（从索引0开始）获取元素</li>
+<li>如果尝试失败，Python抛出TypeError异常</li>
+</ul>
+<p>上面我们对可迭代对象进行了介绍，并说明了如何自己去创建去创建一个可迭代对象，并且序列都是可迭代，但是其中涉及到了迭代器，因此，我们接下来将对迭代器进行介绍。</p>
+<h3 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h3><p><code>实现了无参数的__next__方法，返回序列中的下一个元素，如果没有元素了，那么抛出StopIteration异常，
+同时实现了__iter__方法的对象便为迭代器</code><br>我们首先对迭代器器中的方法进行说明</p>
+<ul>
+<li><strong>next</strong>方法<br>返回下一个可用的元素，如果没有元素了，抛出StopIteration异常</li>
+<li><strong>iter</strong>方法<br>返回self，以便在应该使用可迭代对象的地方使用迭代器，例如在for循环中。</li>
+</ul>
+<p>接着，我们需指出可迭代对象和迭代器之间的关系：Python从可迭代对象中获取迭代器。我们可以看如下一个例子（看不懂没关系，我们后面会进行讲解，这边只是为了说明什么是迭代器），在这个例子中我们不去使用<code>for...in...</code>，因为该语句的迭代器藏在背后，我们无法看到，<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">'ABC'</span></span><br><span class="line">it = iter(s)   <span class="comment"># 构建迭代器 it</span></span><br><span class="line"><span class="comment"># it    # &lt;str_iterator at 0x18ffe98bc50&gt;</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        print(next(it))  <span class="comment"># 不断在迭代器上调用next函数，获取下一个字符</span></span><br><span class="line">    <span class="keyword">except</span> StopIteration: <span class="comment"># 当迭代器中没有字符了，抛出StopIteration异常，并退出循环</span></span><br><span class="line">        <span class="keyword">del</span> it</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># A</span></span><br><span class="line"><span class="comment"># B</span></span><br><span class="line"><span class="comment"># C</span></span><br></pre></td></tr></table></figure></p>
+<p>你可能会好奇上文中不是用<code>iter</code>来判断可迭代对象的嘛，怎么这里使用<code>iter</code>来创建一个迭代器呢，首先需要指出的是，<strong><code>iter</code>在构建一个可迭代对象时，同时<code>iter</code>也会创建一个迭代器</strong>，我们将之前的代码补充如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">it = iter(my_iter())</span><br><span class="line">isinstance(it, Iterable)  <span class="comment"># True</span></span><br><span class="line">isinstance(it, Iterator)  <span class="comment"># True</span></span><br></pre></td></tr></table></figure></p>
+<p>其次，可以回过头去看<strong>序列都是可迭代的</strong>中的<code>iter</code>操作顺序，其明确指出会创建一个迭代器。</p>
+<p>在这里，我们可以对<code>for..in..</code>进行一个简单的说明，毕竟在使用迭代时，99%会使用到它。在用<code>for..in..</code>迭代对象时，如果对象没有实现<code>__iter__、__next__</code>迭代器协议的话，Python的解释器就会去寻找<code>__getitem__</code>来迭代对象，如果连<code>__getitem__</code>都没有定义，这解释器就会报对象不是迭代器的错误，同时<code>for..in..</code>会隐式的调用<code>next()</code></p>
+<p>上述是使用内置函数来创建了一个迭代器，那我们能否自己创建一个迭代器呢？当然可以，我们只需要根据迭代器的概念，在对象中实现<code>__iter__、__next__</code>迭代器协议即可。我们通过定义一个迭代器来实现斐波那契数列，并且只让其输出前5个（为了演示StopIteration）<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Fabs</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, count)</span>:</span></span><br><span class="line">        self.num1 = <span class="number">0</span></span><br><span class="line">        self.num2 = <span class="number">1</span></span><br><span class="line">        self.n = <span class="number">0</span></span><br><span class="line">        self.count = count</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__next__</span><span class="params">(self)</span>:</span></span><br><span class="line">         <span class="keyword">if</span> self.n &lt; self.count:</span><br><span class="line">            self.num1, self.num2 = self.num2, self.num1 + self.num2</span><br><span class="line">            self.n += <span class="number">1</span></span><br><span class="line">            <span class="keyword">return</span> self.num1</span><br><span class="line">         <span class="keyword">raise</span> StopIteration   <span class="comment"># 抛出异常</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span>   <span class="comment"># 返回迭代器自身</span></span><br><span class="line">        <span class="keyword">return</span> self   </span><br><span class="line">    </span><br><span class="line">my_iterator = Fabs(<span class="number">5</span>)</span><br><span class="line"><span class="comment"># 判断一下其是否是可迭代对象</span></span><br><span class="line">isinstance(my_iterator, Iterable)   <span class="comment"># True</span></span><br><span class="line"><span class="comment"># 判断一下其是否是迭代器</span></span><br><span class="line">isinstance(my_iterator, Iterator)   <span class="comment"># True</span></span><br><span class="line"><span class="comment"># 不断迭代迭代器，直至没有元素了抛出异常</span></span><br><span class="line">next(my_iterator)   <span class="comment"># 1</span></span><br><span class="line">next(my_iterator)   <span class="comment"># 1</span></span><br><span class="line">next(my_iterator)   <span class="comment"># 2</span></span><br><span class="line">next(my_iterator)   <span class="comment"># 3</span></span><br><span class="line">next(my_iterator)   <span class="comment"># 5</span></span><br><span class="line">next(my_iterator)   <span class="comment"># StopIteration</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 上述代码等价于：</span></span><br><span class="line">my_iterator = Fabs(<span class="number">5</span>)</span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> my_iterator:</span><br><span class="line">    print(item)</span><br><span class="line"><span class="comment"># 不过上述代码不会输出报错，这是因为for机制会捕获异常，在循环终止时不会报错，</span></span><br><span class="line"><span class="comment"># 感兴趣的小伙伴可以试一下</span></span><br></pre></td></tr></table></figure></p>
+<p>至此，我们便自己实现了一个迭代器，同时也构建了一个可迭代对象，因此，<strong>迭代器可以迭代，但可迭代对象不一定是迭代器</strong>。<code>__next__</code>方法容易理解，就是取下一个值，我们可以构建一个列表的迭代器来更好的理解<code>__next__</code>方法<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">my_list = [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>]</span><br><span class="line">my_lister = iter(my_list)  <span class="comment"># 获取迭代器</span></span><br><span class="line">my_lister.__next__()   <span class="comment"># 1</span></span><br><span class="line">my_lister.__next__()   <span class="comment"># 3</span></span><br><span class="line">my_lister.__next__()   <span class="comment"># 5</span></span><br><span class="line">my_lister.__next__()   <span class="comment"># StopIteration</span></span><br></pre></td></tr></table></figure></p>
+<p>你可能会好奇我们在迭代器中使用<code>__iter__</code>方法返回自身不是多此一举嘛？其实不然，当我们调用<code>next()</code>方法并捕获到异常后，我们将没有办法还原迭代器，如果想再次迭代，那就要调用<code>iter()</code>，传入之前构建迭代器的可迭代对象。这里需要注意的是，传入迭代器本身没用，因为传入的迭代器是已经耗尽的迭代器，并不能还原，因此，我们<strong>需要在迭代器中使用<code>__iter__</code>方法来返回实例自身</strong>。</p>
+<p>现在，你应该更加困惑了，怎么一会儿可迭代对象，一会儿又是迭代器的，什么玩意儿。别急，我们接下来就将两者进行区别开来。在区别之前，我们先看一段代码，我们分别构建了一个可迭代对象和迭代器<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> reprlib</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sentence</span>:</span>   <span class="comment"># 定义一个可迭代对象</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, text)</span>:</span></span><br><span class="line">		self.text = text</span><br><span class="line">		self.words = re.findall(<span class="string">'\w+'</span>, text)</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span>    <span class="comment"># 实例并返回一个迭代器</span></span><br><span class="line">		<span class="keyword">return</span> SentenceIterator(self.words)  </span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SentenceIterator</span>:</span>   <span class="comment"># 定义一个迭代器</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, words)</span>:</span></span><br><span class="line">		self.words = words</span><br><span class="line">		self.index = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__next__</span><span class="params">(self)</span>:</span></span><br><span class="line">		<span class="keyword">try</span>:</span><br><span class="line">			word = self.words[self.index]   <span class="comment"># 根据索引获取单词</span></span><br><span class="line">		<span class="keyword">except</span> IndexError:</span><br><span class="line">			<span class="keyword">raise</span> StopIteration</span><br><span class="line">		self.index += <span class="number">1</span></span><br><span class="line">		<span class="keyword">return</span> word</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span>  <span class="comment"># 返回实例自身</span></span><br><span class="line">		<span class="keyword">return</span> self</span><br></pre></td></tr></table></figure></p>
+<p>我们对上述代码进行测试<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections.abc <span class="keyword">import</span> Iterator, Iterable</span><br><span class="line">s = Sentence(<span class="string">'How are you? I am fine'</span>)</span><br><span class="line">isinstance(s, Iterable)  <span class="comment"># True</span></span><br><span class="line">isinstance(s, Iterator)  <span class="comment"># False</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> s:</span><br><span class="line">    print(i, end = <span class="string">' '</span>)   <span class="comment"># How are you I am fine</span></span><br><span class="line"><span class="comment"># 我们构造了一个可迭代对象s，并且并不是一个迭代器，但是在for循环中，调用了</span></span><br><span class="line"><span class="comment"># Sentence.__iter__，返回了一个迭代器，从而对迭代器进行迭代，在for循环中</span></span><br><span class="line"><span class="comment"># 隐式的调用了next()方法，对结果进行输出，因此若直接对s使用next,将会报错</span></span><br><span class="line">next(s)  <span class="comment"># TypeError: 'Sentence' object is not an iterator</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 我们将next()方法显示的使用，即不使用for循环，因此我们需要将使用iter()</span></span><br><span class="line"><span class="comment"># 将s变成一个迭代器</span></span><br><span class="line">s_it = iter(s)   <span class="comment"># 获取迭代器</span></span><br><span class="line">isinstance(s_it, Iterable)  <span class="comment"># True</span></span><br><span class="line">isinstance(s_it, Iterator)  <span class="comment"># True</span></span><br><span class="line">next(s_it)   <span class="comment"># How</span></span><br><span class="line">next(s_it)   <span class="comment"># are</span></span><br><span class="line">...</span><br><span class="line">next(s_it)   <span class="comment"># StopIteration  # 索引不到单词，抛出异常</span></span><br><span class="line"><span class="comment"># 上述代码iter()即执行了Sentence.__iter__方法，返回了实例化的SentenceIterator迭代器，</span></span><br><span class="line"><span class="comment"># 通过调用next()方法，来逐一输出结果</span></span><br></pre></td></tr></table></figure></p>
+<p>通过上述代码我们可以总结出可迭代对象与迭代器之间的区别：</p>
+<ol>
+<li>迭代器可以迭代，但是可迭代的对象不是迭代器</li>
+<li>可迭代的对象有个<code>__iter__</code>方法，每次都实例化一个新的迭代器。可迭代对象一定不能是自身的迭代器，其必须实现<code>__iter__</code>方法，但不能实现<code>__next__</code>方法</li>
+<li>迭代器要实现<code>__next__</code>方法，返回单个元素，同时，迭代器应该一直可以迭代，实现<code>__iter__</code>方法，返回迭代器自身</li>
+</ol>
+<h3 id="生成器"><a href="#生成器" class="headerlink" title="生成器"></a>生成器</h3><p>在生成器中，<strong>生成器函数</strong>是绕不过去的，因为只有调用生成器函数，才会返回一个生成器对象。</p>
+<ul>
+<li><strong>生成器函数</strong><br>只要Python函数的定义体中有<code>yield</code>关键字，该函数就是生成器函数</li>
+</ul>
+<p>根据上面的定义，我们不难得到<strong>只要函数中有yield关键字，该函数就是生成器函数</strong>，举个例子<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gen</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="number">2</span></span><br><span class="line"></span><br><span class="line">gen </span><br><span class="line"><span class="comment"># &lt;function __main__.gen()&gt;  # 函数对象</span></span><br><span class="line">gen()</span><br><span class="line"><span class="comment"># &lt;generator object gen at 0x0000017C991B9228&gt;  # 返回一个生成器对象</span></span><br></pre></td></tr></table></figure></p>
+<p>我们为什么要使用生成器呢，因为当我们计算的数据量较大时，将会消耗大量的内存，一般在处理数据的函数都是一次性返回所有的数据（若在得到一个数据后就对该函数使用return语句，该函数将停止执行），但是生成器却不一样，其一次只产生一个值，打个比方，现在有一把糖，每次只能拿一个（或根据要求的数量），因此，对于生成器而言，我们想把所有的数据都取出时，需进行迭代(for循环)，所以，我们可将<strong>生成器看作是迭代器</strong>，见如下代码<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gen</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> gen():</span><br><span class="line">    print(item)</span><br><span class="line"><span class="comment"># 1</span></span><br><span class="line"><span class="comment"># 2</span></span><br></pre></td></tr></table></figure></p>
+<p>显然，使用<code>for...in</code>我们无法看出生成器的执行过程。由于<strong>生成器是迭代器</strong>，因此我们将使用<code>next()</code>来进行展示<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections.abc <span class="keyword">import</span> Iterator, Iterable</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gen</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="number">2</span></span><br><span class="line"></span><br><span class="line">g = gen()</span><br><span class="line">isinstance(g, Iterable)  <span class="comment"># True  # 判断其生成器是可迭代对象</span></span><br><span class="line">isinstance(g, Iterator)  <span class="comment"># True  # 判断其生成器是迭代器</span></span><br><span class="line">next(g)  <span class="comment"># 1</span></span><br><span class="line">next(g)  <span class="comment"># 2</span></span><br><span class="line">next(g)  <span class="comment"># StopIteration</span></span><br></pre></td></tr></table></figure></p>
+<p>生成器函数在每次调用<code>next()</code>的时候遇到<code>yield</code>便返回暂停，等到下一次<code>next()</code>再继续执行，当生成器函数的定义体执行完毕后，生成器会抛出<code>StopIteration</code>异常。也就是说用多少取多少，但是再某些情况下，直接使用。但是在某些情况下，使用生成器函数与不使用生成器函数所占用的内存差不多，比如在本文一开始的时候的爬虫中，我们便得到了一个满足条件的列表<code>items</code>，并且我们只是逐一的从该列表中产出我们所需要的数据，这里一开始便计算出列表中的所有元素无疑将消耗大量的内存，因此我们需要考虑有没有一种方法能够减少内存的使用，并得到同样的结果。在这里，就需要考虑<strong>惰性实现</strong>。</p>
+<p>所谓惰性实现是指尽可能延后生成值。还以取糖为例，我们首先假设一次只能拿一颗。惰性实现就是我们取出一颗糖并对其处理完后，再去工厂取糖，但是这里工厂每次只有在我们需要的时候才去生产，而不像以往的一下的全部生产出来，如下<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gen</span><span class="params">()</span>:</span>  <span class="comment"># 按需生产</span></span><br><span class="line">    print(<span class="string">'first need'</span>)</span><br><span class="line">    <span class="keyword">yield</span> <span class="number">1</span></span><br><span class="line">    print(<span class="string">'second need'</span>)</span><br><span class="line">    <span class="keyword">yield</span> <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gen2</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> gen(): </span><br><span class="line">        <span class="keyword">yield</span> item</span><br><span class="line">   </span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> gen2():</span><br><span class="line">    print(item)</span><br></pre></td></tr></table></figure></p>
+<p>显然用<code>for...in...</code>无法说明情况，同样使用<code>next()</code>方法，<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">g = gen2()</span><br><span class="line">next(g) </span><br><span class="line"><span class="comment"># first need</span></span><br><span class="line"><span class="comment"># 1</span></span><br><span class="line">next(g)</span><br><span class="line"><span class="comment"># second need</span></span><br><span class="line"><span class="comment"># 1</span></span><br></pre></td></tr></table></figure></p>
+<p>换句话说，就是对糖工厂使用了<code>yield</code>语句，让他一个一个的生产，我们再一个一个的取出，也就是只有在我们需要的时候才生产一个糖。在爬虫中，我们可以将匹配的列表同样构造一个生成器函数（返回的不是一个列表，而是一个生成器）来节省内存。</p>
+<p>我们在学习Python基础的时候，都知道使用列表推导来快速的构建列表，同样我们也可以使用类似于列表推导的生成器表达式来创建其他任何类型的序列，其与列表推导的区别在于使用的是<strong>小括号</strong>，而不是中括号。</p>
+<ul>
+<li><strong>生成器表达式</strong><br>生成器表达式可以理解为列表推导的惰性版本（即一个一个的按需产出）：不会迫切的构建列表，而是返回一个生成器，按需惰性生成元素。也就是说，如果列表推导是制造列表的工厂，那么生成器表达式就是制造生成器的工厂。</li>
+</ul>
+<p>我们来看一个生成器表达式的例子，使用生成器表达式来计算一个数的阶乘<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">factorial</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span> <span class="keyword">if</span> n &lt; <span class="number">2</span> <span class="keyword">else</span> n * factorial(n - <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">my_generator = (factorial(i) <span class="keyword">for</span> i <span class="keyword">in</span> range (<span class="number">0</span>, <span class="number">3</span>))</span><br><span class="line">next(my_generator)   <span class="comment"># 1   # 计算0的阶乘</span></span><br><span class="line">next(my_generator)   <span class="comment"># 1   # 计算1的阶乘</span></span><br><span class="line">next(my_generator)   <span class="comment"># 2   # 计算2的阶乘</span></span><br><span class="line">next(my_generator)   <span class="comment"># StopIteration # 生成器表达式的定义体执行完毕，抛出异常</span></span><br></pre></td></tr></table></figure></p>
+<p>由于<strong>for循环就是通过不断调用next()函数实现的</strong>，故上述代码也可用<code>for...in...</code>来实现，不过其异常不会被抛出。如果不使用生成器表达式，直接使用<code>yield</code>语句，将会增加代码量，如下<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_generator</span><span class="params">()</span>:</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">3</span>):</span><br><span class="line">		<span class="keyword">yield</span> factorial(i)</span><br></pre></td></tr></table></figure></p>
+<p>显然<strong>生成器表达式能够在一定程度上减少代码的编写</strong>。当然如果你编写的生成器表达式需要分行实现，那还是定义生成器函数较好。</p>
+<p>其实，在之前的学习过程和自己编程的时候就已经在潜移默化的在使用一些生成器函数，有的可能还使用的相当的熟练，如<code>map、enumerate</code>等。故在此对一些常用的生成器函数进行简单说明。</p>
+<ul>
+<li>filter(predicate, it)<br>把it中的各个元素传给predicate，如果predicate(item)返回真值，那么产出对应的元素；如果predicate是None，那么只产出真值元素。<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">filter(<span class="keyword">lambda</span> x: x % <span class="number">2</span> == <span class="number">0</span>, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>])</span><br><span class="line"><span class="comment"># &lt;filter at 0x17c9919a940&gt;</span></span><br><span class="line">list(filter(<span class="keyword">lambda</span> x: x % <span class="number">2</span> == <span class="number">0</span>, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]))</span><br><span class="line"><span class="comment"># [2, 4]</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>这里需注意的是，直接使用<code>filter</code>是无法产出值的，因为它是一个生成器函数，需要去迭代或使用<code>next</code>才可以产出，故在这里我们选择了<code>list</code>方法来进行迭代产出。</p>
+<ul>
+<li><p>enumerate(iterable, start = 0)<br>产出由两个元素组成的元组，结构是(index, item)，其中index从start开始计数，item则是从itearable中获取</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">list(enumerate([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>], <span class="number">0</span>))</span><br><span class="line"><span class="comment"># [(0, 1), (1, 2), (2, 3), (3, 4)]</span></span><br><span class="line">list(enumerate([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>], <span class="number">10</span>))</span><br><span class="line"><span class="comment"># [(10, 1), (11, 2), (12, 3), (13, 4)]</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>map(func, it1, [it2, …, itN])<br>把it中的各个参数传给func，产出结过，如果传入N个可迭代对象，那么func必须能接受N个参数，而且要并行处理各个可迭代的对象</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">list(map(<span class="keyword">lambda</span> x: x ** <span class="number">2</span>, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]))</span><br><span class="line"><span class="comment"># [1, 4, 9, 16]</span></span><br><span class="line"><span class="keyword">import</span> operator</span><br><span class="line">list(map(operator.mul, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>], [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]))</span><br><span class="line"><span class="comment"># [1, 4, 9, 16]</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>zip(it1, it2, …, itN)<br>并行从输入的各个可迭代对象中获取元素，产出由N个元素组成的元组，只要有一个可迭代对象到头了，就默默的停止了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">list(zip(<span class="string">'ABC'</span>,[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]))</span><br><span class="line"><span class="comment"># [('A', 1), ('B', 2), ('C', 3)]</span></span><br><span class="line">list(zip(<span class="string">'ABC'</span>,[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]))</span><br><span class="line"><span class="comment"># [('A', 1), ('B', 2), ('C', 3)]</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>reversed(seq)<br>从后向前，倒序产出seq中的元素，seq必须是序列，或者是实现了<strong>reversed</strong>特殊方法的对象</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">names = [<span class="string">'Tom'</span>, <span class="string">'Andy'</span>, <span class="string">'Jack'</span>]</span><br><span class="line">list(reversed(names))</span><br><span class="line"><span class="comment"># ['Jack', 'Andy', 'Tom']</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>yield from语句</strong></p>
+</li>
+</ul>
+<p>在生成器中，我们还需要了解一下<code>yield from</code>语句，这是在Python 3.3 中新出现的语法，其可以帮助我们在生成器函数中产出另一个生成器生成的值（和之前的惰性实现的概念差不多），传统的解决方法是使用嵌套的<code>for</code>循环，如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gen</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">3</span>):</span><br><span class="line">        <span class="keyword">yield</span> i</span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_generator</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> gen():</span><br><span class="line">        <span class="keyword">yield</span> item</span><br><span class="line"></span><br><span class="line">list(my_generator())</span><br><span class="line"><span class="comment"># [0, 1, 2, 3, 4]</span></span><br></pre></td></tr></table></figure></p>
+<p>我们使用<code>yield from</code>来代替<code>my_generator</code>中的<code>for</code>循环，<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gen</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">5</span>):</span><br><span class="line">        <span class="keyword">yield</span> i</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_generator</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">from</span> gen()</span><br><span class="line"></span><br><span class="line">list(my_generator())</span><br><span class="line"><span class="comment"># [0, 1, 2, 3, 4]</span></span><br></pre></td></tr></table></figure></p>
+<p>至此，关于Python中可迭代对象，迭代器和生成器的介绍就结束了，我们简单的总结一下：</p>
+<p><strong>可迭代对象</strong></p>
+<ul>
+<li>列表、元组、字典、字符串都是可迭代对象</li>
+<li>能用for语句迭代的都是可迭代对象</li>
+<li>实现了<code>__iter__</code>方法的对象是可迭代对象</li>
+<li>实现了<code>__getitem__</code>方法的对象是可迭代对象</li>
+</ul>
+<p><strong>迭代器</strong></p>
+<ul>
+<li>实现了<code>__iter__</code>方法和<code>__next__</code>方法的对象是迭代器，同时迭代器应该一直可以迭代，故<code>__iter__</code>方法应该返回迭代器自身</li>
+<li>迭代器可以迭代，可以看作是可迭代对象，但是可迭代对象不是迭代器，同时可迭代对象一定不能是自身的迭代器</li>
+<li>调用<code>next(obj)</code>来获取元素，当然一般都是直接使用<code>for...in...</code></li>
+</ul>
+<p><strong>生成器</strong></p>
+<ul>
+<li>生成器是由生成器函数创建的，而生成器函数是包含<code>yield</code>语句的函数</li>
+<li>对于生成器需要迭代（next）才能够产出值</li>
+<li>由于生成器和迭代器都是定义了<code>__iter__</code>方法和<code>__next__</code>方法方法，故可将所有的生成器看作是迭代器</li>
+</ul>
+<p>由于刚步入Python不久，对于可迭代对象，迭代器和生成器的了解不足，难免会有错误，还望大家指正。</p>
+<p>好好学习，天天向上！</p>
+
+            <div class="post-copyright">
+    <div class="content">
+        <p>最后更新： 2019年05月04日 17:44</p>
+        <p>原始链接： <a class="post-url" href="/2019/04/04/Python迭代器生成器/Python迭代器生成器/" title="Python迭代器生成器">http://liyanfei123.github.io/2019/04/04/Python迭代器生成器/Python迭代器生成器/</a></p>
+        <footer>
+            <a href="http://liyanfei123.github.io">
+                <img src="/images/logo.png" alt="Li yanfei">
+                Li yanfei
+            </a>
+        </footer>
+    </div>
+</div>
+
+      
+        
+            
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;">赏</a>
+</div>
+
+<div id="reward" class="post-modal reward-lay">
+    <a class="close" href="javascript:;" id="reward-close">×</a>
+    <span class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我吃糖~
+        <i class="icon icon-quote-right"></i>
+    </span>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/images/wechat_code.jpg" alt="打赏二维码">
+        </div>
+        <div class="reward-select">
+            
+            <label class="reward-select-item checked" data-id="wechat" data-wechat="/images/wechat_code.jpg">
+                <img class="reward-select-item-wechat" src="/images/wechat.png" alt="微信">
+            </label>
+            
+            
+            <label class="reward-select-item" data-id="alipay" data-alipay="/images/alipay_code.jpg">
+                <img class="reward-select-item-alipay" src="/images/alipay.png" alt="支付宝">
+            </label>
+            
+        </div>
+    </div>
+</div>
+
+
+        
+    </div>
+    <footer class="article-footer">
+        
+        
+<div class="post-share">
+    <a href="javascript:;" id="share-sub" class="post-share-fab">
+        <i class="fa fa-share-alt"></i>
+    </a>
+    <div class="post-share-list" id="share-list">
+        <ul class="share-icons">
+          <li>
+            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://liyanfei123.github.io/2019/04/04/Python迭代器生成器/Python迭代器生成器/&title=《Python迭代器生成器》 — Good Coding&pic=images/blogs/Python迭代器生成器.jpg" data-title="微博">
+              <i class="fa fa-weibo"></i>
+            </a>
+          </li>
+          <li>
+            <a class="weixin share-sns" id="wxFab" href="javascript:;" data-title="微信">
+              <i class="fa fa-weixin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://liyanfei123.github.io/2019/04/04/Python迭代器生成器/Python迭代器生成器/&title=《Python迭代器生成器》 — Good Coding&source=" data-title="QQ">
+              <i class="fa fa-qq"></i>
+            </a>
+          </li>
+          <li>
+            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://liyanfei123.github.io/2019/04/04/Python迭代器生成器/Python迭代器生成器/" data-title="Facebook">
+              <i class="fa fa-facebook"></i>
+            </a>
+          </li>
+          <li>
+            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Python迭代器生成器》 — Good Coding&url=http://liyanfei123.github.io/2019/04/04/Python迭代器生成器/Python迭代器生成器/&via=http://liyanfei123.github.io" data-title="Twitter">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+          <li>
+            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://liyanfei123.github.io/2019/04/04/Python迭代器生成器/Python迭代器生成器/" data-title="Google+">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        </ul>
+     </div>
+</div>
+<div class="post-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;" id="wxShare-close">×</a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=http://liyanfei123.github.io/2019/04/04/Python迭代器生成器/Python迭代器生成器/" alt="微信分享二维码">
+</div>
+
+<div class="mask"></div>
+
+        
+        <ul class="article-footer-menu">
+            
+            
+  <li class="article-footer-tags">
+    <i class="fa fa-tags"></i>
+      
+    <a href="/tags/迭代器/" class="color4">迭代器</a>
+      
+    <a href="/tags/生成器/" class="color4">生成器</a>
+      
+  </li>
+
+        </ul>
+        
+    </footer>
+  </div>
+</article>
+
+
+    <aside class="post-toc-pos post-toc-top" id="post-toc">
+        <nav class="post-toc-wrap">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#可迭代对象"><span class="post-toc-text">可迭代对象</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#迭代器"><span class="post-toc-text">迭代器</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#生成器"><span class="post-toc-text">生成器</span></a></li></ol>
+        </nav>
+    </aside>
+    
+
+<nav id="article-nav">
+  
+    <a href="/2019/04/18/Python多线程输出123123/Python多线程输出123123/" id="article-nav-newer" class="article-nav-link-wrap">
+
+      <span class="article-nav-title">
+        <i class="fa fa-hand-o-left" aria-hidden="true"></i>
+        
+          Python多线程输出123123
+        
+      </span>
+    </a>
+  
+  
+    <a href="/2019/03/28/Python装饰器/Python装饰器/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-title">Python装饰器</span>
+      <i class="fa fa-hand-o-right" aria-hidden="true"></i>
+    </a>
+  
+</nav>
+
+
+
+    
+</section>
+        
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+      <p>
+        Powered by  <a href="http://hexo.io/" target="_blank">Hexo</a>
+        Theme <a href="//github.com/wongminho/hexo-theme-miho" target="_blank">MiHo</a>
+      &copy; 2019 Li yanfei<br>
+      </p>
+    </div>
+  </div>
+</footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  var mihoConfig = {
+      root: "http://liyanfei123.github.io",
+      animate: true,
+      isHome: false,
+      share: true,
+      reward: 1
+  }
+</script>
+<div class="sidebar">
+    <div id="sidebar-search" title="Search">
+        <i class="fa fa-search"></i>
+    </div>
+    <div id="sidebar-category" title="Categories">
+        <i class="fa fa-book"></i>
+    </div>
+    <div id="sidebar-tag" title="Tags">
+        <i class="fa fa-tags"></i>
+    </div>
+    <div id="sidebar-top">
+        <span class="sidebar-top-icon"><i class="fa fa-angle-up"></i></span>
+    </div>
+</div>
+<div class="sidebar-menu-box" id="sidebar-menu-box">
+    <div class="sidebar-menu-box-container">
+        <div id="sidebar-menu-box-categories">
+            <a class="category-link" href="/categories/Matlab/">Matlab</a><a class="category-link" href="/categories/Python/">Python</a>
+        </div>
+        <div id="sidebar-menu-box-tags">
+            <a href="/tags/Scrapy/" style="font-size: 10px;">Scrapy</a> <a href="/tags/Session/" style="font-size: 10px;">Session</a> <a href="/tags/反爬虫/" style="font-size: 20px;">反爬虫</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/数据分析/" style="font-size: 15px;">数据分析</a> <a href="/tags/模拟登陆/" style="font-size: 15px;">模拟登陆</a> <a href="/tags/生成器/" style="font-size: 10px;">生成器</a> <a href="/tags/稳定性分析/" style="font-size: 10px;">稳定性分析</a> <a href="/tags/线程/" style="font-size: 15px;">线程</a> <a href="/tags/装饰器/" style="font-size: 10px;">装饰器</a> <a href="/tags/进程/" style="font-size: 10px;">进程</a> <a href="/tags/迭代器/" style="font-size: 10px;">迭代器</a>
+        </div>
+    </div>
+    <a href="javascript:;" class="sidebar-menu-box-close">&times;</a>
+</div>
+<div class="mobile-header-menu-nav" id="mobile-header-menu-nav">
+    <div class="mobile-header-menu-container">
+        <span class="title">Menus</span>
+        <ul class="mobile-header-menu-navbar">
+            
+            <li>
+                <a href="/">
+                    <i class="fa fa-home"></i><span>Home</span>
+                </a>
+            </li>
+            
+            <li>
+                <a href="/archives">
+                    <i class="fa fa-archive"></i><span>Archives</span>
+                </a>
+            </li>
+            
+            <li>
+                <a href="/about">
+                    <i class="fa fa-user"></i><span>About</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    <div class="mobile-header-tag-container">
+        <span class="title">Tags</span>
+        <div id="mobile-header-container-tags">
+            <a href="/tags/Scrapy/" style="font-size: 10px;">Scrapy</a> <a href="/tags/Session/" style="font-size: 10px;">Session</a> <a href="/tags/反爬虫/" style="font-size: 20px;">反爬虫</a> <a href="/tags/异步/" style="font-size: 10px;">异步</a> <a href="/tags/数据分析/" style="font-size: 15px;">数据分析</a> <a href="/tags/模拟登陆/" style="font-size: 15px;">模拟登陆</a> <a href="/tags/生成器/" style="font-size: 10px;">生成器</a> <a href="/tags/稳定性分析/" style="font-size: 10px;">稳定性分析</a> <a href="/tags/线程/" style="font-size: 15px;">线程</a> <a href="/tags/装饰器/" style="font-size: 10px;">装饰器</a> <a href="/tags/进程/" style="font-size: 10px;">进程</a> <a href="/tags/迭代器/" style="font-size: 10px;">迭代器</a>
+        </div>
+    </div>
+</div>
+<div class="search-wrap">
+    <span class="search-close">&times;</span>
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+            <i class="icon icon-lg icon-chevron-left"></i>
+        </a>
+        <input class="search-field" placeholder="Search..." id="keywords">
+        <a id="search-submit" href="javascript:;">
+            <i class="fa fa-search"></i>
+        </a>
+    <div class="search-container" id="search-container">
+        <ul class="search-result" id="search-result">
+        </ul>
+    </div>
+</div>
+
+<div id="search-tpl">
+    <li class="search-result-item">
+        <a href="{url}" class="search-item-li">
+            <span class="search-item-li-title" title="{title}">{title}</span>
+        </a>
+    </li>
+</div>
+<script src="/js/search.js"></script>
+<script src="/js/main.js"></script>
+
+
+  <script src="//cdn.bootcss.com/particles.js/2.0.0/particles.min.js"></script>
+  <div id="particles"></div>
+  <script src="/js/particles.js"></script>
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  <script src="//cdn.bootcss.com/scrollReveal.js/3.0.5/scrollreveal.js"></script>
+  <script src="/js/animate.js"></script>
+
+
+  <script src="/js/pop-img.js"></script>
+  <script>
+     $(".article-entry p img").popImg();
+  </script>
+
+  </div>
+</body>
+</html>
