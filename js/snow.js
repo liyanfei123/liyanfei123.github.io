@@ -26,7 +26,7 @@
     }).animate({
         top: endPositionTop,
         left: endPositionLeft,
-        opacity: 0.2
+        opacity: 0.5
     },durationFall,'linear',function(){
         $(this).remove()
     });
@@ -37,6 +37,6 @@ $(function(){
     $.fn.snow({ 
         minSize: 5, /* 定义雪花最小尺寸 */
         maxSize: 50,/* 定义雪花最大尺寸 */
-        newOn: 300  /* 定义密集程度，数字越小越密集 */
+        newOn: 280  /* 定义密集程度，数字越小越密集 */
     });
 });
